@@ -498,7 +498,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runner", choices=("adobe", "staging", "proton"), default="adobe")
     parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
-    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "debug", "ui", "stop", "integrate"))
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
     GRAPHICS = args.graphics
@@ -552,6 +552,18 @@ def main():
     elif args.command == "run-debug":
         os.environ["LRCC_WINEDEBUG"] = "-all,+seh,+loaddll,warn+d2d,fixme+d2d,err+all"
         launch(LR, "lightroom-debug", args.args)
+    elif args.command == "native-debug":
+        if PROTON:
+            raise RuntimeError("Native debugger currently supports standalone Wine runners only")
+        env = environment()
+        env["WINELOADERNOEXEC"] = "1"
+        os.chdir(LR.parent)
+        command = ["gdb", "-nx", "-iex", "set debuginfod enabled off",
+                   "-ex", "set pagination off", "-ex", "set print thread-events off",
+                   "-ex", "set print frame-arguments none",
+                   "-ex", "handle SIGSEGV SIGILL SIGFPE SIGUSR1 SIGUSR2 SIGPIPE nostop noprint pass",
+                   "-ex", "run", "--args", str(RUNTIME / "bin/wine"), str(LR)]
+        os.execvpe("gdb", command, env)
     elif args.command == "debug": debug(args.args)
     elif args.command == "ui": wine(DATA / "tools/lightroom-ui.exe", *args.args)
     elif args.command == "stop": run([RUNTIME / "bin/wineserver", "-k"], env=environment())

@@ -6,6 +6,7 @@
 #include <tlhelp32.h>
 static BOOL click_signin = FALSE;
 static BOOL found = FALSE;
+static BOOL responsiveness = FALSE;
 static DWORD inspected_pid = 0;
 static void inspect_environment(DWORD pid) {
     if (inspected_pid == pid) return;
@@ -76,6 +77,16 @@ static BOOL CALLBACK window(HWND wnd, LPARAM unused) {
     if (IsWindowVisible(wnd)) {
         wchar_t cls[128]; RECT r; GetClassNameW(wnd, cls, 128); GetWindowRect(wnd, &r);
         wprintf(L"Window %p class %ls rect %ld,%ld %ldx%ld\n", (void*)wnd,cls,r.left,r.top,r.right-r.left,r.bottom-r.top);
+        if (responsiveness && !wcscmp(cls, L"Lightroom CC Main Window")) {
+            DWORD_PTR reply = 0;
+            ULONGLONG start = GetTickCount64();
+            SetLastError(0);
+            LRESULT responsive = SendMessageTimeoutW(wnd, WM_NULL, 0, 0,
+                SMTO_ABORTIFHUNG | SMTO_BLOCK, 2000, &reply);
+            DWORD error = GetLastError();
+            printf("UI response: %s; elapsed=%llu ms; error=%lu\n",
+                responsive ? "received" : "timeout/failure", GetTickCount64()-start, error);
+        }
         if (!found) EnumChildWindows(wnd, child, 0);
     }
     return TRUE;
@@ -96,6 +107,7 @@ int main(int argc, char **argv) {
         return 0;
     }
     click_signin = argc == 2 && !strcmp(argv[1], "click-sign-in");
+    responsiveness = argc == 2 && !strcmp(argv[1], "responsiveness");
     EnumWindows(window, 0);
     return click_signin && !found ? 1 : 0;
 }

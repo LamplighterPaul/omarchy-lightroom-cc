@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Paul Zammit and contributors
+Copyright (c) 2026 sander110419 and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,5 +20,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-This license covers this project's original code and documentation.
-Third-party material is identified in THIRD_PARTY.md and retains its own licenses.
+----
+
+This license covers the scripts in `scripts/`, the stub DLL sources in
+`stubs/sources/`, and the documentation in this repository.
+
+The patched `d2d1.dll` and `mfplat.dll` (if shipped as binaries) are
+derivative works of the Wine project and are licensed under the LGPL-2.1+
+matching the Wine source they were built from.
+
+Adobe Creative Cloud, Adobe Lightroom, and related binaries are the property
+of Adobe Inc. and are NOT redistributed by this repository. Users must
+obtain those through a valid Adobe Creative Cloud subscription.
+
+DXVK is © Philip Rebohle and contributors, licensed under the zlib license.

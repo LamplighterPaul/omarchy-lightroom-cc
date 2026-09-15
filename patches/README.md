@@ -14,3 +14,6 @@ Do not assume color accuracy. This is an isolated startup experiment.
 On this machine, unmodified Wine reports missing effect
 `{1a28524c-fdd6-4aa4-ae8f-837eb8267b37}` and Lightroom shows a graphics
 initialization error. No other third-party patches have been applied.
+
+Attribution and license scope are recorded in [THIRD_PARTY.md](../THIRD_PARTY.md).
+The upstream MIT notices and Wine LGPL text are preserved in `LICENSES/`.

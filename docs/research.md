@@ -72,7 +72,9 @@ extractable ADC64/CEF64 and ADC64/NGL .pima ZIP packages. Their .pimx metadata
 places them in CEF and NGL under Adobe Desktop Common. Staging only those two
 components provides Adobe's own authentication helper and Chromium engine
 without installing the Creative Cloud desktop UI. The archive's CEF reports
-Chrome/116.0.5845.190; current Adobe login acceptance remains to be tested.
+Chrome/116.0.5845.190. On 15 September 2026 the sign-in form rendered under
+Wine Staging 11.17 and the subscribed user completed sign-in. The main Lightroom
+UI then hung; see [current validation](validation.md).
 
 A Wine Staging developer also reviewed the earlier Lightroom recipe:
 https://www.patreon.com/winestaging/posts/investigation-of-160397129

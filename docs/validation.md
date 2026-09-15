@@ -1,152 +1,119 @@
-# Release gate
+# Status and validation
 
-Target: Omarchy/Hyprland, Intel Panther Lake, Mesa 26.2.2, kernel 7.2.3,
-approximately 32 GB RAM. User has a cloud Lightroom subscription.
+**15 September 2026 — development paused after successful Adobe authentication.**
+The main Lightroom UI hangs. This is not a working photo-editing release.
 
-Record app version, runner hash, driver version and exact reproduction steps
-with each result. Use disposable photos until persistence and sync are verified.
+## Tested configuration
 
-| Check | Status |
+| Component | Observed configuration |
 | --- | --- |
-| Adobe Wine 11.10 archive checksum and --version | Passed |
-| Adobe Proton 10 archive checksum and --version | Passed (alternate experiment) |
-| cabextract/Winetricks package signatures | Passed against local Arch keyring |
-| Dedicated prefix creation and dependency installation | Passed |
-| Creative Cloud UI, genuine login and app catalog | Offline UI failed; optional direct route used |
-| Stage and launch cloud Lightroom | Main window and genuine Adobe sign-in form render under Wine Staging + Adobe CEF |
-| Authenticate the subscribed account | Passed: user confirmed successful sign-in and return to Lightroom |
-| Import JPEG and camera RAW | Pending |
-| Exposure, white balance, crop, local mask and undo | Pending |
-| Export JPEG/TIFF and compare pixels/profiles with a reference | Pending |
-| Close/reopen, edits persist | Pending |
-| Upload test photo and verify edits on Lightroom web/another device | Pending |
-| GPU acceleration, large image and sustained editing | Pending |
-| Remove/heal, AI tools, offline/reconnect | Pending |
-| HiDPI, keyboard, file picker, multiple monitors | Pending |
-| Reproduce installation from a clean environment | Pending |
+| Desktop | Omarchy / Hyprland / Xwayland |
+| Hardware | Intel Core Ultra 7 355, Panther Lake integrated graphics, approximately 32 GB RAM |
+| Host graphics | Mesa 26.2.2, kernel 7.2.3 |
+| Lightroom | Cloud Lightroom 9.5.1.202608151945, Camera Raw 18.5.1 |
+| Successful authentication runner | Wine Staging 11.17, separate prefix |
+| Direct3D 11 | DXVK 2.7.1 |
+| Direct2D | Source-built Wine 11.10 with experimental ColorManagement pass-through |
+| Authentication | Adobe CEF/NGL extracted from official Creative Cloud 6.10.0.252.41 archive |
+| Browser engine | Adobe helper reports Chromium 116.0.5845.190 |
 
-The original CC recipe uses a no-op Direct2D ColorManagement effect. Its claim
-that this only satisfies a startup probe is not proof of correct display color.
-Any use of this workaround must remain explicitly experimental until tested.
+Download URLs and SHA-256 values are in [manifest.json](../manifest.json).
+Local compiler package hashes are in [build-toolchain.json](build-toolchain.json).
+The successful route was prepared incrementally. These observations do not prove
+that the documented commands reproduce it on a clean machine.
 
-Independent negative evidence: a [CachyOS tester](https://discuss.cachyos.org/t/lightroom-on-linux-progress-in-2026/30426)
-installed all apps but reported CC crashing soon after launch and Photoshop
-crashing immediately. Launch screenshots alone do not pass this release gate.
+## Fixed or demonstrated
 
-Research tools: Grok was invoked for X/web research but returned no substantive
-findings. agy headless research was blocked by its read_url permission policy.
-No claim of verified X reports or YouTube transcripts is made.
+1. **Direct installation payload:** fetched cloud Lightroom from Adobe's catalog;
+   decoded backslash ZIP paths and nested raw LZMA2 payloads into valid PE files.
+   Creative Cloud desktop is not installed. Installer registration is incomplete.
+2. **MSVCP140 startup crash:** replacing the older runtime with genuine Microsoft
+   VS2022 redistributables and native overrides cleared the observed crash.
+3. **Direct2D startup error:** registered the missing ColorManagement effect
+   `{1a28524c-fdd6-4aa4-ae8f-837eb8267b37}` using a source-built pass-through.
+   This clears startup only; color transforms remain unimplemented by this patch.
+4. **Authentication rendering:** Wine Staging plus Adobe CEF/NGL displayed the
+   actual sign-in form. Both direct visual inspection and the operator confirmed it.
+5. **Authentication return:** the subscribed user completed sign-in and returned
+   to Lightroom; the helper window closed. No licensing code was modified.
+6. **Desktop integration:** the launcher records the chosen runner in its desktop
+   entry. Runtimes and prefixes are user-local; system Wine was not replaced.
 
-## Local experiment, 2026-09-15
+## Current blocker: unresponsive main window
 
-- Direct Adobe catalog selected LRCC 9.5.1.202608151945. Downloaded the
-  2,518,535,915-byte Windows package directly from ccmdls.adobe.com using the
-  Creative Cloud user agent. SHA-256 is pinned in manifest.json.
-- Adobe's ZIP entries use backslash paths and an additional raw LZMA2 stream
-  inside each stored entry. The launcher decodes this; the executable is a
-  valid PE file, 27,384,816 bytes. No Adobe licensing code was modified.
-- Creative Cloud desktop remains uninstalled. The offline installer failed to
-  render, which motivated testing the directly staged Lightroom payload.
-- First Lightroom launch crashed in MSVCP140. Upgrading Microsoft's native
-  redistributables from VS2019 to VS2022 cleared that crash.
-- Next startup stopped in a Direct2D initialization dialog. Wine logged the
-  missing ColorManagement effect GUID. Built the effect-only workaround from
-  Wine 11.10 source locally; no downloaded third-party replacement DLL used.
-- With that workaround, Lightroom creates its main window. Its console then
-  reports no installed WebView2 runtime. Sign-in, editing and sync remain
-  unverified; window creation is not a working-app result.
+After successful authentication the main window stopped accepting clicks and
+resize updates. `ui responsiveness` returned Windows timeout error 1460 for a
+`WM_NULL` message sent with `SendMessageTimeoutW`. Memory was approximately
+1.0–1.1 GiB. A short sample showed almost no CPU activity, but overlapped a
+failed debugger attachment and is not a performance benchmark.
 
-Build tools were extracted from signed Arch/Omarchy packages into the user
-application directory. No system Wine or package-manager changes were made.
-Compiler package hashes are in build-toolchain.json. Local logs and binaries
-are deliberately excluded from this repository.
+A restart under native GDB produced repeated Wine lock timeouts:
 
-- Microsoft WebView2 153.0.4234.32 installed successfully from the official
-  standalone installer. The missing-runtime message is gone. User observed
-  Adobe browser sign-in opening; successful account return is still pending.
+```text
+main process heap section: thread 0024 blocked by 0320
+main process heap section: several worker threads also blocked by 0320
+loader_section: blocked by 034c
+fls_section: blocked by 02c0
+```
 
-### Remaining sign-in failure
+These are symptoms consistent with a deadlock; the underlying cause and complete
+lock cycle have not been established. Thread IDs are specific to that run.
+No all-thread backtrace has yet identified the heap-lock owner’s blocked call.
 
-The user sees a splash screen followed by a white window. The main menus and
-panels render, but the embedded WebView2 sign-in window does not. WebView2
-Crashpad reports include `GPU process isn't usable. Goodbye.` Browser login
-opened once but did not establish a verified signed-in session.
+**Parked state:** Lightroom, its debugger and the experiment's Wine processes
+were stopped. An authenticated prefix snapshot is retained privately on the
+development machine and is not part of this repository.
 
-Environment-variable experiments with `--disable-gpu`, `--no-sandbox`,
-`--use-angle=swiftshader` and `--in-process-gpu` were **not valid rendering
-comparisons**: inspection of the actual Windows command lines showed those
-switches absent, even though their environment variable was present. Do not
-claim that those rendering modes were tested successfully or ruled out.
-A Lightroom-specific WebView2 AdditionalBrowserArguments policy is under test.
+## GPU evidence
 
-The normal `run` command does not disable WebView2's sandbox. Explicit
-`experiment-webview no-sandbox` is a development-only attempt, and the same
-command-line verification is needed before interpreting its result.
+Camera Raw's log reported `GPU Init Status (part 1): I1_Failed`,
+`GPU system count: 0`, `GPU device count: 0`, `fail_no_gpu2`, and
+`Invalid GPU system`. DXVK sees the Intel Vulkan device, which does not establish
+that Camera Raw can use it. The staging run loaded Wine's builtin `d3d12.dll`.
 
-The executable-name-specific policy was also ignored. The wildcard policy in
-this dedicated prefix (modern and legacy loader locations, HKLM/HKCU) **did**
-produce `--disable-gpu` in WebView2's Windows command line. With effective
-software rendering, and then effective in-process GPU rendering, the window
-remained white. GPU-sandbox-only relaxation also remained white. Default
-sandbox settings were restored afterward.
+A comparison with vkd3d-proton's native `d3d12.dll` and `d3d12core.dll` is a
+**proposed next experiment**, not a demonstrated fix. Isolate the UI hang before
+changing the GPU stack so the results remain interpretable.
 
-DXVK 2.7.1 was downloaded from its official release, checksum-pinned and loaded
-successfully in both Lightroom and WebView2. The same white window persisted.
-WebView2 148.0.3967.70 from Microsoft's Update Catalog was staged separately
-and its DLL load verified. Its window also remained white, with another GPU
-fatal error. WebView2 153 remains installed.
+## Other combinations tested
 
-With an effective `--no-sandbox` policy on 148, browser processes survived
-long enough to expose a localhost DevTools target, but then failed with the
-same GPU fatal error. A read-only DOM/screenshot request timed out. These
-tests do not establish that page rendering works internally. The original
-prefix was restored to sandboxed software rendering and its debug port removed.
+| Combination | Observed result |
+| --- | --- |
+| Adobe Wine 11.10 + WebView2 153 | White sign-in window; GPU child failures. |
+| WebView2 148 + effective registry rendering policies | White window; GPU fatal errors persisted. |
+| WebView2 environment-variable flags | Ignored by the app; not valid rendering comparisons. |
+| GE-Proton11-6 + UMU 1.4.4 + Steam Runtime 4, Xwayland | White sign-in window; one run fell back to IE and Adobe's “Update your browser” page. |
+| Same full Proton stack, native Wayland | Blank, oversized sign-in surface. |
+| Full Proton + Adobe CEF/NGL | Browser context initialized, visible page remained blank. |
+| Wine Staging 11.17 + Adobe CEF/NGL | Sign-in succeeded; main Lightroom UI then hung. |
 
-Full GE-Proton11-6 (not just a Proton-derived Wine binary) was downloaded
-with a pinned SHA-256 and run through UMU 1.4.4 inside Steam Runtime 4.
-UMU verified the runtime archive checksum and platform mtree. This uses a
-separate prefix copy under experiments/proton-ge. The first Xwayland launch
-reached Lightroom and its sign-in window, which was visually still white.
-Native Wayland rendering is under test. No login has been verified.
+Temporary WebView2 debugger/sandbox overrides were removed from baseline
+prefixes. Adobe's CEF helper itself supplies `--no-sandbox` to its child processes.
+The browser's long-term suitability and update path have not been established.
+No guessed RealTimeStylus COM stub or mfplat binary patch from earlier recipes
+was applied; see [research notes](research.md).
 
-### Proton and Adobe CEF comparison
+## Release gates / next work
 
-- Native Wayland under GE-Proton11-6 loaded winewayland.drv, but the sign-in
-  surface stayed blank and was incorrectly oversized on the HiDPI display.
-- On the next Proton Xwayland run, NGL timed out initializing WebView2 and
-  selected its IE fallback. The user captured Adobe's "Update your browser"
-  page. NGL's log and the EmbeddedWB window class confirm the fallback engine.
-- Staged only ADC64/CEF64 and ADC64/NGL from the already verified official
-  Creative Cloud archive. NGL detected both helper executables at the expected
-  Common Files path and selected CEF:116.0.0.0:1.16.0.7.
-- Adobe's helper logged CEF context and browser initialization. Its first
-  Proton window was still blank; no sign-in success has been established.
-- Restored WebView2 software policy, removing the temporary debugger and
-  sandbox overrides. The CEF helper itself supplies --no-sandbox to its child
-  processes; this was observed in its actual command lines.
-- Wine Staging 11.17 is a separate runtime comparison; the package signature
-  verified against the host Arch keyring. An optional Wine Mono setup prompt
-  was closed, and prefix initialization repeated without installing Mono.
+- [ ] Diagnose the post-authentication hang and verify sustained UI responsiveness.
+- [ ] Establish a usable Camera Raw GPU path and measure it on this Intel GPU.
+- [ ] Replace or validate the Direct2D workaround against reference color output.
+- [ ] Import disposable JPEG and camera RAW files.
+- [ ] Verify exposure, white balance, crop, masking and undo.
+- [ ] Export JPEG/TIFF and compare pixels and embedded profiles with a reference.
+- [ ] Close/reopen and confirm edits persist.
+- [ ] Verify upload and edits on Lightroom web or another device.
+- [ ] Test remove/heal, AI tools, offline/reconnect and sustained large-image editing.
+- [ ] Verify HiDPI, keyboard, file picker and multiple monitors.
+- [ ] Reproduce setup from a clean environment before building an Arch/Omarchy package.
 
-### Sign-in form rendered, approximately 23:10 CEST
+When resumed, start with `--runner staging native-debug` and inspect thread
+stacks at the hang. Preserve authentication privately. Record app/runtime/driver
+versions and exact reproduction steps for every comparison. Do not report
+editing, export, color accuracy or cloud sync as working until those checks pass.
 
-Wine Staging 11.17 + DXVK 2.7.1 + the experimental Direct2D effect + genuine
-Adobe CEF/NGL components displayed the complete Adobe sign-in form, including
-email and social login choices. Verified both by an agent screenshot and the
-user's live observation. The user is signing in; successful account return,
-editing, export and sync must not be inferred from this page.
+## Publication checks
 
-Active prefix: `experiments/wine-staging-11.17/prefix` under the application
-data directory. Log: `20260915-230931-lightroom-debug.log`. Adobe's own helper
-uses Chromium 116; its normal login form was accepted and rendered. The Adobe
-helper's signature/payload was not modified. The desktop launcher now selects
-this Wine Staging prefix. The running app was left untouched for user sign-in.
-
-### Authentication milestone, approximately 23:12 CEST
-
-The user completed genuine Adobe sign-in and confirmed successful return to
-Lightroom. The native Lightroom main window remains open and the authentication
-helper window closed. This establishes authenticated launch, not editing,
-export accuracy, persistence, cloud sync, or complete application support.
-The working instance was left running. No passwords or authentication tokens
-are stored in the repository.
+At this snapshot, all 10 launcher unit tests pass (`make check`). Python syntax
+checks and the Node diagnostic syntax check also pass. These checks cover code
+and payload handling, not Adobe editing or runtime compatibility.
