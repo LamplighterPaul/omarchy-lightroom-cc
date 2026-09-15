@@ -55,6 +55,31 @@ install Creative Cloud desktop. The desktop entry remembers the selected
 runner. This result was obtained incrementally; clean-install reproduction and
 authenticated editing remain release requirements.
 
+### Inspect the hang after sign-in
+
+After the staging route returns to Lightroom, the main window is expected to
+stop accepting clicks. Do not change the GPU stack in the same comparison.
+Install `gdb` first. Launch Wine as GDB's child so ptrace_scope=1 hosts can
+still interrupt the hung process:
+
+```sh
+omarchy-lightroom-cc --runner staging stop
+omarchy-lightroom-cc --runner staging native-debug
+```
+
+Run that in an interactive terminal. At the hang, press Ctrl-C, then:
+
+```
+thread apply all bt
+```
+
+The goal is to identify the owner of the Wine heap lock and the call that
+thread is blocked on. Full notes live in [diagnostics](../diagnostics/README.md)
+and [issue #1](https://github.com/LamplighterPaul/omarchy-lightroom-cc/issues/1).
+Review debugger output before sharing; it can contain private paths. Do not
+attach an authenticated prefix. `native-debug` does not support the Proton
+runner.
+
 Other commands: `status`, `cc`, `stop`, `run-debug`, `repair-vcrun`,
 `repair-browser` (Wine Gecko), and `repair-webview` (Microsoft WebView2). `install-cc /absolute/path/Setup.exe`
 allows testing Adobe's online bootstrapper. Logs live under
@@ -77,7 +102,6 @@ overrides Wine logging. Python 3.12+, curl, bsdtar, unzip, Xwayland and a workin
 Vulkan driver are needed. Microsoft C++ redistributables are downloaded directly from Microsoft with
 pinned hashes. Other dependencies use Winetricks checksum checks; changed
 upstream downloads fail closed.
-
 
 ## Full Proton comparison
 
