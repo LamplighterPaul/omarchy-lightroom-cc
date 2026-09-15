@@ -1,0 +1,29 @@
+diff --git a/dlls/d2d1/effect.c b/dlls/d2d1/effect.c
+index 286fae9..58cd36e 100644
+--- a/dlls/d2d1/effect.c
++++ b/dlls/d2d1/effect.c
+@@ -1804,6 +1804,11 @@ static HRESULT __stdcall scale_factory(IUnknown **effect)
+     return d2d_effect_create_impl(effect, &properties, sizeof(properties));
+ }
+ 
++/* {1a28524c-fdd6-4aa4-ae8f-837eb8267b37} - defined locally to avoid relying on
++ * the guid being linked; used only as a registration key for the passthrough. */
++static const GUID CLSID_D2D1ColorManagement_passthrough =
++    {0x1a28524c, 0xfdd6, 0x4aa4, {0xae, 0x8f, 0x83, 0x7e, 0xb8, 0x26, 0x7b, 0x37}};
++
+ void d2d_effects_init_builtins(struct d2d_factory *factory)
+ {
+     static const struct builtin_description
+@@ -1835,6 +1840,12 @@ void d2d_effects_init_builtins(struct d2d_factory *factory)
+         { &CLSID_D2D1HueRotation, X2(hue_rotation) },
+         { &CLSID_D2D1Saturation, X2(saturation) },
+         { &CLSID_D2D1Scale, X2(scale) },
++        /* Lightroom's startup probe requires CLSID_D2D1ColorManagement
++         * ({1a28524c-fdd6-4aa4-ae8f-837eb8267b37}) to be creatable, but never
++         * invokes it at edit time. Register it as a passthrough by reusing the
++         * Crop effect's description (a 1-input effect that with its default
++         * infinite rect copies its input unchanged). */
++        { &CLSID_D2D1ColorManagement_passthrough, X2(crop) },
+ #undef X2
+ #undef X
+     };

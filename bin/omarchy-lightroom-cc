@@ -1,0 +1,446 @@
+#!/usr/bin/env python3
+"""A local, inspectable Lightroom CC compatibility experiment for Omarchy."""
+import argparse
+import datetime
+import hashlib
+import json
+import lzma
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+import zipfile
+
+APP = "omarchy-lightroom-cc"
+DATA = Path(os.environ.get("LRCC_DATA", Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / APP)).expanduser().resolve()
+PREFIX = DATA / "prefix"
+RUNTIME = DATA / "runtimes/wine-adobe-11.10"
+TOOLS = DATA / "tools/usr/bin"
+SCRIPT = Path(__file__).resolve()
+MANIFEST = next((p for p in (SCRIPT.parent.parent / "manifest.json",
+    SCRIPT.parent.parent / "share" / APP / "manifest.json") if p.is_file()), None)
+LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
+CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
+
+
+def run(args, **kwargs):
+    return subprocess.run([str(a) for a in args], check=True, **kwargs)
+
+
+def digest(path):
+    with path.open("rb") as f:
+        return hashlib.file_digest(f, "sha256").hexdigest()
+
+
+def manifest():
+    if MANIFEST is None:
+        raise RuntimeError("manifest.json missing; run from the checkout or use make install")
+    return json.loads(MANIFEST.read_text())
+
+
+def fetch(name):
+    spec = manifest()[name]
+    dest = DATA / "cache" / spec["filename"]
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if not dest.exists() or digest(dest) != spec["sha256"]:
+        partial = dest.with_name(dest.name + ".partial")
+        request = ["curl", "--fail", "--location", "--retry", "2", "--connect-timeout", "20",
+                   "--max-time", "600", "--output", partial]
+        if spec.get("user_agent"):
+            request += ["--user-agent", spec["user_agent"]]
+        run([*request, spec["url"]])
+        if digest(partial) != spec["sha256"]:
+            raise RuntimeError(f"Checksum mismatch for {name}; download retained at {partial}")
+        partial.replace(dest)
+    print(f"Verified {name}: {spec['sha256']}", flush=True)
+    return dest
+
+
+def bootstrap():
+    archive = fetch("wine")
+    if not (RUNTIME / "bin/wine").exists():
+        RUNTIME.mkdir(parents=True, exist_ok=True)
+        with tarfile.open(archive) as t:
+            t.extractall(RUNTIME, filter="data")
+    for name in ("cabextract", "winetricks"):
+        package = fetch(name)
+        (DATA / "tools").mkdir(exist_ok=True)
+        run(["bsdtar", "-xf", package, "-C", DATA / "tools", f"usr/bin/{name}"])
+
+
+def environment():
+    if not (RUNTIME / "bin/wine").is_file():
+        raise RuntimeError("Runtime missing. Run: omarchy-lightroom-cc fetch")
+    env = os.environ.copy()
+    env.update(WINEPREFIX=str(PREFIX), WINEARCH="win64", WINE=str(RUNTIME / "bin/wine"),
+               WINESERVER=str(RUNTIME / "bin/wineserver"),
+               PATH=f"{RUNTIME / 'bin'}:{TOOLS}:{env.get('PATH', '')}",
+               DXVK_CONFIG_FILE=str(DATA / "dxvk.conf"),
+               WINEDEBUG=env.get("LRCC_WINEDEBUG", "-all,err+all"))
+    return env
+
+
+def wine(*args, **kwargs):
+    return run([RUNTIME / "bin/wine", *args], env=environment(), **kwargs)
+
+
+def logged(label, action):
+    logs = DATA / "logs"
+    logs.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    path = logs / f"{stamp}-{label}.log"
+    print(f"Log: {path}", flush=True)
+    with path.open("w") as log:
+        action(log)
+
+
+def prepare():
+    bootstrap()
+    DATA.mkdir(parents=True, exist_ok=True)
+    (DATA / "dxvk.conf").write_text("dxgi.enableDummyCompositionSwapchain = True\n")
+    PREFIX.mkdir(exist_ok=True)
+    (DATA / "prepared.json").unlink(missing_ok=True)
+    def steps(log):
+        if not (PREFIX / "system.reg").is_file():
+            env = environment()
+            env["WINEDLLOVERRIDES"] = "mscoree,mshtml="
+            run([RUNTIME / "bin/wine", "wineboot", "--init"], env=env, stdout=log, stderr=log)
+            run([RUNTIME / "bin/wineserver", "-w"], env=env, stdout=log, stderr=log)
+        # Xwayland is the baseline in the successful Arch/Intel report.
+        wine("reg", "add", r"HKCU\Software\Wine\Drivers", "/v", "Graphics", "/d", "x11", "/f", stdout=log, stderr=log)
+        # Keep each completed dependency recorded so failed installs can resume.
+        for verb in ("corefonts", "msxml6", "gdiplus", "atmlib", "dxvk"):
+            marker = DATA / f".prepared-{verb}"
+            if not marker.exists():
+                print(f"Preparing {verb}…", flush=True)
+                run([TOOLS / "winetricks", "-q", verb], env=environment(), stdout=log, stderr=log)
+                marker.touch()
+        run([TOOLS / "winetricks", "-q", "win11"], env=environment(), stdout=log, stderr=log)
+    logged("prepare", steps)
+    repair_vcrun()
+    repair_browser()
+    (DATA / "prepared.json").write_text(json.dumps({"runtime_sha256": manifest()["wine"]["sha256"],
+        "status": "dependencies prepared; Adobe not verified"}, indent=2) + "\n")
+
+
+def repair_vcrun():
+    """Upgrade Microsoft's redistributables, including Wine's version-number workaround."""
+    if not (PREFIX / "system.reg").exists():
+        raise RuntimeError("Run prepare first")
+    packages = {arch: fetch("vcrun-" + arch) for arch in ("x86", "x64")}
+    def steps(log):
+        for arch, cabinet, directory in (("x86", "a10", "syswow64"), ("x64", "a12", "system32")):
+            with tempfile.TemporaryDirectory(prefix="vcrun-", dir=DATA) as temp:
+                run([TOOLS / "cabextract", "-q", "-d", temp, "-F", cabinet, packages[arch]], stdout=log, stderr=log)
+                # Microsoft's installer can leave Wine's higher-version builtin behind.
+                run([TOOLS / "cabextract", "-q", "-d", PREFIX / "drive_c/windows" / directory,
+                     "-F", "msvcp140.dll", Path(temp) / cabinet], stdout=log, stderr=log)
+            result = subprocess.run([str(RUNTIME / "bin/wine"), str(packages[arch]),
+                "/install", "/quiet", "/norestart"], env=environment(), stdout=log, stderr=log)
+            if result.returncode not in (0, 194):  # Windows 3010 (reboot requested), truncated to 8 bits.
+                raise RuntimeError(f"Microsoft {arch} runtime installer exited {result.returncode}")
+        for name in ("concrt140", "msvcp140", "msvcp140_1", "msvcp140_2", "msvcp140_atomic_wait",
+                     "msvcp140_codecvt_ids", "vcamp140", "vccorlib140", "vcomp140", "vcruntime140", "vcruntime140_1"):
+            wine("reg", "add", r"HKCU\Software\Wine\DllOverrides", "/v", name, "/d", "native,builtin",
+                 "/f", stdout=log, stderr=log)
+        (DATA / ".prepared-vcrun2022").touch()
+    logged("repair-vcrun", steps)
+
+
+def repair_browser():
+    if not (PREFIX / "system.reg").exists():
+        raise RuntimeError("Run prepare first")
+    archive = fetch("gecko")
+    run(["bsdtar", "-xf", archive, "-C", DATA / "tools", "usr/share/wine/gecko"])
+    gecko = DATA / "tools/usr/share/wine/gecko"
+    dest = RUNTIME / "share/wine/gecko"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    if not dest.exists():
+        dest.symlink_to(gecko, target_is_directory=True)
+    def steps(log):
+        for arch, key in (("x86_64", r"HKLM\Software\Wine\MSHTML\2.47.4"),
+                          ("x86", r"HKLM\Software\Wow6432Node\Wine\MSHTML\2.47.4")):
+            path = gecko / f"wine-gecko-2.47.4-{arch}"
+            windows_path = "Z:" + str(path).replace("/", "\\") + "\\"
+            wine("reg", "add", key, "/v", "GeckoPath", "/d", windows_path, "/f", stdout=log, stderr=log)
+        wine("regsvr32", "/s", "mshtml.dll", stdout=log, stderr=log)
+        wine(r"C:\windows\syswow64\regsvr32.exe", "/s", "mshtml.dll", stdout=log, stderr=log)
+    logged("repair-browser", steps)
+
+
+def repair_webview():
+    installer = fetch("webview2")
+    logged("repair-webview", lambda log: wine(installer, "/silent", "/install", stdout=log, stderr=log))
+    candidates = list(PREFIX.glob("drive_c/Program Files*/Microsoft/EdgeWebView/Application/*/msedgewebview2.exe"))
+    if not candidates:
+        raise RuntimeError("WebView2 installer completed without creating its runtime")
+    for path in candidates:
+        print(f"WebView2 runtime: {path.parent.name}")
+
+
+def repair_webview_rendering(profile="software"):
+    # This Adobe build ignored the equivalent environment variable; verify
+    # the browser's actual Windows command line after changing the policy.
+    profiles = {"software": "--disable-gpu --disable-gpu-compositing",
+                "in-process": "--disable-gpu --disable-gpu-compositing --in-process-gpu",
+                "swiftshader": "--use-angle=swiftshader",
+                "gpu-sandbox": "--disable-gpu --disable-gpu-compositing --disable-gpu-sandbox",
+                "diagnostic": "--disable-gpu --disable-gpu-compositing --in-process-gpu --remote-debugging-address=127.0.0.1 --remote-debugging-port=19223 --enable-logging=stderr"}
+    if profile not in profiles:
+        raise RuntimeError(f"Unknown rendering policy: {profile}")
+    arguments = profiles[profile]
+    wine("reg", "add", r"HKCU\Software\Policies\Microsoft\Edge\WebView2\AdditionalBrowserArguments",
+         "/v", "lightroom.exe", "/d", arguments, "/f")
+    for root in ("HKCU", "HKLM"):
+        wine("reg", "add", root + r"\Software\Policies\Microsoft\Edge\WebView2\AdditionalBrowserArguments",
+             "/v", "*", "/d", arguments, "/f")
+        wine("reg", "add", root + r"\Software\Policies\Microsoft\EmbeddedBrowserWebView\LoaderOverride\*",
+             "/v", "additionalBrowserArguments", "/d", arguments, "/f")
+    print(f"Set WebView2 policy in the Lightroom prefix: {arguments}. Restart Lightroom to test.")
+
+
+def repair_dxvk():
+    archive = fetch("dxvk")
+    run([RUNTIME / "bin/wineserver", "-k"], env=environment())
+    with tempfile.TemporaryDirectory(prefix="dxvk-", dir=DATA) as temp:
+        with tarfile.open(archive) as package:
+            package.extractall(temp, filter="data")
+        for arch, directory in (("x64", "system32"), ("x32", "syswow64")):
+            for name in ("d3d11.dll", "dxgi.dll"):
+                dest = PREFIX / "drive_c/windows" / directory / name
+                backup = DATA / "patches/dxvk-original" / directory / name
+                backup.parent.mkdir(parents=True, exist_ok=True)
+                if not backup.exists():
+                    shutil.copy2(dest, backup)
+                replacement = dest.with_suffix(".dll.new")
+                shutil.copy2(Path(temp) / "dxvk-2.7.1" / arch / name, replacement)
+                replacement.replace(dest)
+    for name in ("d3d11", "dxgi"):
+        wine("reg", "add", r"HKCU\Software\Wine\DllOverrides", "/v", name, "/d", "native", "/f")
+    print("Installed pinned DXVK 2.7.1 for the graphics comparison.")
+
+
+def install_cc(path=None):
+    if not (DATA / "prepared.json").exists():
+        raise RuntimeError("Run prepare first")
+    if path:
+        exe = Path(path).expanduser().resolve()
+        if not exe.is_file():
+            raise RuntimeError(f"Installer not found: {exe}")
+    else:
+        archive = fetch("creative-cloud")
+        dest = DATA / "installers/creative-cloud-6.10.0"
+        dest.mkdir(parents=True, exist_ok=True)
+        run(["unzip", "-q", "-o", archive, "-d", dest])
+        candidates = list(dest.rglob("Set-up.exe"))
+        if len(candidates) != 1:
+            raise RuntimeError(f"Expected one Set-up.exe, found {len(candidates)}")
+        exe = candidates[0]
+    print("Complete Adobe sign-in in the installer window.", flush=True)
+    env = environment()
+    env["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = "--disable-gpu"
+    logged("install-cc", lambda log: run([RUNTIME / "bin/wine", exe], cwd=exe.parent,
+        env=env, stdout=log, stderr=log))
+
+
+def extract_lightroom(archive, target):
+    """Map Adobe's Windows ZIP payload to an app directory, rejecting traversal."""
+    with zipfile.ZipFile(archive) as z:
+        for entry in z.infolist():
+            name = entry.filename.replace("\\", "/")
+            if not name.startswith("1/Adobe Lightroom/"):
+                continue
+            relative = name.removeprefix("1/Adobe Lightroom/")
+            if not relative:
+                continue
+            parts = relative.split("/")
+            if any(p in ("..", ".") or ":" in p for p in parts) or relative.startswith("/"):
+                raise RuntimeError(f"Unsafe archive path: {name}")
+            out = target / relative
+            if not out.resolve().is_relative_to(target.resolve()):
+                raise RuntimeError(f"Archive path escapes app directory: {name}")
+            if name.endswith("/"):
+                out.mkdir(parents=True, exist_ok=True)
+            else:
+                out.parent.mkdir(parents=True, exist_ok=True)
+                with z.open(entry) as source, out.open("wb") as dest:
+                    decode_adobe_file(source, dest)
+
+
+def decode_adobe_file(source, destination):
+    """Adobe HD ZIP entries: one LZMA2 dictionary-property byte, then raw LZMA2."""
+    first = source.read(1)
+    if not first:
+        return
+    prop = first[0]
+    # The pinned package uses a 16 MiB dictionary. Bound allocation on malformed data.
+    if prop > 30:
+        raise RuntimeError(f"Unsupported Adobe LZMA2 dictionary property: {prop}")
+    dictionary_size = (2 | (prop & 1)) << (prop // 2 + 11)
+    with lzma.LZMAFile(source, "rb", format=lzma.FORMAT_RAW,
+                      filters=[{"id": lzma.FILTER_LZMA2, "dict_size": dictionary_size}]) as decoded:
+        shutil.copyfileobj(decoded, destination, length=1024 * 1024)
+
+
+def stage_lightroom():
+    if not (DATA / "prepared.json").exists():
+        raise RuntimeError("Run prepare first")
+    if LR.exists():
+        raise RuntimeError("Lightroom already exists; refusing to overwrite an installation")
+    archive = fetch("lightroom")
+    print("Extracting the unmodified Adobe app payload (experimental direct route)…", flush=True)
+    LR.parent.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=".lightroom-stage-", dir=LR.parent.parent) as temp:
+        target = Path(temp) / "Adobe Lightroom CC"
+        extract_lightroom(archive, target)
+        with (target / "lightroom.exe").open("rb") as exe:
+            if exe.read(2) != b"MZ":
+                raise RuntimeError("Archive did not produce a Windows executable")
+        if LR.parent.exists():
+            raise RuntimeError(f"Destination already exists: {LR.parent}")
+        target.rename(LR.parent)
+    (DATA / "lightroom-staged.json").write_text(json.dumps({
+        "version": manifest()["lightroom"]["version"], "sha256": digest(archive),
+        "method": "direct Adobe ZIP with LZMA2 decoding; installer registration not performed",
+        "verified": False}, indent=2) + "\n")
+    print("Payload staged. Run 'omarchy-lightroom-cc run' to test startup and Adobe sign-in.")
+
+
+def experiment_d2d():
+    replacement = DATA / "patches/d2d1.dll"
+    metadata = json.loads(replacement.with_suffix(".json").read_text())
+    if digest(replacement) != metadata["dll_sha256"]:
+        raise RuntimeError("Built Direct2D component checksum mismatch")
+    dest = PREFIX / "drive_c/windows/system32/d2d1.dll"
+    backup = DATA / "patches/d2d1-original.dll"
+    run([RUNTIME / "bin/wineserver", "-k"], env=environment())
+    if not backup.exists():
+        shutil.copy2(dest, backup)
+    temporary = dest.with_suffix(".dll.new")
+    shutil.copy2(replacement, temporary)
+    temporary.replace(dest)
+    wine("reg", "add", r"HKCU\Software\Wine\DllOverrides", "/v", "d2d1", "/d", "native", "/f")
+    print("Installed experimental Direct2D pass-through. Color accuracy remains unverified.")
+
+
+def restore_d2d():
+    backup = DATA / "patches/d2d1-original.dll"
+    if not backup.is_file():
+        raise RuntimeError("No original Direct2D backup exists")
+    run([RUNTIME / "bin/wineserver", "-k"], env=environment())
+    dest = PREFIX / "drive_c/windows/system32/d2d1.dll"
+    temporary = dest.with_suffix(".dll.new")
+    shutil.copy2(backup, temporary)
+    temporary.replace(dest)
+    wine("reg", "add", r"HKCU\Software\Wine\DllOverrides", "/v", "d2d1", "/d", "builtin", "/f")
+    print("Restored the original Wine Direct2D component.")
+
+
+def launch(exe, label, args):
+    if not exe.is_file():
+        raise RuntimeError(f"{label} is not installed: {exe}")
+    logged(label, lambda log: wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log))
+
+
+def debug(args):
+    run([RUNTIME / "bin/wine", "winedbg", "--command", " ".join(args or ["info", "proc"])], env=environment())
+
+
+def browser_status():
+    """Report rendering flags without exposing browser URLs or login arguments."""
+    report = []
+    for proc in Path("/proc").glob("[0-9]*"):
+        try:
+            command = (proc / "cmdline").read_bytes()
+            if not any(name in command.lower() for name in (b"lightroom.exe", b"msedgewebview2.exe")):
+                continue
+            variables = dict(item.split(b"=", 1) for item in (proc / "environ").read_bytes().split(b"\0") if b"=" in item)
+            if variables.get(b"WINEPREFIX") != str(PREFIX).encode():
+                continue
+            report.append({"pid": int(proc.name), "browser": b"msedgewebview2.exe" in command.lower(),
+                "webview_flags": variables.get(b"WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS", b"").decode(errors="replace"),
+                "flags_present": [flag for flag in ("--disable-gpu", "--no-sandbox", "--use-angle=swiftshader", "--in-process-gpu") if flag.encode() in command]})
+        except (OSError, ValueError):
+            continue
+    print(json.dumps(report, indent=2))
+
+
+def status():
+    return {"data": str(DATA), "prefix": str(PREFIX), "runtime_present": (RUNTIME / "bin/wine").is_file(),
+            "prefix_created": (PREFIX / "system.reg").is_file(),
+            "dependencies_prepared": (DATA / "prepared.json").is_file(),
+            "creative_cloud_exe_present": CC.is_file(), "lightroom_exe_present": LR.is_file(),
+            "workflow_verified": False}
+
+
+def doctor():
+    result = status()
+    result["host"] = os.uname()._asdict() if hasattr(os.uname(), "_asdict") else list(os.uname())
+    result["tools"] = {x: shutil.which(x) for x in ("curl", "bsdtar", "unzip", "vulkaninfo")}
+    result["display"] = {x: os.environ.get(x) for x in ("XDG_SESSION_TYPE", "DISPLAY", "WAYLAND_DISPLAY")}
+    result["free_disk_gib"] = round(shutil.disk_usage(Path.home()).free / 1024**3, 1)
+    print(json.dumps(result, indent=2))
+
+
+def integrate():
+    if not LR.is_file():
+        raise RuntimeError("Install Lightroom before adding its desktop entry")
+    dest = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "applications"
+    dest.mkdir(parents=True, exist_ok=True)
+    # The executable path in a desktop entry uses its own escaping rules.
+    def quote(value):
+        return '"' + str(value).replace("\\", "\\\\").replace('"', '\\"').replace("`", "\\`").replace("$", "\\$").replace("%", "%%") + '"'
+    (dest / f"{APP}.desktop").write_text(f'[Desktop Entry]\nType=Application\nName=Lightroom CC\n'
+        f'Comment=Adobe Lightroom CC on Omarchy\nExec=env {quote("LRCC_DATA=" + str(DATA))} {quote(SCRIPT)} run\n'
+        'Icon=camera-photo\nTerminal=false\nCategories=Graphics;Photography;\nStartupNotify=true\n')
+    print(f"Installed {dest / (APP + '.desktop')}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "install-cc", "cc", "run", "run-debug", "debug", "ui", "stop", "integrate"))
+    parser.add_argument("args", nargs="*")
+    args = parser.parse_args()
+    if args.command == "doctor": doctor()
+    elif args.command == "status": print(json.dumps(status(), indent=2))
+    elif args.command == "fetch": bootstrap()
+    elif args.command == "prepare": prepare()
+    elif args.command == "repair-vcrun": repair_vcrun()
+    elif args.command == "repair-browser": repair_browser()
+    elif args.command == "repair-webview": repair_webview()
+    elif args.command == "repair-webview-rendering": repair_webview_rendering(args.args[0] if args.args else "software")
+    elif args.command == "repair-dxvk": repair_dxvk()
+    elif args.command == "stage-lightroom": stage_lightroom()
+    elif args.command == "experiment-d2d": experiment_d2d()
+    elif args.command == "restore-d2d": restore_d2d()
+    elif args.command == "experiment-webview":
+        profile = args.args[0] if args.args else "software"
+        profiles = {"software": "--use-angle=swiftshader", "no-sandbox": "--disable-gpu --no-sandbox",
+                    "in-process": "--disable-gpu --disable-gpu-compositing --in-process-gpu"}
+        if profile not in profiles:
+            raise RuntimeError(f"Unknown WebView2 experiment: {profile}")
+        print(f"Experimental WebView2 flags: {profiles[profile]}", flush=True)
+        os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = profiles[profile]
+        launch(LR, f"lightroom-webview-{profile}", [])
+    elif args.command == "browser-status": browser_status()
+    elif args.command == "install-cc": install_cc(args.args[0] if args.args else None)
+    elif args.command == "cc": launch(CC, "creative-cloud", ["--disable-gpu", "--disable-gpu-compositing", *args.args])
+    elif args.command == "run": launch(LR, "lightroom", args.args)
+    elif args.command == "run-debug":
+        os.environ["LRCC_WINEDEBUG"] = "-all,+seh,+loaddll,warn+d2d,fixme+d2d,err+all"
+        launch(LR, "lightroom-debug", args.args)
+    elif args.command == "debug": debug(args.args)
+    elif args.command == "ui": wine(DATA / "tools/lightroom-ui.exe", *args.args)
+    elif args.command == "stop": run([RUNTIME / "bin/wineserver", "-k"], env=environment())
+    elif args.command == "integrate": integrate()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (RuntimeError, subprocess.CalledProcessError, OSError, lzma.LZMAError, EOFError) as exc:
+        print(f"{APP}: {exc}", file=sys.stderr)
+        sys.exit(1)

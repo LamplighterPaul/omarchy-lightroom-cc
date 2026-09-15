@@ -1,0 +1,22 @@
+[
+  {
+    "filename": "mingw-w64-binutils-2.47-1-x86_64.pkg.tar.zst",
+    "sha256": "a174f1b5894674b039d356878198e146053fa9527b282d6fac3acb46309b117d"
+  },
+  {
+    "filename": "mingw-w64-crt-14.0.0-1-any.pkg.tar.zst",
+    "sha256": "a809d9b6608235e5b693f1ebda97aa6c3539783c84509cb8db3306ef56ad0a4f"
+  },
+  {
+    "filename": "mingw-w64-gcc-16.2.0-2-x86_64.pkg.tar.zst",
+    "sha256": "9fde71b655105ed8704fb1494a39f3b94d0a138df9dface881588e6cef4886f1"
+  },
+  {
+    "filename": "mingw-w64-headers-14.0.0-1-any.pkg.tar.zst",
+    "sha256": "5b8d6e83aa5c3b456d96a12a4af51518ddd71600d66048ced4b34c0b40a3fb19"
+  },
+  {
+    "filename": "mingw-w64-winpthreads-14.0.0-1-any.pkg.tar.zst",
+    "sha256": "21a4dd95e8a5f0b802d8585e59024f2cfbbd435cee31ed31b511159d9d10579b"
+  }
+]

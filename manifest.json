@@ -1,0 +1,55 @@
+{
+  "wine": {
+    "filename": "wine-11.10-adobe-linux-x86_64.tar.xz",
+    "url": "https://github.com/PhialsBasement/wine-adobe-installers/releases/download/wine-11.10-adobe/wine-11.10-adobe-linux-x86_64.tar.xz",
+    "sha256": "10cc060438b4b4c66818f971b44aeff6eba507892224b1341705a3d31d14b176"
+  },
+  "cabextract": {
+    "filename": "cabextract-1.11-3-x86_64.pkg.tar.zst",
+    "url": "https://stable-mirror.omarchy.org/extra/os/x86_64/cabextract-1.11-3-x86_64.pkg.tar.zst",
+    "sha256": "89f90aa1aefd7215d4d78e656454dde49b29ca5d4526cdc4a8f1be1e07ac9a65"
+  },
+  "winetricks": {
+    "filename": "winetricks-20260125-2-any.pkg.tar.zst",
+    "url": "https://stable-mirror.omarchy.org/extra/os/x86_64/winetricks-20260125-2-any.pkg.tar.zst",
+    "sha256": "dc27087f61bcd5cd5c627640f08594401e8c56dafab6e26791a1b91c38588562"
+  },
+  "gecko": {
+    "filename": "wine-gecko-2.47.4-2-x86_64.pkg.tar.zst",
+    "url": "https://stable-mirror.omarchy.org/extra/os/x86_64/wine-gecko-2.47.4-2-x86_64.pkg.tar.zst",
+    "sha256": "f0555b584bbecb07cd8a258c56eec6e710c5f8a15352b8f987934a6fe7d9122e"
+  },
+  "lightroom": {
+    "filename": "AdobeLightroomCC-9.5.1-mul.zip",
+    "url": "https://ccmdls.adobe.com/AdobeProducts/LRCC/9.5.1.202608151945/win64/9fd8b3a4-2f24-474c-8116-f43c5b532d92/AdobeLightroomCC-mul.zip",
+    "user_agent": "Creative Cloud",
+    "sha256": "fba33ad2e3dc65f8627571ea05af4d3a918d5767bb22d917aa1170d36671405b",
+    "version": "9.5.1.202608151945",
+    "build_guid": "47c8669e-6e6b-4a1d-9b97-61c1e2427b43"
+  },
+  "creative-cloud": {
+    "filename": "ACCCx6_10_0_252_41.zip",
+    "url": "https://ccmdls.adobe.com/AdobeProducts/StandaloneBuilds/ACCC/ESD/6.10.0/252.41/win64/ACCCx6_10_0_252_41.zip",
+    "sha256": "4e5f5b72db712a30a212aafa2c5cb47c555248c5b30f20b529103519c7d4fa4c"
+  },
+  "vcrun-x86": {
+    "filename": "vc_redist-2022.x86.exe",
+    "url": "https://aka.ms/vs/17/release/vc_redist.x86.exe",
+    "sha256": "0c09f2611660441084ce0df425c51c11e147e6447963c3690f97e0b25c55ed64"
+  },
+  "vcrun-x64": {
+    "filename": "vc_redist-2022.x64.exe",
+    "url": "https://aka.ms/vs/17/release/vc_redist.x64.exe",
+    "sha256": "cc0ff0eb1dc3f5188ae6300faef32bf5beeba4bdd6e8e445a9184072096b713b"
+  },
+  "webview2": {
+    "filename": "MicrosoftEdgeWebView2RuntimeInstallerX64.exe",
+    "url": "https://go.microsoft.com/fwlink/p/?LinkId=2124701",
+    "sha256": "ebebc5ec130378ff1ab513f3917be791a9cf84f849e970b1695ff01801a9d348"
+  },
+  "dxvk": {
+    "filename": "dxvk-2.7.1.tar.gz",
+    "url": "https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz",
+    "sha256": "d85ce7c79f57ecd765aaa1b9e7007cb875e6fde9f6d331df799bce73d513ce87"
+  }
+}
