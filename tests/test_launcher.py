@@ -3,6 +3,7 @@ import hashlib
 import importlib.machinery
 import importlib.util
 import io
+import json
 import lzma
 import os
 from pathlib import Path
@@ -49,6 +50,25 @@ class LauncherTest(unittest.TestCase):
         report = self.app.status()
         self.assertTrue(report["lightroom_exe_present"])
         self.assertFalse(report["workflow_verified"])
+
+    def test_proton_selection_keeps_original_prefix_separate(self):
+        original = self.app.PREFIX
+        output = io.StringIO()
+        with patch('sys.argv', ['omarchy-lightroom-cc', '--runner', 'proton', 'status']), contextlib.redirect_stdout(output):
+            self.app.main()
+        report = json.loads(output.getvalue())
+        self.assertNotEqual(Path(report['prefix']), original)
+        self.assertTrue(self.app.LR.is_relative_to(Path(report['prefix'])))
+        self.assertFalse(report['workflow_verified'])
+
+    def test_desktop_entry_preserves_selected_runner(self):
+        self.app.RUNNER = 'staging'
+        self.app.LR.parent.mkdir(parents=True)
+        self.app.LR.touch()
+        with patch.dict(os.environ, {'XDG_DATA_HOME': str(self.root)}), contextlib.redirect_stdout(io.StringIO()):
+            self.app.integrate()
+        entry = (self.root / 'applications/omarchy-lightroom-cc.desktop').read_text()
+        self.assertIn('--runner staging --graphics x11 run', entry)
 
     def test_verified_cache_does_not_access_network(self):
         dest = self.app.DATA / "cache/asset.bin"

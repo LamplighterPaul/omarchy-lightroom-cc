@@ -11,7 +11,7 @@ static void inspect_environment(DWORD pid) {
     if (inspected_pid == pid) return;
     inspected_pid = pid;
     HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
-    if (!process) return;
+    if (!process) { printf("PID %lu inspection unavailable: %lu\n", pid, GetLastError()); return; }
     typedef NTSTATUS (WINAPI *query_fn)(HANDLE, PROCESSINFOCLASS, PVOID, ULONG, PULONG);
     query_fn query = (query_fn)GetProcAddress(GetModuleHandleW(L"ntdll.dll"), "NtQueryInformationProcess");
     PROCESS_BASIC_INFORMATION info;
@@ -85,7 +85,12 @@ int main(int argc, char **argv) {
         HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
         PROCESSENTRY32W entry = { .dwSize = sizeof(entry) };
         if (Process32FirstW(snapshot, &entry)) do {
-            if (!_wcsicmp(entry.szExeFile, L"msedgewebview2.exe")) inspect_environment(entry.th32ProcessID);
+            if (!_wcsicmp(entry.szExeFile, L"msedgewebview2.exe") ||
+                !_wcsicmp(entry.szExeFile, L"adobe_licensing_wf.exe") ||
+                !_wcsicmp(entry.szExeFile, L"adobe_licensing_wf_helper.exe")) {
+                wprintf(L"Browser process %ls PID %lu\n", entry.szExeFile, entry.th32ProcessID);
+                inspect_environment(entry.th32ProcessID);
+            }
         } while (Process32NextW(snapshot, &entry));
         CloseHandle(snapshot);
         return 0;

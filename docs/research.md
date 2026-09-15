@@ -58,3 +58,23 @@ compatibility effort. No Lightroom-on-Darling result was verified.
 
 Grok CLI produced no substantive X findings. agy headless research was blocked
 by its read_url permissions. Neither supplied usable YouTube transcript evidence.
+
+## Bundled authentication browser
+
+The direct Lightroom payload omits Adobe Desktop Common components. On the
+local Proton test, NGL logged missing CEF workflow dependencies, then WebView2
+controller initialization failure, then fallback to IE. The visible Adobe
+"Update your browser" page was therefore the IE fallback, not proof that
+Chromium rendered successfully.
+
+The checksum-pinned Creative Cloud offline archive contains independently
+extractable ADC64/CEF64 and ADC64/NGL .pima ZIP packages. Their .pimx metadata
+places them in CEF and NGL under Adobe Desktop Common. Staging only those two
+components provides Adobe's own authentication helper and Chromium engine
+without installing the Creative Cloud desktop UI. The archive's CEF reports
+Chrome/116.0.5845.190; current Adobe login acceptance remains to be tested.
+
+A Wine Staging developer also reviewed the earlier Lightroom recipe:
+https://www.patreon.com/winestaging/posts/investigation-of-160397129
+The missing e26b366d COM class is RealTimeStylus, not an Adobe licensing class.
+We have not installed the recipe's guessed COM stub or its mfplat binary patch.

@@ -3,6 +3,7 @@
 import argparse
 import datetime
 import hashlib
+import io
 import json
 import lzma
 import os
@@ -18,6 +19,9 @@ APP = "omarchy-lightroom-cc"
 DATA = Path(os.environ.get("LRCC_DATA", Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / APP)).expanduser().resolve()
 PREFIX = DATA / "prefix"
 RUNTIME = DATA / "runtimes/wine-adobe-11.10"
+PROTON = False
+GRAPHICS = "x11"
+RUNNER = "adobe"
 TOOLS = DATA / "tools/usr/bin"
 SCRIPT = Path(__file__).resolve()
 MANIFEST = next((p for p in (SCRIPT.parent.parent / "manifest.json",
@@ -80,11 +84,69 @@ def environment():
                PATH=f"{RUNTIME / 'bin'}:{TOOLS}:{env.get('PATH', '')}",
                DXVK_CONFIG_FILE=str(DATA / "dxvk.conf"),
                WINEDEBUG=env.get("LRCC_WINEDEBUG", "-all,err+all"))
+    if PROTON:
+        env.update(PROTONPATH=str(RUNTIME.parent), GAMEID="umu-default",
+                   PROTON_LOG="1", PROTON_LOG_DIR=str(DATA / "logs"),
+                   UMU_LOG="info", PROTONFIXES_DISABLE="1",
+                   PROTON_ENABLE_WAYLAND="1" if GRAPHICS == "wayland" else "0")
     return env
 
 
 def wine(*args, **kwargs):
-    return run([RUNTIME / "bin/wine", *args], env=environment(), **kwargs)
+    command = DATA / "tools/umu/umu-run" if PROTON else RUNTIME / "bin/wine"
+    env = environment()
+    if PROTON and Path(str(args[0])).name.lower() != "lightroom.exe":
+        env.update(PROTON_VERB="runinprefix", PROTON_LOG="0")
+    return run([command, *args], env=env, **kwargs)
+
+
+def stage_proton():
+    for name, directory in (("proton-ge", DATA / "runtimes"), ("umu", DATA / "tools")):
+        archive = fetch(name)
+        directory.mkdir(parents=True, exist_ok=True)
+        with tarfile.open(archive) as package:
+            package.extractall(directory, filter="data")
+    destination = DATA / "experiments/proton-ge/prefix"
+    if not destination.exists():
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        run(["cp", "-a", "--reflink=auto", DATA / "prefix", destination])
+    print("Proton GE and UMU staged with a separate prefix copy.")
+
+
+def stage_adobe_browser():
+    """Stage Adobe's own Chromium browser and sign-in helper only."""
+    archive = fetch("creative-cloud")
+    common = PREFIX / "drive_c/Program Files/Common Files/Adobe/Adobe Desktop Common"
+    with zipfile.ZipFile(archive) as outer:
+        for component, folder in (("CEF64", "CEF"), ("NGL", "NGL")):
+            target = common / folder
+            with zipfile.ZipFile(io.BytesIO(outer.read(f"packages/ADC64/{component}/{component}.pima"))) as package:
+                for member in package.infolist():
+                    name = member.filename.replace("\\", "/")
+                    relative = Path(name)
+                    if relative.is_absolute() or ".." in relative.parts or ":" in name:
+                        raise RuntimeError("Unsafe Adobe browser archive path")
+                    dest = target / relative
+                    if member.is_dir():
+                        dest.mkdir(parents=True, exist_ok=True)
+                    else:
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        with package.open(member) as source, dest.open("wb") as out:
+                            shutil.copyfileobj(source, out)
+            print(f"Staged Adobe {component}: {target}")
+
+
+def stage_staging():
+    archive = fetch("wine-staging")
+    runtime = DATA / "runtimes/wine-staging-11.17"
+    if not (runtime / "usr/bin/wine").is_file():
+        runtime.mkdir(parents=True, exist_ok=True)
+        run(["bsdtar", "-xf", archive, "-C", runtime, "usr"])
+    destination = DATA / "experiments/wine-staging-11.17/prefix"
+    if not destination.exists():
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        run(["cp", "-a", "--reflink=auto", DATA / "prefix", destination])
+    print("Wine Staging 11.17 staged with a separate prefix copy.")
 
 
 def logged(label, action):
@@ -187,18 +249,23 @@ def repair_webview_rendering(profile="software"):
     profiles = {"software": "--disable-gpu --disable-gpu-compositing",
                 "in-process": "--disable-gpu --disable-gpu-compositing --in-process-gpu",
                 "swiftshader": "--use-angle=swiftshader",
+                "no-sandbox-test": "--disable-gpu --disable-gpu-compositing --no-sandbox",
+                "no-sandbox-diagnostic": "--disable-gpu --disable-gpu-compositing --no-sandbox --remote-debugging-address=127.0.0.1 --remote-debugging-port=19223 --enable-logging=stderr",
+                "native-diagnostic": "--remote-debugging-address=127.0.0.1 --remote-debugging-port=19223 --enable-logging=stderr",
                 "gpu-sandbox": "--disable-gpu --disable-gpu-compositing --disable-gpu-sandbox",
                 "diagnostic": "--disable-gpu --disable-gpu-compositing --in-process-gpu --remote-debugging-address=127.0.0.1 --remote-debugging-port=19223 --enable-logging=stderr"}
     if profile not in profiles:
         raise RuntimeError(f"Unknown rendering policy: {profile}")
     arguments = profiles[profile]
-    wine("reg", "add", r"HKCU\Software\Policies\Microsoft\Edge\WebView2\AdditionalBrowserArguments",
-         "/v", "lightroom.exe", "/d", arguments, "/f")
-    for root in ("HKCU", "HKLM"):
-        wine("reg", "add", root + r"\Software\Policies\Microsoft\Edge\WebView2\AdditionalBrowserArguments",
-             "/v", "*", "/d", arguments, "/f")
-        wine("reg", "add", root + r"\Software\Policies\Microsoft\EmbeddedBrowserWebView\LoaderOverride\*",
-             "/v", "additionalBrowserArguments", "/d", arguments, "/f")
+    entries = [(r"HKEY_CURRENT_USER\Software\Policies\Microsoft\Edge\WebView2\AdditionalBrowserArguments", "lightroom.exe")]
+    for root in ("HKEY_CURRENT_USER", "HKEY_LOCAL_MACHINE"):
+        entries.extend(((root + r"\Software\Policies\Microsoft\Edge\WebView2\AdditionalBrowserArguments", "*"),
+                        (root + r"\Software\Policies\Microsoft\EmbeddedBrowserWebView\LoaderOverride\*", "additionalBrowserArguments")))
+    with tempfile.TemporaryDirectory(prefix="webview-policy-", dir=DATA) as temp:
+        policy = Path(temp) / "rendering.reg"
+        policy.write_text("Windows Registry Editor Version 5.00\n\n" + "\n".join(
+            f'[{key}]\n"{value}"="{arguments}"\n' for key, value in entries), encoding="utf-16")
+        logged("webview-policy", lambda log: wine("reg.exe", "import", "Z:" + str(policy).replace("/", "\\"), stdout=log, stderr=log))
     print(f"Set WebView2 policy in the Lightroom prefix: {arguments}. Restart Lightroom to test.")
 
 
@@ -221,6 +288,33 @@ def repair_dxvk():
     for name in ("d3d11", "dxgi"):
         wine("reg", "add", r"HKCU\Software\Wine\DllOverrides", "/v", name, "/d", "native", "/f")
     print("Installed pinned DXVK 2.7.1 for the graphics comparison.")
+
+
+def stage_webview148():
+    archive = fetch("webview2-148")
+    package = fetch("7zip")
+    run(["bsdtar", "-xf", package, "-C", DATA / "tools", "usr"])
+    extractor = DATA / "tools/usr/lib/7zip/7z"
+    staging = DATA / "installers/webview148"
+    target = DATA / "runtimes/webview148"
+    browser = target / "Chrome-bin/148.0.3967.70"
+    if not (browser / "msedgewebview2.exe").is_file():
+        run([extractor, "x", "-y", "-bso0", "-bsp0", f"-o{staging}", archive, "MicrosoftEdge_X64_148.0.3967.70.exe.*"])
+        candidates = list(staging.glob("MicrosoftEdge_X64_148.0.3967.70.exe.*"))
+        if len(candidates) != 1:
+            raise RuntimeError("Unexpected archived WebView2 payload")
+        run([extractor, "x", "-y", "-bso0", "-bsp0", f"-o{staging}", candidates[0]])
+        run([extractor, "x", "-y", "-bso0", "-bsp0", f"-o{target}", staging / "MSEDGE.7z"])
+    select_webview("Z:" + str(browser).replace("/", "\\"))
+
+
+def select_webview(folder=""):
+    for root in ("HKCU", "HKLM"):
+        wine("reg", "add", root + r"\Software\Policies\Microsoft\Edge\WebView2\BrowserExecutableFolder",
+             "/v", "*", "/d", folder, "/f")
+        wine("reg", "add", root + r"\Software\Policies\Microsoft\EmbeddedBrowserWebView\LoaderOverride\*",
+             "/v", "browserExecutableFolder", "/d", folder, "/f")
+    print(f"WebView2 selection: {folder or 'installed runtime'}. Restart Lightroom to test.")
 
 
 def install_cc(path=None):
@@ -346,7 +440,7 @@ def launch(exe, label, args):
 
 
 def debug(args):
-    run([RUNTIME / "bin/wine", "winedbg", "--command", " ".join(args or ["info", "proc"])], env=environment())
+    wine("winedbg", "--command", " ".join(args or ["info", "proc"]))
 
 
 def browser_status():
@@ -394,25 +488,50 @@ def integrate():
     def quote(value):
         return '"' + str(value).replace("\\", "\\\\").replace('"', '\\"').replace("`", "\\`").replace("$", "\\$").replace("%", "%%") + '"'
     (dest / f"{APP}.desktop").write_text(f'[Desktop Entry]\nType=Application\nName=Lightroom CC\n'
-        f'Comment=Adobe Lightroom CC on Omarchy\nExec=env {quote("LRCC_DATA=" + str(DATA))} {quote(SCRIPT)} run\n'
+        f'Comment=Adobe Lightroom CC on Omarchy\nExec=env {quote("LRCC_DATA=" + str(DATA))} {quote(SCRIPT)} --runner {RUNNER} --graphics {GRAPHICS} run\n'
         'Icon=camera-photo\nTerminal=false\nCategories=Graphics;Photography;\nStartupNotify=true\n')
     print(f"Installed {dest / (APP + '.desktop')}")
 
 
 def main():
+    global PREFIX, RUNTIME, LR, CC, PROTON, GRAPHICS, RUNNER
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "install-cc", "cc", "run", "run-debug", "debug", "ui", "stop", "integrate"))
+    parser.add_argument("--runner", choices=("adobe", "staging", "proton"), default="adobe")
+    parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "debug", "ui", "stop", "integrate"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
+    GRAPHICS = args.graphics
+    RUNNER = args.runner
+    if args.runner == "staging":
+        PREFIX = DATA / "experiments/wine-staging-11.17/prefix"
+        RUNTIME = DATA / "runtimes/wine-staging-11.17/usr"
+        LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
+        CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
+    elif args.runner == "proton":
+        PROTON = True
+        PREFIX = DATA / "experiments/proton-ge/prefix"
+        RUNTIME = DATA / "runtimes/GE-Proton11-6-x86_64/files"
+        LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
+        CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
     if args.command == "doctor": doctor()
     elif args.command == "status": print(json.dumps(status(), indent=2))
     elif args.command == "fetch": bootstrap()
     elif args.command == "prepare": prepare()
+    elif args.command == "initialize-runner":
+        env = environment()
+        env["WINEDLLOVERRIDES"] = "mscoree,mshtml="
+        logged("initialize-runner", lambda log: run([RUNTIME / "bin/wine", "wineboot", "--update"], env=env, stdout=log, stderr=log))
     elif args.command == "repair-vcrun": repair_vcrun()
     elif args.command == "repair-browser": repair_browser()
     elif args.command == "repair-webview": repair_webview()
     elif args.command == "repair-webview-rendering": repair_webview_rendering(args.args[0] if args.args else "software")
     elif args.command == "repair-dxvk": repair_dxvk()
+    elif args.command == "stage-webview-148": stage_webview148()
+    elif args.command == "stage-proton": stage_proton()
+    elif args.command == "stage-staging": stage_staging()
+    elif args.command == "stage-adobe-browser": stage_adobe_browser()
+    elif args.command == "use-installed-webview": select_webview()
     elif args.command == "stage-lightroom": stage_lightroom()
     elif args.command == "experiment-d2d": experiment_d2d()
     elif args.command == "restore-d2d": restore_d2d()
@@ -426,6 +545,7 @@ def main():
         os.environ["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = profiles[profile]
         launch(LR, f"lightroom-webview-{profile}", [])
     elif args.command == "browser-status": browser_status()
+    elif args.command == "capture-webview": run(["node", DATA / "tools/webview-capture.mjs", DATA / "diagnostics"])
     elif args.command == "install-cc": install_cc(args.args[0] if args.args else None)
     elif args.command == "cc": launch(CC, "creative-cloud", ["--disable-gpu", "--disable-gpu-compositing", *args.args])
     elif args.command == "run": launch(LR, "lightroom", args.args)

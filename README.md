@@ -3,7 +3,8 @@
 Run the Windows version of Adobe **Lightroom CC (cloud)** locally on Omarchy,
 through a dedicated Wine environment, with desktop integration.
 
-**Status: experimental setup in development. Lightroom editing, export, color
+**Status: Adobe sign-in succeeded and returned to Lightroom on the target
+machine with Wine Staging 11.17 and Adobe's CEF/NGL components. Editing, export, color
 accuracy and cloud sync have not yet been verified on the target machine.**
 This is not a Linux port of Adobe Lightroom or an Adobe-supported platform.
 A valid Adobe subscription and interactive Adobe sign-in are required.
@@ -35,8 +36,27 @@ are GCC, make, flex, bison and the mingw-w64 toolchain. The script accepts a
 user-local toolchain in `$LRCC_DATA/tools/usr/bin`, as used on the development
 machine. `restore-d2d` rolls this experiment back (and closes this Wine prefix).
 
-The installer and app are still being debugged. These commands describe the
-intended workflow, not a claim that the whole workflow currently passes.
+### Observed working sign-in route
+
+On the prepared environment above, the Adobe Wine runner's WebView2 path
+remained blank. This separate runtime and Adobe browser combination displayed
+the actual Adobe sign-in form:
+
+```sh
+omarchy-lightroom-cc stop
+omarchy-lightroom-cc repair-dxvk
+omarchy-lightroom-cc stage-staging
+omarchy-lightroom-cc --runner staging initialize-runner
+omarchy-lightroom-cc --runner staging stage-adobe-browser
+omarchy-lightroom-cc --runner staging run
+omarchy-lightroom-cc --runner staging integrate
+```
+
+`stage-adobe-browser` extracts only Adobe's Chromium engine (CEF) and sign-in
+helper (NGL) from the official, checksum-pinned offline archive. It does not
+install Creative Cloud desktop. The desktop entry remembers the selected
+runner. This result was obtained incrementally; clean-install reproduction and
+authenticated editing remain release requirements.
 
 Other commands: `status`, `cc`, `stop`, `run-debug`, `repair-vcrun`,
 `repair-browser` (Wine Gecko), and `repair-webview` (Microsoft WebView2). `install-cc /absolute/path/Setup.exe`
@@ -94,6 +114,29 @@ without Creative Cloud desktop. This does not yet establish successful login,
 editing, export or cloud synchronization.
 
 ## Alternatives
+
+### Full Proton comparison
+
+With the original Lightroom prefix prepared and stopped:
+
+```sh
+omarchy-lightroom-cc stop
+omarchy-lightroom-cc stage-proton
+omarchy-lightroom-cc --runner proton run-debug
+omarchy-lightroom-cc --runner proton stop
+omarchy-lightroom-cc --runner proton --graphics wayland run-debug
+```
+
+This stages checksum-pinned GE-Proton11-6 and UMU 1.4.4, then copies the
+original prefix into `experiments/proton-ge/prefix`. UMU downloads and verifies
+the matching Steam Linux Runtime on first launch. It does not add an app to
+Steam or change the system Wine installation. The first Xwayland Proton test
+still showed a white sign-in window; native Wayland is being investigated.
+
+The Wine Staging route above currently has the best observed result. Full
+Proton with Adobe CEF was also tested and its sign-in window stayed blank.
+
+### Other platforms
 
 Android Lightroom is the next planned fallback. This machine's Android emulator
 supports arm64 translation, but Lightroom has not been installed or tested there.

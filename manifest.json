@@ -51,5 +51,30 @@
     "filename": "dxvk-2.7.1.tar.gz",
     "url": "https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz",
     "sha256": "d85ce7c79f57ecd765aaa1b9e7007cb875e6fde9f6d331df799bce73d513ce87"
+  },
+  "webview2-148": {
+    "filename": "webview2-148.0.3967.70.exe",
+    "url": "https://catalog.s.download.windowsupdate.com/d/msdownload/update/software/updt/2026/05/microsoftedgestandaloneinstallerx64_4575da244ba169e9efb112be308e693e6ff1de9f.exe",
+    "sha256": "60889bd84c3a25237ac193ec867d06bfc447b4b38aa1633d2fcc6f69465f4983"
+  },
+  "7zip": {
+    "filename": "7zip-26.03-1-x86_64.pkg.tar.zst",
+    "url": "https://stable-mirror.omarchy.org/extra/os/x86_64/7zip-26.03-1-x86_64.pkg.tar.zst",
+    "sha256": "32ae902300f2bdfab48ba8d03e9627830f84bff00a23ec9b80afa94b5a3ee37c"
+  },
+  "proton-ge": {
+    "filename": "GE-Proton11-6-x86_64.tar.gz",
+    "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton11-6/GE-Proton11-6-x86_64.tar.gz",
+    "sha256": "659f8d71f2f78659340120b20c1c5a1464aa138939332a1376dea22f6d2dc2e4"
+  },
+  "umu": {
+    "filename": "umu-launcher-1.4.4-zipapp.tar",
+    "url": "https://github.com/Open-Wine-Components/umu-launcher/releases/download/1.4.4/umu-launcher-1.4.4-zipapp.tar",
+    "sha256": "eb590691841f7fad3fc3ad8fd5db4ccb87849fe7948e62b28ece7a4ee48cc851"
+  },
+  "wine-staging": {
+    "filename": "wine-staging-11.17-1-x86_64.pkg.tar.zst",
+    "url": "https://stable-mirror.omarchy.org/extra/os/x86_64/wine-staging-11.17-1-x86_64.pkg.tar.zst",
+    "sha256": "d4f8c250128c95abe4dbe0e5d3cdedd7fb4a88706a92b3e30fb85c42f1b95b74"
   }
 }

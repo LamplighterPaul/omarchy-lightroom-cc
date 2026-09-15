@@ -13,7 +13,8 @@ with each result. Use disposable photos until persistence and sync are verified.
 | cabextract/Winetricks package signatures | Passed against local Arch keyring |
 | Dedicated prefix creation and dependency installation | Passed |
 | Creative Cloud UI, genuine login and app catalog | Offline UI failed; optional direct route used |
-| Stage and launch cloud Lightroom | Main window opens; sign-in under test |
+| Stage and launch cloud Lightroom | Main window and genuine Adobe sign-in form render under Wine Staging + Adobe CEF |
+| Authenticate the subscribed account | Passed: user confirmed successful sign-in and return to Lightroom |
 | Import JPEG and camera RAW | Pending |
 | Exposure, white balance, crop, local mask and undo | Pending |
 | Export JPEG/TIFF and compare pixels/profiles with a reference | Pending |
@@ -91,5 +92,61 @@ sandbox settings were restored afterward.
 
 DXVK 2.7.1 was downloaded from its official release, checksum-pinned and loaded
 successfully in both Lightroom and WebView2. The same white window persisted.
-WebView2 148.0.3967.70 from Microsoft's Update Catalog is the next comparison;
-it has not yet been run. WebView2 153 remains installed.
+WebView2 148.0.3967.70 from Microsoft's Update Catalog was staged separately
+and its DLL load verified. Its window also remained white, with another GPU
+fatal error. WebView2 153 remains installed.
+
+With an effective `--no-sandbox` policy on 148, browser processes survived
+long enough to expose a localhost DevTools target, but then failed with the
+same GPU fatal error. A read-only DOM/screenshot request timed out. These
+tests do not establish that page rendering works internally. The original
+prefix was restored to sandboxed software rendering and its debug port removed.
+
+Full GE-Proton11-6 (not just a Proton-derived Wine binary) was downloaded
+with a pinned SHA-256 and run through UMU 1.4.4 inside Steam Runtime 4.
+UMU verified the runtime archive checksum and platform mtree. This uses a
+separate prefix copy under experiments/proton-ge. The first Xwayland launch
+reached Lightroom and its sign-in window, which was visually still white.
+Native Wayland rendering is under test. No login has been verified.
+
+### Proton and Adobe CEF comparison
+
+- Native Wayland under GE-Proton11-6 loaded winewayland.drv, but the sign-in
+  surface stayed blank and was incorrectly oversized on the HiDPI display.
+- On the next Proton Xwayland run, NGL timed out initializing WebView2 and
+  selected its IE fallback. The user captured Adobe's "Update your browser"
+  page. NGL's log and the EmbeddedWB window class confirm the fallback engine.
+- Staged only ADC64/CEF64 and ADC64/NGL from the already verified official
+  Creative Cloud archive. NGL detected both helper executables at the expected
+  Common Files path and selected CEF:116.0.0.0:1.16.0.7.
+- Adobe's helper logged CEF context and browser initialization. Its first
+  Proton window was still blank; no sign-in success has been established.
+- Restored WebView2 software policy, removing the temporary debugger and
+  sandbox overrides. The CEF helper itself supplies --no-sandbox to its child
+  processes; this was observed in its actual command lines.
+- Wine Staging 11.17 is a separate runtime comparison; the package signature
+  verified against the host Arch keyring. An optional Wine Mono setup prompt
+  was closed, and prefix initialization repeated without installing Mono.
+
+### Sign-in form rendered, approximately 23:10 CEST
+
+Wine Staging 11.17 + DXVK 2.7.1 + the experimental Direct2D effect + genuine
+Adobe CEF/NGL components displayed the complete Adobe sign-in form, including
+email and social login choices. Verified both by an agent screenshot and the
+user's live observation. The user is signing in; successful account return,
+editing, export and sync must not be inferred from this page.
+
+Active prefix: `experiments/wine-staging-11.17/prefix` under the application
+data directory. Log: `20260915-230931-lightroom-debug.log`. Adobe's own helper
+uses Chromium 116; its normal login form was accepted and rendered. The Adobe
+helper's signature/payload was not modified. The desktop launcher now selects
+this Wine Staging prefix. The running app was left untouched for user sign-in.
+
+### Authentication milestone, approximately 23:12 CEST
+
+The user completed genuine Adobe sign-in and confirmed successful return to
+Lightroom. The native Lightroom main window remains open and the authentication
+helper window closed. This establishes authenticated launch, not editing,
+export accuracy, persistence, cloud sync, or complete application support.
+The working instance was left running. No passwords or authentication tokens
+are stored in the repository.
