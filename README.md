@@ -4,11 +4,14 @@ An open-source compatibility experiment by **[Paul Zammit](https://github.com/La
 to run Adobe **Lightroom CC (cloud)** locally on Omarchy, with an isolated Wine
 setup and desktop integration.
 
-**Status · 15 September 2026 · development paused**
+**Status · 16 September 2026 · cloud library loads; sign-in survives restart**
 
-Genuine Adobe sign-in **succeeded** and returned to Lightroom. The main Lightroom
-window then became **unresponsive**. This is an authentication milestone;
-photo editing is not yet usable or verified.
+Genuine Adobe sign-in **succeeded**, and Lightroom now loads the cloud library
+and opens full-size photos. Disabling the optional AdobeGrowthSDK for Lightroom
+avoids the observed post-sign-in hang. A clean exit and restart preserved sign-in
+and restored the library without another login. The operator confirms basic
+editing works. Camera Raw now detects the Intel GPU and passes its GPU sanity
+tests with vkd3d-proton. Full editing/export validation is still pending.
 
 ## What works so far
 
@@ -19,17 +22,21 @@ photo editing is not yet usable or verified.
 - Pass a missing Direct2D startup effect using a source-built experimental patch.
 - Render Adobe's sign-in form using Wine Staging 11.17 and Adobe's CEF/NGL helpers.
 - Complete subscription sign-in and return to the native Windows Lightroom app.
+- Load cloud photos and albums, open photos, and retain sign-in across restart.
+- Avoid the post-sign-in hang with a persistent, Lightroom-only GrowthSDK override.
+- Initialize Camera Raw's Intel GPU path using vkd3d-proton's Direct3D 12 DLLs.
 - Launch from an Omarchy desktop entry that remembers the selected Wine runner.
 
-## What is still broken
+## Remaining limitations
 
 | Area | Current result |
 | --- | --- |
-| Main UI | Hangs after sign-in; Wine reports heap-lock waits. Root cause unresolved. |
-| Camera Raw GPU | Initialization fails; no usable GPU reported by Camera Raw. |
+| Main UI | Responsive with optional AdobeGrowthSDK disabled; library and photo view verified. Underlying heap fault remains unresolved. |
+| Camera Raw GPU | Intel GPU recognized; GPU sanity tests pass. Speedup not benchmarked. |
 | Color management | Experimental Direct2D effect is a pass-through, not a color transform. |
-| Import, edit, export | Not verified. |
-| Persistence and cloud sync | Not verified. |
+| Import, edit, export | Basic editing confirmed by the operator. Comprehensive tool and export tests remain. |
+| Input and performance | Operator reported slowness and pointer jumping in the camera-profile selector before the GPU comparison. Pointer issue remains unresolved. |
+| Persistence and cloud sync | Sign-in persists after exit/restart; cloud library downloads. Edit persistence and upload not verified. |
 | Clean installation and packaging | Not reproduced; no production package yet. |
 
 Full results and the restart point are in **[Status and validation](docs/validation.md)**.

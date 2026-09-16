@@ -41,6 +41,7 @@ continue to apply. Pinned downloadable artifacts are listed in
 | [Wine](https://www.winehq.org/) / [Wine Staging](https://github.com/wine-staging/wine-staging) | Windows compatibility; Staging 11.17 produced the successful sign-in. Wine is LGPL-2.1-or-later. |
 | [PhialsBasement/wine-adobe-installers](https://github.com/PhialsBasement/wine-adobe-installers) | Initial Adobe Wine 11.10 runner; Adobe Proton 10 also evaluated. Consult its source and component notices. |
 | [DXVK](https://github.com/doitsujin/dxvk) | Direct3D 11/DXGI over Vulkan; pinned 2.7.1 comparison. Copyright Philip Rebohle and contributors, zlib license. |
+| [vkd3d-proton](https://github.com/HansKristian-Work/vkd3d-proton) | Direct3D 12 over Vulkan; DLL pair from the pinned GE-Proton11-6 bundle. Successfully initializes Camera Raw's Intel GPU path. Upstream component licenses apply; no binaries are included here. |
 | [Valve Proton](https://github.com/ValveSoftware/Proton) / [GE-Proton](https://github.com/GloriousEggroll/proton-ge-custom) | Full GE-Proton11-6 comparison; Wine and additional components with their respective licenses. |
 | [UMU launcher](https://github.com/Open-Wine-Components/umu-launcher) | Launches the full Proton comparison outside Steam. |
 | [Steam Linux Runtime](https://gitlab.steamos.cloud/steamrt/steam-runtime-tools) | Runtime container used by UMU; component licenses apply. |
@@ -82,7 +83,8 @@ make Adobe Lightroom open source.
   desktop installation. No distribution-specific code was copied.
 - [vkd3d-proton](https://github.com/HansKristian-Work/vkd3d-proton) and
   [Adobe's GPU requirements](https://helpx.adobe.com/lightroom/desktop/kb/lightroom-gpu-faq.html):
-  references for a proposed Direct3D 12 comparison, not a verified fix.
+  references for the Direct3D 12 comparison. Our Intel GPU initialization and
+  Camera Raw sanity-test results are recorded in [validation](docs/validation.md).
 - [Darling](https://www.darlinghq.org/) and Android Lightroom: fallback ideas only;
   neither was validated by this project.
 

@@ -1,12 +1,12 @@
 # Contributing
 
-The project is paused at the authentication milestone. Contributions and
-reproducible results are welcome through issues and pull requests.
+The project now loads the cloud library and retains sign-in after restart.
+Contributions and reproducible results are welcome through issues and pull requests.
 
 Start with [current status](docs/validation.md) and the
 [issue tracker](https://github.com/LamplighterPaul/omarchy-lightroom-cc/issues).
-Priorities are the main-window hang, Camera Raw GPU initialization, color
-correctness and clean setup reproduction.
+Priorities are validating editing/export, measuring GPU performance, resolving
+pointer jumping, color correctness and clean setup reproduction.
 
 ## Development
 

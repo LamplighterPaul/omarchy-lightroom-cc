@@ -1,8 +1,9 @@
 # Development setup
 
-Experimental instructions, recorded on 15 September 2026. Sign-in succeeded on
-one incrementally prepared machine; the main UI then hung. A clean installation
-has not been reproduced. Read [current status](validation.md) before trying this.
+Experimental instructions, updated on 16 September 2026. Official sign-in, cloud
+library loading and sign-in persistence after restart work on one incrementally
+prepared machine. A clean installation has not been reproduced. Read
+[current status](validation.md) before trying this.
 
 Run these commands from a checkout of this repository.
 
@@ -45,6 +46,8 @@ omarchy-lightroom-cc repair-dxvk
 omarchy-lightroom-cc stage-staging
 omarchy-lightroom-cc --runner staging initialize-runner
 omarchy-lightroom-cc --runner staging stage-adobe-browser
+omarchy-lightroom-cc --runner staging repair-growth-sdk
+omarchy-lightroom-cc --runner staging repair-d3d12
 omarchy-lightroom-cc --runner staging run
 omarchy-lightroom-cc --runner staging integrate
 ```
@@ -54,6 +57,43 @@ helper (NGL) from the official, checksum-pinned offline archive. It does not
 install Creative Cloud desktop. The desktop entry remembers the selected
 runner. This result was obtained incrementally; clean-install reproduction and
 authenticated editing remain release requirements.
+
+### Avoid the post-sign-in hang
+
+`repair-growth-sdk` writes an empty `AdobeGrowthSDK` DLL override under
+`HKCU\Software\Wine\AppDefaults\lightroom.exe\DllOverrides` in the selected
+prefix. This disables the optional GrowthSDK only for Lightroom. It leaves
+Adobe sign-in and subscription validation intact and does not modify Adobe
+binaries. Restart Lightroom after applying it. The setting persists, so normal
+desktop launches need no environment-variable override.
+
+With the SDK enabled, the observed run hit an access violation while a worker
+owned the process heap lock and then waited in crash handling. With the SDK
+disabled, the library loaded and remained available after a clean restart.
+This is a verified workaround on this machine, not a diagnosis of the underlying
+heap fault. See [the investigation](hang-investigation-2026-09-16.md).
+
+To undo this setting, remove only the `AdobeGrowthSDK` value from the above
+registry key in the same prefix, then restart Lightroom. No application file
+needs to be restored.
+
+### Camera Raw GPU initialization
+
+`repair-d3d12` verifies the pinned GE-Proton archive and extracts only its 64-bit
+vkd3d-proton `d3d12.dll` and `d3d12core.dll`. It stops the selected prefix, backs
+up its original DLLs under that prefix's parent `repairs/d3d12/` directory, and
+sets Lightroom-only native overrides. Lightroom continues to use Wine Staging;
+this does not switch the runner to Proton.
+
+On the tested Intel GPU this changed Camera Raw from zero usable GPUs to one
+Intel device, with successful GPU3/GPU4 results and a completed sanity test.
+Performance has not been benchmarked. Keep the GPU's real vendor identity;
+no adapter spoof is part of this setup.
+
+To undo, stop this runner, restore the saved DLL pair into its
+`drive_c/windows/system32/`, and remove the `d3d12` and `d3d12core` values from
+the Lightroom AppDefaults key above. Re-running the repair retains the first
+DLL backup rather than replacing it.
 
 Other commands: `status`, `cc`, `stop`, `run-debug`, `repair-vcrun`,
 `repair-browser` (Wine Gecko), and `repair-webview` (Microsoft WebView2). `install-cc /absolute/path/Setup.exe`

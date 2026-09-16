@@ -7,6 +7,7 @@ import json
 import lzma
 import os
 from pathlib import Path
+import tarfile
 import tempfile
 import unittest
 import zipfile
@@ -106,3 +107,47 @@ class LauncherTest(unittest.TestCase):
     def test_adobe_decoder_bounds_dictionary_allocation(self):
         with self.assertRaisesRegex(RuntimeError, "dictionary property"):
             self.app.decode_adobe_file(io.BytesIO(b"\xffgarbage"), io.BytesIO())
+
+    def make_d3d12_archive(self, names):
+        archive = self.root / "proton-test.tar.gz"
+        with tarfile.open(archive, "w:gz") as package:
+            for name in names:
+                payload = ("new-" + name).encode()
+                member = tarfile.TarInfo("proton-test/files/lib/wine/vkd3d-proton/x86_64-windows/" + name)
+                member.size = len(payload)
+                package.addfile(member, io.BytesIO(payload))
+        return archive
+
+    def test_d3d12_repair_is_scoped_and_preserves_first_backup(self):
+        archive = self.make_d3d12_archive(("d3d12.dll", "d3d12core.dll"))
+        original = self.app.PREFIX / "drive_c/windows/system32/d3d12.dll"
+        original.parent.mkdir(parents=True)
+        original.write_bytes(b"unrelated-prefix")
+        target = self.app.DATA / "experiments/wine-staging-11.17/prefix/drive_c/windows/system32/d3d12.dll"
+        target.parent.mkdir(parents=True)
+        target.write_bytes(b"original-staging")
+        with patch.object(self.app, "fetch", return_value=archive), \
+             patch.object(self.app, "manifest", return_value={"proton-ge": {"filename": archive.name}}), \
+             patch.object(self.app, "environment", return_value={}), \
+             patch.object(self.app, "run"), patch.object(self.app, "wine"), \
+             patch("sys.argv", ["omarchy-lightroom-cc", "--runner", "staging", "repair-d3d12"]), \
+             contextlib.redirect_stdout(io.StringIO()):
+            self.app.main()
+            self.app.main()
+        self.assertEqual(original.read_bytes(), b"unrelated-prefix")
+        self.assertEqual(target.read_bytes(), b"new-d3d12.dll")
+        self.assertEqual(target.with_name("d3d12core.dll").read_bytes(), b"new-d3d12core.dll")
+        self.assertEqual((self.app.PREFIX.parent / "repairs/d3d12/d3d12.dll").read_bytes(), b"original-staging")
+
+    def test_incomplete_d3d12_pair_leaves_installation_running_and_unchanged(self):
+        archive = self.make_d3d12_archive(("d3d12.dll",))
+        target = self.app.PREFIX / "drive_c/windows/system32/d3d12.dll"
+        target.parent.mkdir(parents=True)
+        target.write_bytes(b"original")
+        with patch.object(self.app, "fetch", return_value=archive), \
+             patch.object(self.app, "manifest", return_value={"proton-ge": {"filename": archive.name}}), \
+             patch.object(self.app, "run") as execute:
+            with self.assertRaisesRegex(RuntimeError, "missing the vkd3d-proton DLL pair"):
+                self.app.repair_d3d12()
+        execute.assert_not_called()
+        self.assertEqual(target.read_bytes(), b"original")

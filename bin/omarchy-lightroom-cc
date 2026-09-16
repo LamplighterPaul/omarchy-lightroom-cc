@@ -439,6 +439,52 @@ def launch(exe, label, args):
     logged(label, lambda log: wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log))
 
 
+def repair_growth_sdk():
+    """Disable optional GrowthSDK only for Lightroom in the selected prefix."""
+    wine("reg", "add", r"HKCU\Software\Wine\AppDefaults\lightroom.exe\DllOverrides",
+         "/v", "AdobeGrowthSDK", "/t", "REG_SZ", "/d", "", "/f")
+    print("Disabled optional AdobeGrowthSDK for Lightroom. Restart Lightroom to apply.")
+
+
+def repair_d3d12():
+    """Install the pinned Proton bundle's vkd3d-proton into the selected prefix."""
+    archive = fetch("proton-ge")
+    bundle = manifest()["proton-ge"]["filename"].removesuffix(".tar.gz")
+    names = ("d3d12.dll", "d3d12core.dll")
+    members = {f"{bundle}/files/lib/wine/vkd3d-proton/x86_64-windows/{name}": name
+               for name in names}
+    with tempfile.TemporaryDirectory(prefix="lrcc-d3d12-") as temporary:
+        staged = Path(temporary)
+        with tarfile.open(archive, "r|gz") as package:
+            for member in package:
+                if member.name not in members:
+                    continue
+                if not member.isfile():
+                    raise RuntimeError("Expected a regular vkd3d-proton DLL in the pinned archive")
+                with package.extractfile(member) as source, (staged / members[member.name]).open("wb") as out:
+                    shutil.copyfileobj(source, out)
+        if not all((staged / name).is_file() for name in names):
+            raise RuntimeError("Pinned Proton archive is missing the vkd3d-proton DLL pair")
+        try:
+            run([RUNTIME / "bin/wineserver", "-k"], env=environment(), capture_output=True, text=True)
+        except subprocess.CalledProcessError as exc:
+            # Wine returns 1 with no output when this prefix has no running server.
+            if exc.returncode != 1 or exc.stdout or exc.stderr:
+                raise
+        backup = PREFIX.parent / "repairs/d3d12"
+        backup.mkdir(parents=True, exist_ok=True)
+        for name in names:
+            target = PREFIX / "drive_c/windows/system32" / name
+            if target.exists() and not (backup / name).exists():
+                shutil.copy2(target, backup / name)
+            replacement = target.with_suffix(".dll.new")
+            shutil.copy2(staged / name, replacement)
+            replacement.replace(target)
+            wine("reg", "add", r"HKCU\Software\Wine\AppDefaults\lightroom.exe\DllOverrides",
+                 "/v", Path(name).stem, "/t", "REG_SZ", "/d", "native", "/f")
+    print(f"Installed vkd3d-proton for Lightroom. Original DLLs retained in {backup}")
+
+
 def debug(args):
     wine("winedbg", "--command", " ".join(args or ["info", "proc"]))
 
@@ -498,7 +544,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runner", choices=("adobe", "staging", "proton"), default="adobe")
     parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
-    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate"))
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
     GRAPHICS = args.graphics
@@ -527,6 +573,8 @@ def main():
     elif args.command == "repair-webview": repair_webview()
     elif args.command == "repair-webview-rendering": repair_webview_rendering(args.args[0] if args.args else "software")
     elif args.command == "repair-dxvk": repair_dxvk()
+    elif args.command == "repair-growth-sdk": repair_growth_sdk()
+    elif args.command == "repair-d3d12": repair_d3d12()
     elif args.command == "stage-webview-148": stage_webview148()
     elif args.command == "stage-proton": stage_proton()
     elif args.command == "stage-staging": stage_staging()
