@@ -73,16 +73,26 @@ input helper now sends the additional Escape needed to leave the menu bar.
 Corrected screenshots visibly confirm a grid view and switching to another
 photo. Resize checks and longer use still need comparison against the baseline.
 
-The experimental `loupe-background.c` probe tests first presentation, full and
-partial fills, unrelated/top-level windows and renderer release. Its synthetic
-red GPU frame is not currently observed correctly **even with the workaround
-disabled**; an actual compositor capture also showed a black synthetic surface.
-It is therefore an incomplete test fixture, not a passing regression gate or
-evidence that the candidate fails those cases. Do not drop its failed checks
-or use its GDI reads as proof of GPU appearance.
+The `loupe-background.c` probe now passes **21/21 compositor checks in both
+baseline and retained modes**. It checks first presentation, full and partial
+fills, unrelated and top-level windows, an overlapping sibling with identical
+geometry, resize before and after a new presentation, renderer release, and a
+recreated window without a renderer. These are bounded synthetic checks, not a
+long-running application stability result.
+
+The earlier fixture failure had multiple causes. A staging texture read confirmed
+that the GPU rendered red, while the child window's `GetPixel` could still read
+stale GDI storage. The runner now checks pixels from the private compositor.
+The fixture's own AppDefaults selects `ClientSideGraphics=N` to exercise the
+observed X11 PatBlt path rather than a cached parent DIB. A diagnostic GDI read
+flushes the synthetic fill before capture, and the helper keeps pumping messages
+while waiting for capture acknowledgement. GPU staging reads and GDI synchronization
+exist only in this probe; the candidate driver adds neither. The numeric results
+are [baseline](measurements/20260919-loupe-retention/regression-baseline.json) and
+[retained](measurements/20260919-loupe-retention/regression-retained.json).
 
 Resource collection ran, but the attempted frame-time recordings did not produce
 a valid recording covering the intended scored gestures. No speedup claim is
-made from them. Remaining work includes reliable frame-time capture, synthetic
-fixture repair, overlapping-window/fallback/lifetime checks, resize validation,
+made from them. Remaining work includes reliable frame-time capture, real-application
+resize validation, longer fallback/lifetime coverage,
 and clean runtime packaging before promotion.

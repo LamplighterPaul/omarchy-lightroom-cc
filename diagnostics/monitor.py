@@ -17,6 +17,8 @@ def host_state():
         'governor': '/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor',
         'energy_preference': '/sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference',
         'no_turbo': '/sys/devices/system/cpu/intel_pstate/no_turbo',
+        'min_perf_pct': '/sys/devices/system/cpu/intel_pstate/min_perf_pct',
+        'max_perf_pct': '/sys/devices/system/cpu/intel_pstate/max_perf_pct',
         'cpu_pressure': '/proc/pressure/cpu',
         'memory_pressure': '/proc/pressure/memory',
         'io_pressure': '/proc/pressure/io',
@@ -35,6 +37,50 @@ def host_state():
             pass
     if clocks:
         result['cpu_policy_mhz'] = dict(min=min(clocks), max=max(clocks), mean=sum(clocks)/len(clocks))
+    policies = {}
+    for policy in Path('/sys/devices/system/cpu/cpufreq').glob('policy*'):
+        values = {}
+        for name in ('scaling_driver', 'scaling_governor', 'energy_performance_preference',
+                     'scaling_min_freq', 'scaling_max_freq', 'cpuinfo_max_freq'):
+            try:
+                values[name] = (policy / name).read_text().strip()
+            except OSError:
+                pass
+        policies[policy.name] = values
+    result['cpu_policies'] = policies
+    supplies = {}
+    for path in Path('/sys/class/power_supply').glob('*/online'):
+        try:
+            supplies[path.parent.name] = int(path.read_text())
+        except (OSError, ValueError):
+            pass
+    result['power_supplies_online'] = supplies
+    # RAPL constraints are hardware policy, not a VM or application quota.
+    # Energy counters may require privilege; do not invent a wattage from limits.
+    caps = {}
+    for domain in Path('/sys/class/powercap').glob('intel-rapl:*'):
+        values = {}
+        for path in [domain / 'name', domain / 'enabled', *domain.glob('constraint_*')]:
+            try:
+                values[path.name] = path.read_text().strip()
+            except OSError:
+                pass
+        if values:
+            caps[domain.name] = values
+    result['rapl_constraints'] = caps
+    temperatures = {}
+    for sensor in Path('/sys/class/hwmon').glob('hwmon*'):
+        try:
+            name = (sensor / 'name').read_text().strip()
+            if name not in ('coretemp', 'k10temp', 'zenpower', 'xe', 'amdgpu', 'acpitz'):
+                continue
+            for path in sensor.glob('temp*_input'):
+                label = path.with_name(path.name.replace('_input', '_label'))
+                key = label.read_text().strip() if label.exists() else path.stem
+                temperatures[f'{sensor.name}/{name}/{key}'] = int(path.read_text()) / 1000
+        except (OSError, ValueError):
+            pass
+    result['temperatures_c'] = temperatures
     gpu_clocks = {}
     for directory in Path('/sys/class/drm').glob('card*/device/tile*/gt*/freq*'):
         values = {}
@@ -133,6 +179,7 @@ def record(prefix, seconds, interval=1):
              'PSS apportions shared memory. Exited/new processes can make CPU incomplete. '
              'Throttle counts are cumulative: compare changes during this run, not absolute values. '
              'Cgroup ancestor counters may include other applications. GPU clocks are instantaneous. '
+             'RAPL limits are configured hardware constraints, not measured power consumption. '
              'This records resources, not presentation FPS. Match with MangoHud and an actual interaction.',
         samples=samples)
 

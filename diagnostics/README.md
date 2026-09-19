@@ -64,11 +64,19 @@ sets a pick flag in this application and must not be used to test zoom.
 
 ## Experimental photo-retention probe
 
-`loupe-background.c` and `run-loupe-background.py` are an **incomplete** GPU/GDI
-regression fixture. Its red GPU frame currently fails the baseline check, so
-it is not an acceptance test yet. See [the candidate report](../docs/loupe-retention-2026-09-19.md).
-Build it with MinGW and `-ld3d11 -ldxgi -ldxguid -lgdi32 -luser32`, writing
-`$LRCC_DATA/tools/loupe-background.exe`. The Python runner validates the private
-Weston display before creating temporary test windows; it never sends input to
-the production desktop. With the staged candidate, run on `DISPLAY=:1` and
-`WAYLAND_DISPLAY=lightroom-test` with `--expect baseline` or `--expect retained`.
+`loupe-background.c` and `run-loupe-background.py` check actual private-compositor
+pixels for GPU/GDI painting, overlapping windows, resize, release and recreation.
+Both baseline and retained modes pass 21 checks; see [the candidate report](../docs/loupe-retention-2026-09-19.md).
+Build with MinGW and `-ld3d11 -ldxgi -ldxguid -lgdi32 -luser32`, writing
+`$LRCC_DATA/tools/loupe-background.exe`. The runner needs ImageMagick and the staged
+`composited-capture` binary. Start the private Weston with `--capture` first.
+Run on `DISPLAY=:1` and `WAYLAND_DISPLAY=lightroom-test` with `--expect baseline`
+or `--expect retained`. It validates the private display and sends no desktop
+input. Its isolated AppDefaults selects direct X11 graphics for this executable
+only. Results and synthetic captures stay in `measurements/loupe-regression/`.
+The test deliberately synchronizes and waits for captures: it measures painting
+correctness, not performance.
+
+The resource recorder also includes CPU policy ceilings, AC connection, RAPL
+power constraints and CPU temperatures. Power constraints are configured limits,
+not measured watts; unavailable privileged energy counters are not guessed.
