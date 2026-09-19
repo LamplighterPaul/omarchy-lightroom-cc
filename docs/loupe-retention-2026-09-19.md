@@ -91,8 +91,59 @@ exist only in this probe; the candidate driver adds neither. The numeric results
 are [baseline](measurements/20260919-loupe-retention/regression-baseline.json) and
 [retained](measurements/20260919-loupe-retention/regression-retained.json).
 
-Resource collection ran, but the attempted frame-time recordings did not produce
-a valid recording covering the intended scored gestures. No speedup claim is
-made from them. Remaining work includes reliable frame-time capture, real-application
-resize validation, longer fallback/lifetime coverage,
-and clean runtime packaging before promotion.
+## Warm presentation timing and power
+
+The earlier hotkey/control recording attempts failed to cover the intended
+phases. A separate configuration using MangoHud's documented
+[`autostart_log=1` and `log_duration=180`](https://github.com/flightlessmango/MangoHud/blob/master/data/MangoHud.conf)
+now records from launch. All three runs below used the same candidate binary,
+2× scaling, private 120 Hz output, MangoHud late 120 Hz limiter and DXVK cap off.
+Only `LIGHTROOM_OMARCHY_RETAIN_LOUPE` changed. The signed-in copied profile showed
+the same lake photo. No production input was sent.
+
+The sequence was Escape twice, maximize, detail view, ten-second pan, five menu
+cycles, resize smaller, maximize, then another ten-second pan. Screenshots were
+taken after three-second settles at size changes and **after**, not during, the
+pans. The second pan is scored below; the complete 45-second interaction sequence
+also has resource samples. Settled real-application screenshots show matching
+correct layout in baseline and retained modes, including after re-enlarging.
+
+| Retention | Recorded intervals | Median ms | p95 ms | p99 ms | Max ms | Over 16.67 ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Disabled | 653 | 12.462 | 14.968 | 18.634 | 26.420 | 10 |
+| Enabled | 973 | 8.336 | 8.474 | 8.566 | 13.640 | 0 |
+| Disabled again | 539 | 15.019 | 16.970 | 21.066 | 26.845 | 33 |
+
+Filename timestamps have one-second precision, so each gesture boundary is
+trimmed by one second. Every interval inside that span is included, including
+stalls. Their summed frame durations match the approximately 8.1-second recorded
+spans within one frame, unlike sparse/startup portions of these same logs that
+contain new-context timing artifacts. Raw scored intervals and summaries are in
+[the numeric evidence](measurements/20260919-loupe-retention/warm-pacing.json).
+This is evidence of improved warm-drag **presentation pacing**, consistent with
+the eliminated repaint. It is not an end-to-end input-latency measurement or
+proof of sustained display FPS. MangoHud logs do not identify individual
+swapchains; the sum check cannot establish surface identity by itself. Startup
+warmup and host activity were not perfectly controlled, and there is one enabled
+run in this timing series. Menu latency and long stalls remain open.
+
+The refreshed live production audit showed all eight CPUs available, main nice 0,
+no cgroup CPU/RAM quota and no cgroup throttling. The host was on AC with
+performance platform profile, performance EPP, turbo enabled and maximum CPU
+performance percentage 100. Intel's governor reported `powersave`; observed
+clocks still reached 4.4 GHz. The graphics maximum was 2500 MHz, equal to RP0.
+Configured package long/short power limits were 40/50 W. These are hardware
+policy values, not measured watts; privileged energy counters were unavailable.
+No host policy was changed.
+
+During the first disabled interaction sequence, prefix CPU usage peaked at
+384.52% (100% is one core), PSS at 2505.21 MiB and package temperature at 73°C.
+Thermal-throttle counters did not increase. See the numeric summaries for the
+other sequences; whole-sequence resource maxima must not be attributed solely
+to the scored pan. The recorder now saves AC state, frequency ceilings, power
+constraints and temperatures alongside CPU, memory, GPU-engine counters and
+cgroup limits.
+
+Remaining work includes repeated per-surface timing, remaining menu/application
+stalls, longer fallback/lifetime coverage and clean runtime packaging before
+promotion. Production still runs 11.7-2.
