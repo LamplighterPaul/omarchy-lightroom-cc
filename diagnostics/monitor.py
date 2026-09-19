@@ -135,16 +135,18 @@ def process_constraints(pid):
     return result
 
 
-def record(prefix, seconds, interval=1):
+def record(prefix, seconds, interval=1, include_pss=False):
     hz = os.sysconf('SC_CLK_TCK')
     utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
     started = last = time.monotonic()
-    before = snapshot(prefix)
+    cpu_started = time.process_time()
+    before = snapshot(prefix, include_pss=include_pss)
     samples = []
     while time.monotonic() - started < seconds:
         time.sleep(min(interval, max(0, seconds - (time.monotonic() - started))))
         now = time.monotonic()
-        after = snapshot(prefix)
+        after = snapshot(prefix, include_pss=include_pss)
+        snapshot_end = time.monotonic()
         rows, engines = [], {}
         for pid, item in after.items():
             prior = before.get(pid)
@@ -157,7 +159,8 @@ def record(prefix, seconds, interval=1):
                         # Shared DRM clients are counted once across processes.
                         engines[key] = round(100 * (busy-old[0]) / (total-old[1]), 2)
             rows.append(dict(pid=pid, name=item['name'], cpu_percent=None if cpu is None else round(cpu, 2),
-                             pss_mib=round(item['pss_kib']/1024, 2)))
+                             rss_mib=round(item['rss_kib']/1024, 2),
+                             pss_mib=round(item['pss_kib']/1024, 2) if item['pss_kib'] is not None else None))
         focused = None
         try:
             window = json.loads(subprocess.check_output(['hyprctl', 'activewindow', '-j'],
@@ -165,18 +168,25 @@ def record(prefix, seconds, interval=1):
             focused = window.get('pid') in after
         except (OSError, ValueError, subprocess.SubprocessError):
             pass
-        samples.append(dict(t=round(now-started, 3), prefix_window_focused=focused,
+        samples.append(dict(t=round(now-started, 3), monotonic=now,
+            snapshot_wall_ms=round((snapshot_end-now)*1000, 3), prefix_window_focused=focused,
             cpu_percent=round(sum(r['cpu_percent'] or 0 for r in rows), 2),
-            pss_mib=round(sum(r['pss_mib'] for r in rows), 2),
+            rss_mib=round(sum(r['rss_mib'] for r in rows), 2),
+            pss_mib=round(sum(r['pss_mib'] for r in rows), 2) if include_pss else None,
             gpu_engine_percent=engines, processes=rows, host=host_state(),
             main_process_constraints={str(pid): process_constraints(pid)
                 for pid, item in after.items() if item['name'].lower() == 'lightroom.exe'},
             exited_processes=len(set(before)-set(after))))
+        samples[-1]['collection_wall_ms'] = round((time.monotonic()-now)*1000, 3)
         before, last = after, now
-    return dict(started_utc=utc,
+    return dict(started_utc=utc, started_monotonic=started, pss_enabled=include_pss,
+        observer_cpu_seconds=round(time.process_time()-cpu_started, 6),
         duration=round(last-started, 3), interval=interval,
         note='CPU 100% = one core. GPU percentages are per DRM client/engine, not whole-GPU utilization. '
-             'PSS apportions shared memory. Exited/new processes can make CPU incomplete. '
+             'RSS is a lightweight estimate and double-counts shared pages across processes. '
+             'Optional PSS apportions shared memory but its mapping scans can perturb frame timing. '
+             'PSS is null when disabled. Observer CPU excludes helper subprocesses. '
+             'Exited/new processes can make CPU incomplete. '
              'Throttle counts are cumulative: compare changes during this run, not absolute values. '
              'Cgroup ancestor counters may include other applications. GPU clocks are instantaneous. '
              'RAPL limits are configured hardware constraints, not measured power consumption. '
@@ -189,6 +199,8 @@ def main():
     parser.add_argument('prefix', type=Path)
     parser.add_argument('--seconds', type=float, default=30)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--pss', action='store_true',
+                        help='Read detailed proportional memory; can perturb interactive frame timing.')
     args = parser.parse_args()
     if not 1 <= args.seconds <= 300:
         parser.error('--seconds must be between 1 and 300')
@@ -198,11 +210,12 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     path = args.output / (datetime.datetime.now().strftime('%Y%m%d-%H%M%S') + '-resources.json')
     print(f'Recording {args.seconds:g}s to {path}. Use the same photo and zoom for comparisons.', flush=True)
-    report = record(prefix, args.seconds)
+    report = record(prefix, args.seconds, include_pss=args.pss)
     path.write_text(json.dumps(report, indent=2)+'\n')
     samples = report['samples']
     print(json.dumps(dict(path=str(path), peak_cpu_percent=max(s['cpu_percent'] for s in samples),
-        peak_pss_mib=max(s['pss_mib'] for s in samples),
+        peak_rss_mib=max(s['rss_mib'] for s in samples),
+        peak_pss_mib=max(s['pss_mib'] for s in samples) if args.pss else None,
         focused_samples=sum(s['prefix_window_focused'] is True for s in samples)), indent=2))
 
 

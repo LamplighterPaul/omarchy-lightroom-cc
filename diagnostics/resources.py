@@ -7,7 +7,22 @@ from pathlib import Path
 import time
 
 
-def snapshot(prefix):
+def drm_fdinfo(process):
+    """Skip event/timer/ntsync descriptors before asking drivers for fdinfo.
+
+    Enumerate anew each sample so newly opened GPU devices are included. A
+    descriptor can disappear or be reused during the scan; the subsequent
+    drm-client-id check still rejects non-DRM fdinfo in that case.
+    """
+    for fd in (process / 'fd').iterdir():
+        try:
+            if os.readlink(fd).startswith('/dev/dri/'):
+                yield process / 'fdinfo' / fd.name
+        except OSError:
+            continue
+
+
+def snapshot(prefix, include_pss=True):
     result = {}
     for proc in Path('/proc').glob('[0-9]*'):
         try:
@@ -16,14 +31,15 @@ def snapshot(prefix):
             if value is None or Path(os.fsdecode(value)).resolve() != prefix:
                 continue
             stat = (proc / 'stat').read_text().rsplit(')', 1)[1].split()
-            memory = {}
-            for line in (proc / 'smaps_rollup').read_text().splitlines()[1:]:
-                key, value = line.split(':', 1)
-                memory[key] = int(value.split()[0])
+            memory = {'Rss': int(stat[21]) * os.sysconf('SC_PAGE_SIZE') // 1024}
+            if include_pss:
+                for line in (proc / 'smaps_rollup').read_text().splitlines()[1:]:
+                    key, value = line.split(':', 1)
+                    memory[key] = int(value.split()[0])
             gpu_kib = 0
             engines = {}
             clients = set()
-            for fd in (proc / 'fdinfo').iterdir():
+            for fd in drm_fdinfo(proc):
                 try:
                     fields = dict(line.split(':', 1) for line in fd.read_text().splitlines() if ':' in line)
                     client = fields.get('drm-client-id')
@@ -47,7 +63,7 @@ def snapshot(prefix):
                     continue
             result[int(proc.name)] = dict(name=(proc / 'comm').read_text().strip(),
                 ticks=int(stat[11]) + int(stat[12]), start=int(stat[19]),
-                rss_kib=memory.get('Rss', 0), pss_kib=memory.get('Pss', 0), gpu_kib=gpu_kib,
+                rss_kib=memory['Rss'], pss_kib=memory.get('Pss'), gpu_kib=gpu_kib,
                 engines=engines)
         except (OSError, ValueError, IndexError):
             continue

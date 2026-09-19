@@ -20,12 +20,17 @@ Do not count unchanged idle content as slow rendering.
 
 Press Shift+F2 with Lightroom focused to record MangoHud CSVs (60-second limit).
 In a terminal, `lightroom-omarchy-proton measure 40` records the prefix's CPU,
-proportional memory and GPU engine counters once per second. It never switches
+resident memory (RSS) and GPU engine counters once per second. It never switches
 workspaces or moves the pointer. Results are under
 `~/.local/share/omarchy-lightroom-cc/measurements/`.
 Each resource sample reports whether a prefix window was focused. A background
 run is not evidence of actual panning. GPU counters are per-client/engine;
 unsupported counters are absent, never fabricated as zero utilization.
+RSS is an inexpensive estimate and counts shared pages in each process. For
+detailed proportional memory, invoke `diagnostics/monitor.py` with `--pss`;
+that mode can perturb interactive frame timing. PSS is `null` when disabled.
+The recorder includes its own CPU cost and collection durations; compare an
+identical gesture without the recorder before attributing stalls to Lightroom.
 
 Compare frame-time p50/p95/p99, time above 16.67 ms and 8.33 ms, and the longest
 stall during the active interval. Presentation cadence does not prove that the
@@ -157,3 +162,6 @@ The [mixed-photo run](mixed-photo-2026-09-19.md) covers photo selection, zoom,
 vertical pans and menus, including the remaining occasional submission stalls.
 The launcher also [removes an unnecessary startup wait](startup-wait-2026-09-19.md)
 between its configuration helpers and Lightroom.
+
+[Recorder overhead measurements](observer-cost-2026-09-19.md) explain why RSS
+is now the default and why scored gestures should also run without the recorder.

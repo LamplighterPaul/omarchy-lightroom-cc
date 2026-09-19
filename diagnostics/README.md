@@ -51,6 +51,9 @@ policy, CPU clocks, Xe GPU clocks, thermal-throttle counters and the main
 process's scheduler/affinity/cgroup limits. It is read-only. Ancestor cgroups
 can cover other applications; their usage counters are not Lightroom usage.
 Thermal counters are cumulative, so correlate **increments** with an interaction.
+Continuous monitoring defaults to lightweight RSS. `monitor.py --pss` enables
+more expensive proportional-memory scans; absent PSS is reported as null.
+Use the recorded observer CPU/collection times to assess measurement overhead.
 
 ## Composited appearance capture
 
