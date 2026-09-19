@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'record', 'menu-open', 'edit-menu-open', 'escape', 'loupe', 'close'])
+parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'resize-small', 'record', 'menu-open', 'edit-menu-open', 'escape', 'loupe', 'grid', 'next-photo', 'previous-photo', 'close'])
 args = parser.parse_args()
 if os.environ.get('WAYLAND_DISPLAY') != 'lightroom-test' or os.environ.get('DISPLAY') != ':1':
     raise SystemExit('Refusing input outside the dedicated lightroom-test/:1 fixture')
@@ -67,12 +67,18 @@ def key(symbol,pressed):
     t.XTestFakeKeyEvent(d,x.XKeysymToKeycode(d,symbol),pressed,0);x.XFlush(d)
 
 phase_start = time.time()
-if args.action=='maximize':
-    x.XMoveResizeWindow(d,w,0,0,2832,1692);x.XFlush(d)
+if args.action in ('maximize', 'resize-small'):
+    width, height = (2832, 1692) if args.action == 'maximize' else (2304, 1440)
+    x.XMoveResizeWindow(d,w,0,0,width,height);x.XFlush(d)
 elif args.action=='zoom':
     key(ord(' '),1);key(ord(' '),0)
 elif args.action=='loupe':
     key(ord('d'),1);key(ord('d'),0)
+elif args.action=='grid':
+    key(ord('g'),1);key(ord('g'),0)
+elif args.action in ('next-photo', 'previous-photo'):
+    symbol = 0xff53 if args.action == 'next-photo' else 0xff51
+    key(symbol,1);key(symbol,0)
 elif args.action=='close':
     key(0xffe3,1);key(ord('q'),1);time.sleep(.05);key(ord('q'),0);key(0xffe3,0)
 elif args.action=='menu-open':
@@ -92,6 +98,8 @@ elif args.action=='menus':
     for i in range(5):
         key(0xffe9,1);key(ord('f'),1);key(ord('f'),0);key(0xffe9,0)
         time.sleep(.6);key(0xff1b,1);key(0xff1b,0);time.sleep(.4)
+    # Escape closes the popup first; a second Escape exits menu-bar navigation.
+    key(0xff1b,1);key(0xff1b,0);time.sleep(.05)
 else:
     left=c.c_int();top=c.c_int();child=c.c_ulong()
     x.XTranslateCoordinates(d,w,root,0,0,c.byref(left),c.byref(top),c.byref(child))

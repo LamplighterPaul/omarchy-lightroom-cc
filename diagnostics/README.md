@@ -61,3 +61,14 @@ overhead limitations. Capture photos stay local; commit only numeric timings.
 
 The real-input helper uses Lightroom Desktop's **Space** zoom shortcut. `Z`
 sets a pick flag in this application and must not be used to test zoom.
+
+## Experimental photo-retention probe
+
+`loupe-background.c` and `run-loupe-background.py` are an **incomplete** GPU/GDI
+regression fixture. Its red GPU frame currently fails the baseline check, so
+it is not an acceptance test yet. See [the candidate report](../docs/loupe-retention-2026-09-19.md).
+Build it with MinGW and `-ld3d11 -ldxgi -ldxguid -lgdi32 -luser32`, writing
+`$LRCC_DATA/tools/loupe-background.exe`. The Python runner validates the private
+Weston display before creating temporary test windows; it never sends input to
+the production desktop. With the staged candidate, run on `DISPLAY=:1` and
+`WAYLAND_DISPLAY=lightroom-test` with `--expect baseline` or `--expect retained`.
