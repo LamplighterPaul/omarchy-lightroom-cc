@@ -1,0 +1,380 @@
+[
+  {
+    "name": "before-first-present",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "GPU-red",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "full-client-fill",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "partial-fill",
+    "position": [
+      7,
+      7
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "overlapping-owner",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "after-overlap",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "resize-before-present",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "resized-GPU-red",
+    "position": [
+      92,
+      67
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "resized-full-fill",
+    "position": [
+      92,
+      67
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "after-renderer-release",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "recreated-no-renderer",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "before-first-present",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "GPU-red",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "full-client-fill",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "partial-fill",
+    "position": [
+      7,
+      7
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "after-renderer-release",
+    "position": [
+      17,
+      17
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "before-first-present",
+    "position": [
+      12,
+      12
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "GPU-red",
+    "position": [
+      12,
+      12
+    ],
+    "actual": [
+      255,
+      0,
+      0
+    ],
+    "expected": [
+      255,
+      0,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "full-client-fill",
+    "position": [
+      12,
+      12
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "partial-fill",
+    "position": [
+      2,
+      2
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  },
+  {
+    "name": "after-renderer-release",
+    "position": [
+      12,
+      12
+    ],
+    "actual": [
+      0,
+      255,
+      0
+    ],
+    "expected": [
+      0,
+      255,
+      0
+    ],
+    "passed": true
+  }
+]

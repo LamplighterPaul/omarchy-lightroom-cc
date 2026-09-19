@@ -1,0 +1,82 @@
+[
+  {
+    "executable": "firewall-enumerator.exe",
+    "case": null,
+    "result": 0
+  },
+  {
+    "executable": "uia-shutdown.exe",
+    "case": null,
+    "result": 0
+  },
+  {
+    "executable": "credential-roundtrip.exe",
+    "case": "protect",
+    "result": 0
+  },
+  {
+    "executable": "credential-roundtrip.exe",
+    "case": "unprotect",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime.exe",
+    "case": "empty",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime.exe",
+    "case": "normal",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime.exe",
+    "case": "timer",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime.exe",
+    "case": "wait",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime.exe",
+    "case": "work",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime.exe",
+    "case": "cancel",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime32.exe",
+    "case": "empty",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime32.exe",
+    "case": "normal",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime32.exe",
+    "case": "timer",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime32.exe",
+    "case": "wait",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime32.exe",
+    "case": "work",
+    "result": 0
+  },
+  {
+    "executable": "threadpool-lifetime32.exe",
+    "case": "cancel",
+    "result": 0
+  }
+]

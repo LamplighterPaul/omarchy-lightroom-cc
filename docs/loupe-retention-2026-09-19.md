@@ -147,3 +147,63 @@ cgroup limits.
 Remaining work includes repeated per-surface timing, remaining menu/application
 stalls, longer fallback/lifetime coverage and clean runtime packaging before
 promotion. Production still runs 11.7-2.
+
+## Packaged 11.7-3-rc1
+
+The [candidate recipe and packager](https://github.com/LamplighterPaul/lightroom-omarchy-proton/commit/dee31af)
+assemble a fresh pinned GE archive with 14 checksum-verified components. It
+includes the tested retention driver, deferred threadpool close and optional
+menu timing. Existing colour compatibility code is unchanged. The shared
+build's unrelated Direct2D experiment is excluded. Supplying the stable runtime
+against this recipe correctly fails checksum validation without creating output.
+All 14 hashes were checked again after assembly.
+
+The [launcher selector](https://github.com/LamplighterPaul/omarchy-lightroom-cc/commit/555cde1)
+keeps the stable runtime as default and supports `--runtime
+lightroom-omarchy-proton-11.7-3-rc1`. It refuses a runtime switch when live Wine
+mappings in the selected prefix point to another runtime. A read-only check
+identified the 12 existing production processes; selecting their actual stable
+runtime reported no conflict. The launcher has 27 passing unit tests. This is
+an explicit candidate selection, not an update of the running production app.
+
+Packaged-runtime checks on the copied prefix:
+
+- Both baseline and retention modes pass all 21 compositor regression checks.
+- Disposable credential protection/unprotection, firewall enumeration and UI
+  Automation shutdown probes pass.
+- The six threadpool cases pass 25 iterations each on both x64 and i386.
+- Lightroom loads the existing signed-in library, retains 192-DPI scaling, and
+  displays the selected photo. Resize, menus, zoom and pan are exercised.
+- Quit via Ctrl+Q exits the actual Lightroom process in 1.75 seconds. A restart
+  without stopping the prefix reopens the library without a sign-in prompt.
+  Screenshots confirm zoom changes between fit and the enlarged photo. A second
+  Quit exits in 1.25 seconds. These are bounded Quit-path checks; they do not
+  resolve the earlier inconsistent WM_CLOSE behavior or prove long-session
+  stability. The production process remained running throughout.
+
+The packaged run's warmed pan records 767 intervals, median **10.512 ms**, p95
+12.442 ms, p99 16.365 ms and maximum 26.153 ms. Seven intervals exceed 16.67 ms.
+The sum/span consistency check still passes. This second enabled result is
+slower than the earlier 8.336 ms trial, so sustained 120 Hz performance is not
+established. Menu instrumentation was enabled in this packaged run; the first
+series did not enable it. DXVK/vkd3d library hashes match the experimental
+runtime. These results preserve the warm-pacing improvement as a promising
+observation, not a guaranteed frame rate.
+
+Five File-menu openings give the following phase medians/maxima (ms):
+
+| Phase | Median | Max |
+| --- | ---: | ---: |
+| Lightroom initialization callback | 6.531 | 9.204 |
+| Popup initialization callback | 0.251 | 0.395 |
+| Create popup | 0.471 | 0.518 |
+| Layout | 0.438 | 0.660 |
+| Show window | 1.556 | 1.974 |
+| Paint | 0.749 | 1.373 |
+
+This sample does not reproduce a long menu-phase stall. It excludes input queue
+latency and compositor display latency, and runs under private Weston rather
+than the user's Hyprland session. It therefore does not explain away the
+reported desktop lag. Further profiling should target those missing boundaries
+and longer stalls, rather than assuming a CPU-priority increase is the fix.
+Numeric results are in [the packaged validation artifacts](measurements/20260919-rc1/).

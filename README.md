@@ -90,7 +90,7 @@ using the Proton repository's pinned candidate recipe first. After closing
 Lightroom and stopping its prefix, select it explicitly:
 
 ```sh
-lightroom-omarchy-proton --runtime lightroom-omarchy-proton-11.7-3-rc1 run-perf
+LRCC_LIMITER=mangohud lightroom-omarchy-proton --runtime lightroom-omarchy-proton-11.7-3-rc1 run-perf
 ```
 
 The stable runtime remains the default. The launcher refuses to start a different
@@ -98,6 +98,7 @@ runtime while that prefix has live Wine processes using another one. Candidate
 metadata enables photo retention; set `LRCC_RETAIN_LOUPE=0` for an explicit
 comparison. The selected runtime follows the usual silent Super+0 launch and
 desktop scaling rules. `LRCC_PREFIX` still selects an isolated prefix for tests.
+The command uses the staged MangoHud limiter to match the measured configuration.
 
 ## Credits and license
 

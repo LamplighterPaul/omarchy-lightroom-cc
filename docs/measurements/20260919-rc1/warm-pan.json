@@ -1,0 +1,18 @@
+{
+  "case": "11.7-3-rc1",
+  "phase": {
+    "action": "pan",
+    "start_epoch": 1789851277.3008432,
+    "end_epoch": 1789851287.4271777
+  },
+  "file": "lightroom_2026-09-19_22-53-38.csv",
+  "count": 767,
+  "p50_ms": 10.5117,
+  "p95_ms": 12.4415,
+  "p99_ms": 16.365,
+  "max_ms": 26.1526,
+  "frame_sum_ms": 8119.79288,
+  "sample_span_ms": 8109.468539,
+  "over_16_67": 7,
+  "menu_timing_enabled": true
+}

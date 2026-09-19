@@ -1,0 +1,142 @@
+[
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 9.204
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.395
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.509
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.66
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.974
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.373
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 5.584
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.231
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.471
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.432
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.452
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.727
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 7.348
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.36
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.518
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.438
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.556
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.882
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 6.531
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.234
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.379
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.444
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.311
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.749
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 6.33
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.251
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.452
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.418
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.743
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.731
+  }
+]
