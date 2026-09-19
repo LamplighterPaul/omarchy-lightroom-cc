@@ -1,0 +1,7 @@
+{
+  "frames": 30,
+  "distinct_photo_crop_means": 30,
+  "photo_crop_mean_min": 0.245262,
+  "photo_crop_mean_max": 0.341445,
+  "note": "Separate unscored gesture; capture perturbs performance."
+}

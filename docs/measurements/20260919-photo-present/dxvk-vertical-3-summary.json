@@ -1,0 +1,68 @@
+{
+  "total_committed": 2231,
+  "capacity_reached": false,
+  "selected": 547,
+  "surfaces": {
+    "40db2:555568a6ecd0:2732x1151": {
+      "outcomes": {
+        "7": 547
+      },
+      "callback_entry_intervals": {
+        "count": 546,
+        "median_ms": 14.001256,
+        "p95_ms": 21.161324,
+        "p99_ms": 24.952547,
+        "max_ms": 27.342901,
+        "over_16_67_ms": 98,
+        "over_33_33_ms": 0
+      },
+      "phases": {
+        "callback": {
+          "count": 547,
+          "median_ms": 0.031122,
+          "p95_ms": 0.076855,
+          "p99_ms": 0.096399,
+          "max_ms": 0.491312,
+          "over_16_67_ms": 0,
+          "over_33_33_ms": 0
+        },
+        "geometry": {
+          "count": 547,
+          "median_ms": 0.011667,
+          "p95_ms": 0.032158,
+          "p99_ms": 0.04723,
+          "max_ms": 0.112564,
+          "over_16_67_ms": 0,
+          "over_33_33_ms": 0
+        },
+        "clip": {
+          "count": 547,
+          "median_ms": 0.0111,
+          "p95_ms": 0.027403,
+          "p99_ms": 0.032768,
+          "max_ms": 0.055276,
+          "over_16_67_ms": 0,
+          "over_33_33_ms": 0
+        },
+        "copy": {
+          "count": 547,
+          "median_ms": 0.002026,
+          "p95_ms": 0.003774,
+          "p99_ms": 0.004426,
+          "max_ms": 0.010371,
+          "over_16_67_ms": 0,
+          "over_33_33_ms": 0
+        },
+        "flush": {
+          "count": 547,
+          "median_ms": 0.005446,
+          "p95_ms": 0.012131,
+          "p99_ms": 0.018449,
+          "max_ms": 0.43094,
+          "over_16_67_ms": 0,
+          "over_33_33_ms": 0
+        }
+      }
+    }
+  }
+}

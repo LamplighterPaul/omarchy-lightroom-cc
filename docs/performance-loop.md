@@ -145,3 +145,10 @@ add a second limiter when making comparisons. `LRCC_PRESENTATION=upstream`
 bypasses this presentation profile. The default remains `LRCC_LIMITER=dxvk`
 pending broader live compositor, menu and colour/flicker validation.
 See [the limiter comparison](limiters-2026-09-19.md).
+
+## Per-photo submission trace
+
+The [photo presentation investigation](photo-presentation-2026-09-19.md) adds an
+opt-in driver trace and decoder for individual loupe surfaces. Use
+`isolated-input.py pan-vertical` when horizontal movement is clamped; verify
+that photo submissions and visible content actually change before scoring.

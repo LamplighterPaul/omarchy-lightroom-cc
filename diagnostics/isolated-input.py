@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'resize-small', 'record', 'menu-open', 'edit-menu-open', 'escape', 'loupe', 'grid', 'next-photo', 'previous-photo', 'close'])
+parser.add_argument('action', choices=['zoom', 'pan', 'pan-vertical', 'menus', 'maximize', 'resize-small', 'record', 'menu-open', 'edit-menu-open', 'escape', 'loupe', 'grid', 'next-photo', 'previous-photo', 'close'])
 args = parser.parse_args()
 if os.environ.get('WAYLAND_DISPLAY') != 'lightroom-test' or os.environ.get('DISPLAY') != ':1':
     raise SystemExit('Refusing input outside the dedicated lightroom-test/:1 fixture')
@@ -109,7 +109,8 @@ else:
     for i in range(1200):
         step=i%240
         dx=(step if step<120 else 240-step)*3
-        t.XTestFakeMotionEvent(d,-1,cx+dx,cy,0);x.XFlush(d);time.sleep(1/120)
+        px, py = (cx, cy-dx) if args.action == 'pan-vertical' else (cx+dx, cy)
+        t.XTestFakeMotionEvent(d,-1,px,py,0);x.XFlush(d);time.sleep(1/120)
     t.XTestFakeButtonEvent(d,1,0,0);x.XFlush(d)
 phase = dict(action=args.action, start_epoch=phase_start, end_epoch=time.time(),
              start_monotonic=monotonic_start, end_monotonic=time.monotonic())
