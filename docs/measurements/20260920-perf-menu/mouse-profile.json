@@ -1,0 +1,322 @@
+{
+  "note": "Main-thread sampled IP counts, not inclusive stacks, CPU-time percentages or visible latency. Hybrid PMU events also reported separately.",
+  "total_samples": 6292,
+  "selected_samples": 1059,
+  "openings": 60,
+  "samples_per_opening": [
+    42,
+    9,
+    44,
+    16,
+    13,
+    15,
+    16,
+    15,
+    14,
+    16,
+    13,
+    16,
+    14,
+    16,
+    16,
+    25,
+    18,
+    19,
+    18,
+    17,
+    14,
+    15,
+    18,
+    16,
+    13,
+    14,
+    18,
+    11,
+    14,
+    15,
+    14,
+    14,
+    19,
+    20,
+    19,
+    16,
+    18,
+    15,
+    11,
+    23,
+    18,
+    21,
+    14,
+    20,
+    13,
+    19,
+    10,
+    22,
+    19,
+    18,
+    15,
+    19,
+    24,
+    23,
+    24,
+    18,
+    18,
+    18,
+    19,
+    18
+  ],
+  "modules": [
+    {
+      "module": "AgKernel.dll",
+      "samples": 618,
+      "sample_percent": 58.35694050991501
+    },
+    {
+      "module": "libc.so.6",
+      "samples": 85,
+      "sample_percent": 8.026440037771483
+    },
+    {
+      "module": "win32u.so",
+      "samples": 81,
+      "sample_percent": 7.64872521246459
+    },
+    {
+      "module": "ntdll.dll",
+      "samples": 66,
+      "sample_percent": 6.232294617563739
+    },
+    {
+      "module": "ntdll.so",
+      "samples": 43,
+      "sample_percent": 4.0604343720491025
+    },
+    {
+      "module": "[unknown]",
+      "samples": 37,
+      "sample_percent": 3.493862134088763
+    },
+    {
+      "module": "ucrtbase.dll",
+      "samples": 24,
+      "sample_percent": 2.26628895184136
+    },
+    {
+      "module": "mfc140u.dll",
+      "samples": 20,
+      "sample_percent": 1.8885741265344664
+    },
+    {
+      "module": "winex11.so",
+      "samples": 18,
+      "sample_percent": 1.69971671388102
+    },
+    {
+      "module": "libfreetype.so.6.20.2",
+      "samples": 14,
+      "sample_percent": 1.3220018885741265
+    },
+    {
+      "module": "vcruntime140.dll",
+      "samples": 11,
+      "sample_percent": 1.0387157695939566
+    },
+    {
+      "module": "user32.dll",
+      "samples": 9,
+      "sample_percent": 0.84985835694051
+    },
+    {
+      "module": "libX11.so.6.4.0",
+      "samples": 8,
+      "sample_percent": 0.7554296506137866
+    },
+    {
+      "module": "win32u.dll",
+      "samples": 5,
+      "sample_percent": 0.4721435316336166
+    },
+    {
+      "module": "ui.dll",
+      "samples": 3,
+      "sample_percent": 0.28328611898017
+    },
+    {
+      "module": "kernelbase.dll",
+      "samples": 3,
+      "sample_percent": 0.28328611898017
+    },
+    {
+      "module": "gdi32.dll",
+      "samples": 2,
+      "sample_percent": 0.18885741265344666
+    },
+    {
+      "module": "msvcp140.dll",
+      "samples": 2,
+      "sample_percent": 0.18885741265344666
+    },
+    {
+      "module": "substrate.dll",
+      "samples": 2,
+      "sample_percent": 0.18885741265344666
+    },
+    {
+      "module": "CameraRaw.dll",
+      "samples": 2,
+      "sample_percent": 0.18885741265344666
+    },
+    {
+      "module": "libxcb.so.1.1.0",
+      "samples": 2,
+      "sample_percent": 0.18885741265344666
+    },
+    {
+      "module": "lightroom.exe",
+      "samples": 2,
+      "sample_percent": 0.18885741265344666
+    },
+    {
+      "module": "libXext.so.6.4.0",
+      "samples": 1,
+      "sample_percent": 0.09442870632672333
+    },
+    {
+      "module": "wichitafoundation.dll",
+      "samples": 1,
+      "sample_percent": 0.09442870632672333
+    }
+  ],
+  "events": {
+    "cpu_atom/cycles/u": {
+      "AgKernel.dll": 499,
+      "libc.so.6": 55,
+      "ntdll.dll": 51,
+      "win32u.so": 43,
+      "ntdll.so": 35,
+      "ucrtbase.dll": 22,
+      "mfc140u.dll": 13,
+      "winex11.so": 7,
+      "[unknown]": 7,
+      "user32.dll": 7,
+      "libfreetype.so.6.20.2": 7,
+      "libX11.so.6.4.0": 5,
+      "vcruntime140.dll": 5,
+      "kernelbase.dll": 3,
+      "win32u.dll": 3,
+      "substrate.dll": 2,
+      "ui.dll": 2,
+      "CameraRaw.dll": 2,
+      "lightroom.exe": 2,
+      "gdi32.dll": 1,
+      "libXext.so.6.4.0": 1,
+      "msvcp140.dll": 1,
+      "libxcb.so.1.1.0": 1,
+      "wichitafoundation.dll": 1
+    },
+    "cpu_core/cycles/u": {
+      "AgKernel.dll": 119,
+      "win32u.so": 38,
+      "libc.so.6": 30,
+      "[unknown]": 30,
+      "ntdll.dll": 15,
+      "winex11.so": 11,
+      "ntdll.so": 8,
+      "mfc140u.dll": 7,
+      "libfreetype.so.6.20.2": 7,
+      "vcruntime140.dll": 6,
+      "libX11.so.6.4.0": 3,
+      "user32.dll": 2,
+      "win32u.dll": 2,
+      "ucrtbase.dll": 2,
+      "ui.dll": 1,
+      "msvcp140.dll": 1,
+      "gdi32.dll": 1,
+      "libxcb.so.1.1.0": 1
+    }
+  },
+  "known_symbols": {
+    "ntdll.so!__wine_syscall_dispatcher": 37,
+    "winex11.so!x11drv_surface_flush": 15,
+    "win32u.so!get_dc_ptr": 7,
+    "win32u.so!get_glyph_outline": 5,
+    "win32u.so!get_user_handle_ptr": 4,
+    "win32u.so!get_user_entry": 3,
+    "win32u.so!font_GetTextExtentExPoint": 3,
+    "win32u.so!release_dc_ptr": 3,
+    "win32u.so!convert_to_1": 3,
+    "win32u.so!get_monitor_from_rect": 2,
+    "win32u.so!NtGdiGetTextMetricsW": 2,
+    "win32u.so!get_menu_item_info": 2,
+    "win32u.so!get_glyph_index": 2,
+    "win32u.so!get_window_long_size": 2,
+    "win32u.so!get_system_metrics": 2,
+    "winex11.so!xrenderdrv_SelectFont": 2,
+    "win32u.so!invalidate_dce": 2,
+    "win32u.so!NtGdiTransformPoints": 2,
+    "win32u.so!get_window_relative": 2,
+    "winex11.so!client_surface_update_geometry": 1,
+    "win32u.so!find_shared_session_object": 1,
+    "win32u.so!lock_display_devices": 1,
+    "win32u.so!get_win_monitor_dpi": 1,
+    "win32u.so!REGION_UnionNonO": 1,
+    "win32u.so!get_window_dpi_awareness_context": 1,
+    "ntdll.so!server_call_unlocked": 1,
+    "win32u.so!NtGdiCreateRectRgn": 1,
+    "win32u.so!find_cached_gdi_font": 1,
+    "win32u.so!hash_font": 1,
+    "win32u.so!user_lock": 1,
+    "win32u.so!LoadImageW": 1,
+    "win32u.so!freetype_get_font_data": 1,
+    "win32u.so!alloc_dc_ptr": 1,
+    "win32u.so!release_dc": 1,
+    "win32u.so!NtUserNotifyWinEvent": 1,
+    "win32u.so!nulldrv_GetDeviceCaps": 1,
+    "win32u.so!rgb_to_pixel_colortable": 1,
+    "win32u.so!freetype_get_aa_flags": 1,
+    "win32u.so!font_SelectFont": 1,
+    "win32u.so!show_sub_popup": 1
+  },
+  "pe_rva_256byte_buckets": {
+    "AgKernel.dll+0x33700": 144,
+    "AgKernel.dll+0x37300": 51,
+    "AgKernel.dll+0x15100": 43,
+    "AgKernel.dll+0x2d300": 38,
+    "AgKernel.dll+0x19000": 28,
+    "AgKernel.dll+0x37500": 27,
+    "AgKernel.dll+0x37400": 26,
+    "ntdll.dll+0x1bd00": 24,
+    "AgKernel.dll+0x15200": 18,
+    "AgKernel.dll+0x18f00": 15,
+    "AgKernel.dll+0x38f00": 14,
+    "AgKernel.dll+0x38400": 13,
+    "AgKernel.dll+0x38c00": 12,
+    "AgKernel.dll+0x38500": 12,
+    "AgKernel.dll+0x38200": 9,
+    "AgKernel.dll+0x38100": 9,
+    "AgKernel.dll+0x14e00": 8,
+    "AgKernel.dll+0x33600": 8,
+    "ntdll.dll+0x54600": 7,
+    "AgKernel.dll+0x18700": 7,
+    "AgKernel.dll+0x19300": 7,
+    "AgKernel.dll+0x2ff00": 6,
+    "AgKernel.dll+0x32300": 6,
+    "AgKernel.dll+0x15300": 5,
+    "AgKernel.dll+0x9900": 5,
+    "ntdll.dll+0x1c400": 5,
+    "AgKernel.dll+0x37700": 4,
+    "ucrtbase.dll+0x1a000": 4,
+    "AgKernel.dll+0x32400": 4,
+    "win32u.dll+0x17400": 4,
+    "AgKernel.dll+0x39000": 4,
+    "AgKernel.dll+0x16100": 4,
+    "ntdll.dll+0x1ba00": 4,
+    "mfc140u.dll+0x23e200": 4,
+    "AgKernel.dll+0x32f00": 4,
+    "AgKernel.dll+0x2f600": 4,
+    "AgKernel.dll+0x18a00": 4,
+    "ntdll.dll+0x53200": 4,
+    "ntdll.dll+0x1be00": 3,
+    "AgKernel.dll+0x38b00": 3
+  }
+}

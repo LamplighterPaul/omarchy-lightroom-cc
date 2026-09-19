@@ -1,0 +1,58 @@
+[
+  {
+    "name": "keyboard",
+    "openings": 60,
+    "median_ms": 65.8492494985694,
+    "p95_ms": 103.03861100692302,
+    "max_ms": 206.2296459916979,
+    "over_100ms": 4
+  },
+  {
+    "name": "mouse",
+    "openings": 60,
+    "median_ms": 14.36733198352158,
+    "p95_ms": 17.958200012799352,
+    "max_ms": 54.131418000906706,
+    "over_100ms": 0
+  },
+  {
+    "name": "pcores-keyboard",
+    "openings": 60,
+    "median_ms": 44.25106399867218,
+    "p95_ms": 86.72526699956506,
+    "max_ms": 263.2358240080066,
+    "over_100ms": 2
+  },
+  {
+    "name": "affinity-1-all",
+    "openings": 40,
+    "median_ms": 65.62133150873706,
+    "p95_ms": 99.45543101639487,
+    "max_ms": 153.08235000702552,
+    "over_100ms": 2
+  },
+  {
+    "name": "affinity-2-pcores",
+    "openings": 40,
+    "median_ms": 43.18238249106798,
+    "p95_ms": 78.18964298348874,
+    "max_ms": 179.39435201697052,
+    "over_100ms": 1
+  },
+  {
+    "name": "affinity-3-all",
+    "openings": 40,
+    "median_ms": 64.96783198963385,
+    "p95_ms": 106.27538699191064,
+    "max_ms": 253.06834100047126,
+    "over_100ms": 4
+  },
+  {
+    "name": "affinity-4-pcores",
+    "openings": 40,
+    "median_ms": 43.30050748831127,
+    "p95_ms": 91.11081997980364,
+    "max_ms": 228.67350099841133,
+    "over_100ms": 2
+  }
+]
