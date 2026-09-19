@@ -1,0 +1,3502 @@
+[
+  {
+    "wine_timestamp": 175722.865,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175722.87,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.27
+  },
+  {
+    "wine_timestamp": 175722.87,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.187
+  },
+  {
+    "wine_timestamp": 175722.871,
+    "phase": "create-popup-window",
+    "duration_ms": 0.529
+  },
+  {
+    "wine_timestamp": 175722.871,
+    "phase": "popup-layout",
+    "duration_ms": 0.527
+  },
+  {
+    "wine_timestamp": 175722.874,
+    "phase": "show-popup-window",
+    "duration_ms": 2.13
+  },
+  {
+    "wine_timestamp": 175722.875,
+    "phase": "popup-paint",
+    "duration_ms": 0.917
+  },
+  {
+    "wine_timestamp": 175723.329,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175723.333,
+    "phase": "init-menu-callback",
+    "duration_ms": 3.97
+  },
+  {
+    "wine_timestamp": 175723.333,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.239
+  },
+  {
+    "wine_timestamp": 175723.335,
+    "phase": "create-popup-window",
+    "duration_ms": 0.55
+  },
+  {
+    "wine_timestamp": 175723.335,
+    "phase": "popup-layout",
+    "duration_ms": 0.64
+  },
+  {
+    "wine_timestamp": 175723.337,
+    "phase": "show-popup-window",
+    "duration_ms": 1.571
+  },
+  {
+    "wine_timestamp": 175723.338,
+    "phase": "popup-paint",
+    "duration_ms": 1.217
+  },
+  {
+    "wine_timestamp": 175723.729,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175723.737,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.533
+  },
+  {
+    "wine_timestamp": 175723.737,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.188
+  },
+  {
+    "wine_timestamp": 175723.738,
+    "phase": "create-popup-window",
+    "duration_ms": 0.824
+  },
+  {
+    "wine_timestamp": 175723.738,
+    "phase": "popup-layout",
+    "duration_ms": 0.425
+  },
+  {
+    "wine_timestamp": 175723.74,
+    "phase": "show-popup-window",
+    "duration_ms": 1.783
+  },
+  {
+    "wine_timestamp": 175723.741,
+    "phase": "popup-paint",
+    "duration_ms": 1.307
+  },
+  {
+    "wine_timestamp": 175724.174,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175724.182,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.584
+  },
+  {
+    "wine_timestamp": 175724.182,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.989
+  },
+  {
+    "wine_timestamp": 175724.185,
+    "phase": "create-popup-window",
+    "duration_ms": 0.638
+  },
+  {
+    "wine_timestamp": 175724.185,
+    "phase": "popup-layout",
+    "duration_ms": 0.651
+  },
+  {
+    "wine_timestamp": 175724.188,
+    "phase": "show-popup-window",
+    "duration_ms": 2.186
+  },
+  {
+    "wine_timestamp": 175724.189,
+    "phase": "popup-paint",
+    "duration_ms": 1.205
+  },
+  {
+    "wine_timestamp": 175724.615,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175724.62,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.199
+  },
+  {
+    "wine_timestamp": 175724.62,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.195
+  },
+  {
+    "wine_timestamp": 175724.621,
+    "phase": "create-popup-window",
+    "duration_ms": 0.632
+  },
+  {
+    "wine_timestamp": 175724.621,
+    "phase": "popup-layout",
+    "duration_ms": 0.698
+  },
+  {
+    "wine_timestamp": 175724.624,
+    "phase": "show-popup-window",
+    "duration_ms": 1.646
+  },
+  {
+    "wine_timestamp": 175724.625,
+    "phase": "popup-paint",
+    "duration_ms": 1.192
+  },
+  {
+    "wine_timestamp": 175725.106,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175725.115,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.718
+  },
+  {
+    "wine_timestamp": 175725.116,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.518
+  },
+  {
+    "wine_timestamp": 175725.119,
+    "phase": "create-popup-window",
+    "duration_ms": 0.614
+  },
+  {
+    "wine_timestamp": 175725.119,
+    "phase": "popup-layout",
+    "duration_ms": 0.623
+  },
+  {
+    "wine_timestamp": 175725.121,
+    "phase": "show-popup-window",
+    "duration_ms": 1.712
+  },
+  {
+    "wine_timestamp": 175725.123,
+    "phase": "popup-paint",
+    "duration_ms": 2.033
+  },
+  {
+    "wine_timestamp": 175725.526,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175725.535,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.716
+  },
+  {
+    "wine_timestamp": 175725.535,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.368
+  },
+  {
+    "wine_timestamp": 175725.535,
+    "phase": "create-popup-window",
+    "duration_ms": 0.419
+  },
+  {
+    "wine_timestamp": 175725.536,
+    "phase": "popup-layout",
+    "duration_ms": 0.632
+  },
+  {
+    "wine_timestamp": 175725.538,
+    "phase": "show-popup-window",
+    "duration_ms": 1.687
+  },
+  {
+    "wine_timestamp": 175725.539,
+    "phase": "popup-paint",
+    "duration_ms": 1.151
+  },
+  {
+    "wine_timestamp": 175726.001,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175726.009,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.023
+  },
+  {
+    "wine_timestamp": 175726.01,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.995
+  },
+  {
+    "wine_timestamp": 175726.012,
+    "phase": "create-popup-window",
+    "duration_ms": 0.629
+  },
+  {
+    "wine_timestamp": 175726.012,
+    "phase": "popup-layout",
+    "duration_ms": 0.9
+  },
+  {
+    "wine_timestamp": 175726.015,
+    "phase": "show-popup-window",
+    "duration_ms": 1.936
+  },
+  {
+    "wine_timestamp": 175726.017,
+    "phase": "popup-paint",
+    "duration_ms": 1.918
+  },
+  {
+    "wine_timestamp": 175726.407,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175726.412,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.109
+  },
+  {
+    "wine_timestamp": 175726.412,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.198
+  },
+  {
+    "wine_timestamp": 175726.413,
+    "phase": "create-popup-window",
+    "duration_ms": 0.554
+  },
+  {
+    "wine_timestamp": 175726.413,
+    "phase": "popup-layout",
+    "duration_ms": 0.71
+  },
+  {
+    "wine_timestamp": 175726.415,
+    "phase": "show-popup-window",
+    "duration_ms": 1.749
+  },
+  {
+    "wine_timestamp": 175726.416,
+    "phase": "popup-paint",
+    "duration_ms": 0.796
+  },
+  {
+    "wine_timestamp": 175726.85,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175726.859,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.111
+  },
+  {
+    "wine_timestamp": 175726.859,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.326
+  },
+  {
+    "wine_timestamp": 175726.862,
+    "phase": "create-popup-window",
+    "duration_ms": 0.485
+  },
+  {
+    "wine_timestamp": 175726.862,
+    "phase": "popup-layout",
+    "duration_ms": 0.916
+  },
+  {
+    "wine_timestamp": 175726.865,
+    "phase": "show-popup-window",
+    "duration_ms": 1.99
+  },
+  {
+    "wine_timestamp": 175726.867,
+    "phase": "popup-paint",
+    "duration_ms": 1.794
+  },
+  {
+    "wine_timestamp": 175727.293,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175727.3,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.033
+  },
+  {
+    "wine_timestamp": 175727.3,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.196
+  },
+  {
+    "wine_timestamp": 175727.3,
+    "phase": "create-popup-window",
+    "duration_ms": 0.387
+  },
+  {
+    "wine_timestamp": 175727.3,
+    "phase": "popup-layout",
+    "duration_ms": 0.53
+  },
+  {
+    "wine_timestamp": 175727.302,
+    "phase": "show-popup-window",
+    "duration_ms": 1.615
+  },
+  {
+    "wine_timestamp": 175727.304,
+    "phase": "popup-paint",
+    "duration_ms": 1.233
+  },
+  {
+    "wine_timestamp": 175727.772,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "wine_timestamp": 175727.782,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.682
+  },
+  {
+    "wine_timestamp": 175727.782,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.267
+  },
+  {
+    "wine_timestamp": 175727.785,
+    "phase": "create-popup-window",
+    "duration_ms": 0.84
+  },
+  {
+    "wine_timestamp": 175727.785,
+    "phase": "popup-layout",
+    "duration_ms": 0.719
+  },
+  {
+    "wine_timestamp": 175727.788,
+    "phase": "show-popup-window",
+    "duration_ms": 1.991
+  },
+  {
+    "wine_timestamp": 175727.79,
+    "phase": "popup-paint",
+    "duration_ms": 1.742
+  },
+  {
+    "wine_timestamp": 175728.195,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175728.204,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.542
+  },
+  {
+    "wine_timestamp": 175728.204,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.504
+  },
+  {
+    "wine_timestamp": 175728.206,
+    "phase": "create-popup-window",
+    "duration_ms": 0.464
+  },
+  {
+    "wine_timestamp": 175728.206,
+    "phase": "popup-layout",
+    "duration_ms": 0.62
+  },
+  {
+    "wine_timestamp": 175728.208,
+    "phase": "show-popup-window",
+    "duration_ms": 1.554
+  },
+  {
+    "wine_timestamp": 175728.209,
+    "phase": "popup-paint",
+    "duration_ms": 1.256
+  },
+  {
+    "wine_timestamp": 175728.658,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175728.663,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.265
+  },
+  {
+    "wine_timestamp": 175728.664,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.432
+  },
+  {
+    "wine_timestamp": 175728.666,
+    "phase": "create-popup-window",
+    "duration_ms": 0.572
+  },
+  {
+    "wine_timestamp": 175728.666,
+    "phase": "popup-layout",
+    "duration_ms": 0.622
+  },
+  {
+    "wine_timestamp": 175728.668,
+    "phase": "show-popup-window",
+    "duration_ms": 1.889
+  },
+  {
+    "wine_timestamp": 175728.67,
+    "phase": "popup-paint",
+    "duration_ms": 2.011
+  },
+  {
+    "wine_timestamp": 175729.093,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175729.098,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.604
+  },
+  {
+    "wine_timestamp": 175729.098,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.245
+  },
+  {
+    "wine_timestamp": 175729.099,
+    "phase": "create-popup-window",
+    "duration_ms": 0.671
+  },
+  {
+    "wine_timestamp": 175729.099,
+    "phase": "popup-layout",
+    "duration_ms": 0.426
+  },
+  {
+    "wine_timestamp": 175729.101,
+    "phase": "show-popup-window",
+    "duration_ms": 1.495
+  },
+  {
+    "wine_timestamp": 175729.102,
+    "phase": "popup-paint",
+    "duration_ms": 0.733
+  },
+  {
+    "wine_timestamp": 175729.575,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175729.585,
+    "phase": "init-menu-callback",
+    "duration_ms": 10.045
+  },
+  {
+    "wine_timestamp": 175729.585,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.381
+  },
+  {
+    "wine_timestamp": 175729.588,
+    "phase": "create-popup-window",
+    "duration_ms": 0.523
+  },
+  {
+    "wine_timestamp": 175729.588,
+    "phase": "popup-layout",
+    "duration_ms": 0.729
+  },
+  {
+    "wine_timestamp": 175729.591,
+    "phase": "show-popup-window",
+    "duration_ms": 2.217
+  },
+  {
+    "wine_timestamp": 175729.592,
+    "phase": "popup-paint",
+    "duration_ms": 1.28
+  },
+  {
+    "wine_timestamp": 175730.008,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175730.014,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.776
+  },
+  {
+    "wine_timestamp": 175730.014,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.245
+  },
+  {
+    "wine_timestamp": 175730.015,
+    "phase": "create-popup-window",
+    "duration_ms": 0.704
+  },
+  {
+    "wine_timestamp": 175730.015,
+    "phase": "popup-layout",
+    "duration_ms": 0.426
+  },
+  {
+    "wine_timestamp": 175730.017,
+    "phase": "show-popup-window",
+    "duration_ms": 1.571
+  },
+  {
+    "wine_timestamp": 175730.019,
+    "phase": "popup-paint",
+    "duration_ms": 1.283
+  },
+  {
+    "wine_timestamp": 175730.475,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175730.479,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.667
+  },
+  {
+    "wine_timestamp": 175730.48,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.499
+  },
+  {
+    "wine_timestamp": 175730.483,
+    "phase": "create-popup-window",
+    "duration_ms": 0.465
+  },
+  {
+    "wine_timestamp": 175730.483,
+    "phase": "popup-layout",
+    "duration_ms": 0.757
+  },
+  {
+    "wine_timestamp": 175730.486,
+    "phase": "show-popup-window",
+    "duration_ms": 2.27
+  },
+  {
+    "wine_timestamp": 175730.487,
+    "phase": "popup-paint",
+    "duration_ms": 1.218
+  },
+  {
+    "wine_timestamp": 175730.88,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175730.886,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.961
+  },
+  {
+    "wine_timestamp": 175730.886,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.223
+  },
+  {
+    "wine_timestamp": 175730.887,
+    "phase": "create-popup-window",
+    "duration_ms": 0.519
+  },
+  {
+    "wine_timestamp": 175730.887,
+    "phase": "popup-layout",
+    "duration_ms": 0.41
+  },
+  {
+    "wine_timestamp": 175730.889,
+    "phase": "show-popup-window",
+    "duration_ms": 2.056
+  },
+  {
+    "wine_timestamp": 175730.89,
+    "phase": "popup-paint",
+    "duration_ms": 0.831
+  },
+  {
+    "wine_timestamp": 175731.36,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175731.366,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.263
+  },
+  {
+    "wine_timestamp": 175731.367,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.444
+  },
+  {
+    "wine_timestamp": 175731.369,
+    "phase": "create-popup-window",
+    "duration_ms": 0.537
+  },
+  {
+    "wine_timestamp": 175731.369,
+    "phase": "popup-layout",
+    "duration_ms": 0.61
+  },
+  {
+    "wine_timestamp": 175731.371,
+    "phase": "show-popup-window",
+    "duration_ms": 1.938
+  },
+  {
+    "wine_timestamp": 175731.372,
+    "phase": "popup-paint",
+    "duration_ms": 1.125
+  },
+  {
+    "wine_timestamp": 175794.367,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175794.374,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.309
+  },
+  {
+    "wine_timestamp": 175794.374,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.346
+  },
+  {
+    "wine_timestamp": 175794.375,
+    "phase": "create-popup-window",
+    "duration_ms": 0.462
+  },
+  {
+    "wine_timestamp": 175794.375,
+    "phase": "popup-layout",
+    "duration_ms": 0.502
+  },
+  {
+    "wine_timestamp": 175794.378,
+    "phase": "show-popup-window",
+    "duration_ms": 1.831
+  },
+  {
+    "wine_timestamp": 175794.378,
+    "phase": "popup-paint",
+    "duration_ms": 0.876
+  },
+  {
+    "wine_timestamp": 175794.796,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175794.804,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.218
+  },
+  {
+    "wine_timestamp": 175794.804,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.88
+  },
+  {
+    "wine_timestamp": 175794.806,
+    "phase": "create-popup-window",
+    "duration_ms": 0.636
+  },
+  {
+    "wine_timestamp": 175794.806,
+    "phase": "popup-layout",
+    "duration_ms": 0.7
+  },
+  {
+    "wine_timestamp": 175794.809,
+    "phase": "show-popup-window",
+    "duration_ms": 2.225
+  },
+  {
+    "wine_timestamp": 175794.811,
+    "phase": "popup-paint",
+    "duration_ms": 1.41
+  },
+  {
+    "wine_timestamp": 175795.215,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175795.219,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.481
+  },
+  {
+    "wine_timestamp": 175795.219,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.178
+  },
+  {
+    "wine_timestamp": 175795.22,
+    "phase": "create-popup-window",
+    "duration_ms": 0.626
+  },
+  {
+    "wine_timestamp": 175795.22,
+    "phase": "popup-layout",
+    "duration_ms": 0.706
+  },
+  {
+    "wine_timestamp": 175795.223,
+    "phase": "show-popup-window",
+    "duration_ms": 1.661
+  },
+  {
+    "wine_timestamp": 175795.223,
+    "phase": "popup-paint",
+    "duration_ms": 0.91
+  },
+  {
+    "wine_timestamp": 175795.641,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175795.651,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.535
+  },
+  {
+    "wine_timestamp": 175795.651,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.323
+  },
+  {
+    "wine_timestamp": 175795.654,
+    "phase": "create-popup-window",
+    "duration_ms": 0.528
+  },
+  {
+    "wine_timestamp": 175795.654,
+    "phase": "popup-layout",
+    "duration_ms": 1.025
+  },
+  {
+    "wine_timestamp": 175795.657,
+    "phase": "show-popup-window",
+    "duration_ms": 2.431
+  },
+  {
+    "wine_timestamp": 175795.659,
+    "phase": "popup-paint",
+    "duration_ms": 1.282
+  },
+  {
+    "wine_timestamp": 175796.086,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175796.091,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.626
+  },
+  {
+    "wine_timestamp": 175796.091,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.181
+  },
+  {
+    "wine_timestamp": 175796.092,
+    "phase": "create-popup-window",
+    "duration_ms": 0.496
+  },
+  {
+    "wine_timestamp": 175796.092,
+    "phase": "popup-layout",
+    "duration_ms": 0.449
+  },
+  {
+    "wine_timestamp": 175796.093,
+    "phase": "show-popup-window",
+    "duration_ms": 1.461
+  },
+  {
+    "wine_timestamp": 175796.094,
+    "phase": "popup-paint",
+    "duration_ms": 0.737
+  },
+  {
+    "wine_timestamp": 175796.497,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175796.503,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.158
+  },
+  {
+    "wine_timestamp": 175796.503,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.026
+  },
+  {
+    "wine_timestamp": 175796.505,
+    "phase": "create-popup-window",
+    "duration_ms": 0.815
+  },
+  {
+    "wine_timestamp": 175796.505,
+    "phase": "popup-layout",
+    "duration_ms": 0.702
+  },
+  {
+    "wine_timestamp": 175796.507,
+    "phase": "show-popup-window",
+    "duration_ms": 1.727
+  },
+  {
+    "wine_timestamp": 175796.508,
+    "phase": "popup-paint",
+    "duration_ms": 1.104
+  },
+  {
+    "wine_timestamp": 175796.915,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175796.92,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.532
+  },
+  {
+    "wine_timestamp": 175796.92,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.181
+  },
+  {
+    "wine_timestamp": 175796.921,
+    "phase": "create-popup-window",
+    "duration_ms": 0.433
+  },
+  {
+    "wine_timestamp": 175796.921,
+    "phase": "popup-layout",
+    "duration_ms": 0.422
+  },
+  {
+    "wine_timestamp": 175796.922,
+    "phase": "show-popup-window",
+    "duration_ms": 1.494
+  },
+  {
+    "wine_timestamp": 175796.924,
+    "phase": "popup-paint",
+    "duration_ms": 1.202
+  },
+  {
+    "wine_timestamp": 175797.342,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175797.349,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.818
+  },
+  {
+    "wine_timestamp": 175797.349,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.023
+  },
+  {
+    "wine_timestamp": 175797.35,
+    "phase": "create-popup-window",
+    "duration_ms": 0.608
+  },
+  {
+    "wine_timestamp": 175797.351,
+    "phase": "popup-layout",
+    "duration_ms": 0.896
+  },
+  {
+    "wine_timestamp": 175797.353,
+    "phase": "show-popup-window",
+    "duration_ms": 1.944
+  },
+  {
+    "wine_timestamp": 175797.355,
+    "phase": "popup-paint",
+    "duration_ms": 1.808
+  },
+  {
+    "wine_timestamp": 175797.769,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175797.776,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.467
+  },
+  {
+    "wine_timestamp": 175797.776,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.359
+  },
+  {
+    "wine_timestamp": 175797.777,
+    "phase": "create-popup-window",
+    "duration_ms": 0.495
+  },
+  {
+    "wine_timestamp": 175797.777,
+    "phase": "popup-layout",
+    "duration_ms": 0.604
+  },
+  {
+    "wine_timestamp": 175797.78,
+    "phase": "show-popup-window",
+    "duration_ms": 1.775
+  },
+  {
+    "wine_timestamp": 175797.781,
+    "phase": "popup-paint",
+    "duration_ms": 0.94
+  },
+  {
+    "wine_timestamp": 175798.199,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175798.206,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.69
+  },
+  {
+    "wine_timestamp": 175798.206,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.702
+  },
+  {
+    "wine_timestamp": 175798.209,
+    "phase": "create-popup-window",
+    "duration_ms": 0.876
+  },
+  {
+    "wine_timestamp": 175798.209,
+    "phase": "popup-layout",
+    "duration_ms": 0.663
+  },
+  {
+    "wine_timestamp": 175798.212,
+    "phase": "show-popup-window",
+    "duration_ms": 2.159
+  },
+  {
+    "wine_timestamp": 175798.213,
+    "phase": "popup-paint",
+    "duration_ms": 1.871
+  },
+  {
+    "wine_timestamp": 175798.616,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175798.624,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.311
+  },
+  {
+    "wine_timestamp": 175798.624,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.345
+  },
+  {
+    "wine_timestamp": 175798.624,
+    "phase": "create-popup-window",
+    "duration_ms": 0.425
+  },
+  {
+    "wine_timestamp": 175798.625,
+    "phase": "popup-layout",
+    "duration_ms": 0.61
+  },
+  {
+    "wine_timestamp": 175798.627,
+    "phase": "show-popup-window",
+    "duration_ms": 1.58
+  },
+  {
+    "wine_timestamp": 175798.628,
+    "phase": "popup-paint",
+    "duration_ms": 1.197
+  },
+  {
+    "wine_timestamp": 175799.035,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175799.043,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.867
+  },
+  {
+    "wine_timestamp": 175799.043,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.896
+  },
+  {
+    "wine_timestamp": 175799.045,
+    "phase": "create-popup-window",
+    "duration_ms": 0.628
+  },
+  {
+    "wine_timestamp": 175799.046,
+    "phase": "popup-layout",
+    "duration_ms": 0.883
+  },
+  {
+    "wine_timestamp": 175799.048,
+    "phase": "show-popup-window",
+    "duration_ms": 2.033
+  },
+  {
+    "wine_timestamp": 175799.05,
+    "phase": "popup-paint",
+    "duration_ms": 1.236
+  },
+  {
+    "wine_timestamp": 175799.47,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175799.477,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.507
+  },
+  {
+    "wine_timestamp": 175799.477,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.373
+  },
+  {
+    "wine_timestamp": 175799.478,
+    "phase": "create-popup-window",
+    "duration_ms": 0.416
+  },
+  {
+    "wine_timestamp": 175799.478,
+    "phase": "popup-layout",
+    "duration_ms": 0.627
+  },
+  {
+    "wine_timestamp": 175799.48,
+    "phase": "show-popup-window",
+    "duration_ms": 1.485
+  },
+  {
+    "wine_timestamp": 175799.482,
+    "phase": "popup-paint",
+    "duration_ms": 1.127
+  },
+  {
+    "wine_timestamp": 175799.897,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175799.903,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.355
+  },
+  {
+    "wine_timestamp": 175799.903,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.985
+  },
+  {
+    "wine_timestamp": 175799.904,
+    "phase": "create-popup-window",
+    "duration_ms": 0.453
+  },
+  {
+    "wine_timestamp": 175799.904,
+    "phase": "popup-layout",
+    "duration_ms": 0.691
+  },
+  {
+    "wine_timestamp": 175799.907,
+    "phase": "show-popup-window",
+    "duration_ms": 2.151
+  },
+  {
+    "wine_timestamp": 175799.909,
+    "phase": "popup-paint",
+    "duration_ms": 1.757
+  },
+  {
+    "wine_timestamp": 175800.303,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175800.311,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.709
+  },
+  {
+    "wine_timestamp": 175800.311,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.336
+  },
+  {
+    "wine_timestamp": 175800.312,
+    "phase": "create-popup-window",
+    "duration_ms": 0.72
+  },
+  {
+    "wine_timestamp": 175800.312,
+    "phase": "popup-layout",
+    "duration_ms": 0.441
+  },
+  {
+    "wine_timestamp": 175800.314,
+    "phase": "show-popup-window",
+    "duration_ms": 1.649
+  },
+  {
+    "wine_timestamp": 175800.315,
+    "phase": "popup-paint",
+    "duration_ms": 1.027
+  },
+  {
+    "wine_timestamp": 175800.744,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175800.749,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.561
+  },
+  {
+    "wine_timestamp": 175800.749,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.97
+  },
+  {
+    "wine_timestamp": 175800.75,
+    "phase": "create-popup-window",
+    "duration_ms": 0.442
+  },
+  {
+    "wine_timestamp": 175800.75,
+    "phase": "popup-layout",
+    "duration_ms": 0.607
+  },
+  {
+    "wine_timestamp": 175800.753,
+    "phase": "show-popup-window",
+    "duration_ms": 1.712
+  },
+  {
+    "wine_timestamp": 175800.754,
+    "phase": "popup-paint",
+    "duration_ms": 1.06
+  },
+  {
+    "wine_timestamp": 175801.161,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175801.168,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.444
+  },
+  {
+    "wine_timestamp": 175801.168,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.316
+  },
+  {
+    "wine_timestamp": 175801.169,
+    "phase": "create-popup-window",
+    "duration_ms": 0.636
+  },
+  {
+    "wine_timestamp": 175801.169,
+    "phase": "popup-layout",
+    "duration_ms": 0.616
+  },
+  {
+    "wine_timestamp": 175801.172,
+    "phase": "show-popup-window",
+    "duration_ms": 1.632
+  },
+  {
+    "wine_timestamp": 175801.173,
+    "phase": "popup-paint",
+    "duration_ms": 1.21
+  },
+  {
+    "wine_timestamp": 175801.578,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175801.583,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.538
+  },
+  {
+    "wine_timestamp": 175801.583,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.982
+  },
+  {
+    "wine_timestamp": 175801.585,
+    "phase": "create-popup-window",
+    "duration_ms": 0.64
+  },
+  {
+    "wine_timestamp": 175801.585,
+    "phase": "popup-layout",
+    "duration_ms": 0.606
+  },
+  {
+    "wine_timestamp": 175801.587,
+    "phase": "show-popup-window",
+    "duration_ms": 1.738
+  },
+  {
+    "wine_timestamp": 175801.588,
+    "phase": "popup-paint",
+    "duration_ms": 1.095
+  },
+  {
+    "wine_timestamp": 175802.006,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175802.01,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.535
+  },
+  {
+    "wine_timestamp": 175802.01,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.174
+  },
+  {
+    "wine_timestamp": 175802.011,
+    "phase": "create-popup-window",
+    "duration_ms": 0.52
+  },
+  {
+    "wine_timestamp": 175802.011,
+    "phase": "popup-layout",
+    "duration_ms": 0.423
+  },
+  {
+    "wine_timestamp": 175802.013,
+    "phase": "show-popup-window",
+    "duration_ms": 1.765
+  },
+  {
+    "wine_timestamp": 175802.014,
+    "phase": "popup-paint",
+    "duration_ms": 1.25
+  },
+  {
+    "wine_timestamp": 175802.404,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175802.408,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.49
+  },
+  {
+    "wine_timestamp": 175802.408,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.974
+  },
+  {
+    "wine_timestamp": 175802.41,
+    "phase": "create-popup-window",
+    "duration_ms": 0.509
+  },
+  {
+    "wine_timestamp": 175802.41,
+    "phase": "popup-layout",
+    "duration_ms": 0.94
+  },
+  {
+    "wine_timestamp": 175802.413,
+    "phase": "show-popup-window",
+    "duration_ms": 2.098
+  },
+  {
+    "wine_timestamp": 175802.415,
+    "phase": "popup-paint",
+    "duration_ms": 1.845
+  },
+  {
+    "wine_timestamp": 175802.986,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175802.993,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.176
+  },
+  {
+    "wine_timestamp": 175802.993,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.343
+  },
+  {
+    "wine_timestamp": 175802.994,
+    "phase": "create-popup-window",
+    "duration_ms": 0.514
+  },
+  {
+    "wine_timestamp": 175802.994,
+    "phase": "popup-layout",
+    "duration_ms": 0.639
+  },
+  {
+    "wine_timestamp": 175802.996,
+    "phase": "show-popup-window",
+    "duration_ms": 1.577
+  },
+  {
+    "wine_timestamp": 175802.998,
+    "phase": "popup-paint",
+    "duration_ms": 1.194
+  },
+  {
+    "wine_timestamp": 175803.457,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175803.465,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.944
+  },
+  {
+    "wine_timestamp": 175803.466,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.864
+  },
+  {
+    "wine_timestamp": 175803.468,
+    "phase": "create-popup-window",
+    "duration_ms": 0.624
+  },
+  {
+    "wine_timestamp": 175803.468,
+    "phase": "popup-layout",
+    "duration_ms": 0.7
+  },
+  {
+    "wine_timestamp": 175803.471,
+    "phase": "show-popup-window",
+    "duration_ms": 1.995
+  },
+  {
+    "wine_timestamp": 175803.472,
+    "phase": "popup-paint",
+    "duration_ms": 1.296
+  },
+  {
+    "wine_timestamp": 175803.94,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "wine_timestamp": 175803.95,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.447
+  },
+  {
+    "wine_timestamp": 175803.95,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.52
+  },
+  {
+    "wine_timestamp": 175803.952,
+    "phase": "create-popup-window",
+    "duration_ms": 0.713
+  },
+  {
+    "wine_timestamp": 175803.952,
+    "phase": "popup-layout",
+    "duration_ms": 0.614
+  },
+  {
+    "wine_timestamp": 175803.954,
+    "phase": "show-popup-window",
+    "duration_ms": 1.839
+  },
+  {
+    "wine_timestamp": 175803.955,
+    "phase": "popup-paint",
+    "duration_ms": 1.143
+  },
+  {
+    "wine_timestamp": 175804.399,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175804.409,
+    "phase": "init-menu-callback",
+    "duration_ms": 10.122
+  },
+  {
+    "wine_timestamp": 175804.409,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.423
+  },
+  {
+    "wine_timestamp": 175804.412,
+    "phase": "create-popup-window",
+    "duration_ms": 0.443
+  },
+  {
+    "wine_timestamp": 175804.412,
+    "phase": "popup-layout",
+    "duration_ms": 0.902
+  },
+  {
+    "wine_timestamp": 175804.416,
+    "phase": "show-popup-window",
+    "duration_ms": 2.393
+  },
+  {
+    "wine_timestamp": 175804.417,
+    "phase": "popup-paint",
+    "duration_ms": 1.786
+  },
+  {
+    "wine_timestamp": 175804.886,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175804.895,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.102
+  },
+  {
+    "wine_timestamp": 175804.896,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.499
+  },
+  {
+    "wine_timestamp": 175804.897,
+    "phase": "create-popup-window",
+    "duration_ms": 0.736
+  },
+  {
+    "wine_timestamp": 175804.897,
+    "phase": "popup-layout",
+    "duration_ms": 0.671
+  },
+  {
+    "wine_timestamp": 175804.9,
+    "phase": "show-popup-window",
+    "duration_ms": 1.817
+  },
+  {
+    "wine_timestamp": 175804.9,
+    "phase": "popup-paint",
+    "duration_ms": 0.842
+  },
+  {
+    "wine_timestamp": 175805.368,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175805.377,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.067
+  },
+  {
+    "wine_timestamp": 175805.378,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.104
+  },
+  {
+    "wine_timestamp": 175805.38,
+    "phase": "create-popup-window",
+    "duration_ms": 0.437
+  },
+  {
+    "wine_timestamp": 175805.38,
+    "phase": "popup-layout",
+    "duration_ms": 0.723
+  },
+  {
+    "wine_timestamp": 175805.383,
+    "phase": "show-popup-window",
+    "duration_ms": 2.037
+  },
+  {
+    "wine_timestamp": 175805.385,
+    "phase": "popup-paint",
+    "duration_ms": 1.828
+  },
+  {
+    "wine_timestamp": 175805.851,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175805.859,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.156
+  },
+  {
+    "wine_timestamp": 175805.86,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.528
+  },
+  {
+    "wine_timestamp": 175805.861,
+    "phase": "create-popup-window",
+    "duration_ms": 0.405
+  },
+  {
+    "wine_timestamp": 175805.861,
+    "phase": "popup-layout",
+    "duration_ms": 0.623
+  },
+  {
+    "wine_timestamp": 175805.864,
+    "phase": "show-popup-window",
+    "duration_ms": 1.83
+  },
+  {
+    "wine_timestamp": 175805.864,
+    "phase": "popup-paint",
+    "duration_ms": 0.882
+  },
+  {
+    "wine_timestamp": 175806.295,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175806.299,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.233
+  },
+  {
+    "wine_timestamp": 175806.299,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.079
+  },
+  {
+    "wine_timestamp": 175806.301,
+    "phase": "create-popup-window",
+    "duration_ms": 0.577
+  },
+  {
+    "wine_timestamp": 175806.301,
+    "phase": "popup-layout",
+    "duration_ms": 0.625
+  },
+  {
+    "wine_timestamp": 175806.303,
+    "phase": "show-popup-window",
+    "duration_ms": 1.827
+  },
+  {
+    "wine_timestamp": 175806.304,
+    "phase": "popup-paint",
+    "duration_ms": 1.176
+  },
+  {
+    "wine_timestamp": 175806.758,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175806.768,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.931
+  },
+  {
+    "wine_timestamp": 175806.768,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.571
+  },
+  {
+    "wine_timestamp": 175806.769,
+    "phase": "create-popup-window",
+    "duration_ms": 0.456
+  },
+  {
+    "wine_timestamp": 175806.77,
+    "phase": "popup-layout",
+    "duration_ms": 0.632
+  },
+  {
+    "wine_timestamp": 175806.772,
+    "phase": "show-popup-window",
+    "duration_ms": 1.837
+  },
+  {
+    "wine_timestamp": 175806.773,
+    "phase": "popup-paint",
+    "duration_ms": 0.858
+  },
+  {
+    "wine_timestamp": 175807.227,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175807.232,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.941
+  },
+  {
+    "wine_timestamp": 175807.233,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.619
+  },
+  {
+    "wine_timestamp": 175807.235,
+    "phase": "create-popup-window",
+    "duration_ms": 0.577
+  },
+  {
+    "wine_timestamp": 175807.235,
+    "phase": "popup-layout",
+    "duration_ms": 0.672
+  },
+  {
+    "wine_timestamp": 175807.238,
+    "phase": "show-popup-window",
+    "duration_ms": 1.82
+  },
+  {
+    "wine_timestamp": 175807.239,
+    "phase": "popup-paint",
+    "duration_ms": 1.341
+  },
+  {
+    "wine_timestamp": 175807.732,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175807.739,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.645
+  },
+  {
+    "wine_timestamp": 175807.739,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.222
+  },
+  {
+    "wine_timestamp": 175807.74,
+    "phase": "create-popup-window",
+    "duration_ms": 0.339
+  },
+  {
+    "wine_timestamp": 175807.74,
+    "phase": "popup-layout",
+    "duration_ms": 0.421
+  },
+  {
+    "wine_timestamp": 175807.742,
+    "phase": "show-popup-window",
+    "duration_ms": 1.563
+  },
+  {
+    "wine_timestamp": 175807.743,
+    "phase": "popup-paint",
+    "duration_ms": 0.787
+  },
+  {
+    "wine_timestamp": 175808.163,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175808.167,
+    "phase": "init-menu-callback",
+    "duration_ms": 3.787
+  },
+  {
+    "wine_timestamp": 175808.167,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.97
+  },
+  {
+    "wine_timestamp": 175808.169,
+    "phase": "create-popup-window",
+    "duration_ms": 0.44
+  },
+  {
+    "wine_timestamp": 175808.169,
+    "phase": "popup-layout",
+    "duration_ms": 0.604
+  },
+  {
+    "wine_timestamp": 175808.171,
+    "phase": "show-popup-window",
+    "duration_ms": 1.893
+  },
+  {
+    "wine_timestamp": 175808.172,
+    "phase": "popup-paint",
+    "duration_ms": 1.101
+  },
+  {
+    "wine_timestamp": 175808.61,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175808.617,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.426
+  },
+  {
+    "wine_timestamp": 175808.617,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.321
+  },
+  {
+    "wine_timestamp": 175808.618,
+    "phase": "create-popup-window",
+    "duration_ms": 0.424
+  },
+  {
+    "wine_timestamp": 175808.618,
+    "phase": "popup-layout",
+    "duration_ms": 0.634
+  },
+  {
+    "wine_timestamp": 175808.621,
+    "phase": "show-popup-window",
+    "duration_ms": 2.071
+  },
+  {
+    "wine_timestamp": 175808.622,
+    "phase": "popup-paint",
+    "duration_ms": 0.943
+  },
+  {
+    "wine_timestamp": 175809.065,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175809.072,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.758
+  },
+  {
+    "wine_timestamp": 175809.072,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.662
+  },
+  {
+    "wine_timestamp": 175809.074,
+    "phase": "create-popup-window",
+    "duration_ms": 0.406
+  },
+  {
+    "wine_timestamp": 175809.074,
+    "phase": "popup-layout",
+    "duration_ms": 0.885
+  },
+  {
+    "wine_timestamp": 175809.077,
+    "phase": "show-popup-window",
+    "duration_ms": 1.924
+  },
+  {
+    "wine_timestamp": 175809.079,
+    "phase": "popup-paint",
+    "duration_ms": 1.35
+  },
+  {
+    "wine_timestamp": 175809.531,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175809.535,
+    "phase": "init-menu-callback",
+    "duration_ms": 3.88
+  },
+  {
+    "wine_timestamp": 175809.535,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.461
+  },
+  {
+    "wine_timestamp": 175809.536,
+    "phase": "create-popup-window",
+    "duration_ms": 0.454
+  },
+  {
+    "wine_timestamp": 175809.536,
+    "phase": "popup-layout",
+    "duration_ms": 0.625
+  },
+  {
+    "wine_timestamp": 175809.538,
+    "phase": "show-popup-window",
+    "duration_ms": 1.506
+  },
+  {
+    "wine_timestamp": 175809.539,
+    "phase": "popup-paint",
+    "duration_ms": 1.171
+  },
+  {
+    "wine_timestamp": 175810.009,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175810.016,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.453
+  },
+  {
+    "wine_timestamp": 175810.017,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.678
+  },
+  {
+    "wine_timestamp": 175810.019,
+    "phase": "create-popup-window",
+    "duration_ms": 0.711
+  },
+  {
+    "wine_timestamp": 175810.019,
+    "phase": "popup-layout",
+    "duration_ms": 0.913
+  },
+  {
+    "wine_timestamp": 175810.022,
+    "phase": "show-popup-window",
+    "duration_ms": 1.912
+  },
+  {
+    "wine_timestamp": 175810.024,
+    "phase": "popup-paint",
+    "duration_ms": 2.227
+  },
+  {
+    "wine_timestamp": 175810.48,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175810.487,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.82
+  },
+  {
+    "wine_timestamp": 175810.487,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.308
+  },
+  {
+    "wine_timestamp": 175810.488,
+    "phase": "create-popup-window",
+    "duration_ms": 0.391
+  },
+  {
+    "wine_timestamp": 175810.488,
+    "phase": "popup-layout",
+    "duration_ms": 0.602
+  },
+  {
+    "wine_timestamp": 175810.49,
+    "phase": "show-popup-window",
+    "duration_ms": 1.848
+  },
+  {
+    "wine_timestamp": 175810.491,
+    "phase": "popup-paint",
+    "duration_ms": 1.181
+  },
+  {
+    "wine_timestamp": 175810.936,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175810.94,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.208
+  },
+  {
+    "wine_timestamp": 175810.941,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.169
+  },
+  {
+    "wine_timestamp": 175810.944,
+    "phase": "create-popup-window",
+    "duration_ms": 0.494
+  },
+  {
+    "wine_timestamp": 175810.944,
+    "phase": "popup-layout",
+    "duration_ms": 0.904
+  },
+  {
+    "wine_timestamp": 175810.946,
+    "phase": "show-popup-window",
+    "duration_ms": 1.952
+  },
+  {
+    "wine_timestamp": 175810.948,
+    "phase": "popup-paint",
+    "duration_ms": 1.846
+  },
+  {
+    "wine_timestamp": 175811.377,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175811.381,
+    "phase": "init-menu-callback",
+    "duration_ms": 3.764
+  },
+  {
+    "wine_timestamp": 175811.381,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.169
+  },
+  {
+    "wine_timestamp": 175811.382,
+    "phase": "create-popup-window",
+    "duration_ms": 0.439
+  },
+  {
+    "wine_timestamp": 175811.382,
+    "phase": "popup-layout",
+    "duration_ms": 0.419
+  },
+  {
+    "wine_timestamp": 175811.384,
+    "phase": "show-popup-window",
+    "duration_ms": 1.659
+  },
+  {
+    "wine_timestamp": 175811.385,
+    "phase": "popup-paint",
+    "duration_ms": 0.748
+  },
+  {
+    "wine_timestamp": 175811.849,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175811.858,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.045
+  },
+  {
+    "wine_timestamp": 175811.859,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.254
+  },
+  {
+    "wine_timestamp": 175811.861,
+    "phase": "create-popup-window",
+    "duration_ms": 0.458
+  },
+  {
+    "wine_timestamp": 175811.861,
+    "phase": "popup-layout",
+    "duration_ms": 0.886
+  },
+  {
+    "wine_timestamp": 175811.864,
+    "phase": "show-popup-window",
+    "duration_ms": 1.962
+  },
+  {
+    "wine_timestamp": 175811.866,
+    "phase": "popup-paint",
+    "duration_ms": 1.329
+  },
+  {
+    "wine_timestamp": 175835.331,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175835.335,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.41
+  },
+  {
+    "wine_timestamp": 175835.335,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.268
+  },
+  {
+    "wine_timestamp": 175835.336,
+    "phase": "create-popup-window",
+    "duration_ms": 0.506
+  },
+  {
+    "wine_timestamp": 175835.336,
+    "phase": "popup-layout",
+    "duration_ms": 0.442
+  },
+  {
+    "wine_timestamp": 175835.339,
+    "phase": "show-popup-window",
+    "duration_ms": 1.845
+  },
+  {
+    "wine_timestamp": 175835.34,
+    "phase": "popup-paint",
+    "duration_ms": 1.422
+  },
+  {
+    "wine_timestamp": 175835.824,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "wine_timestamp": 175835.833,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.601
+  },
+  {
+    "wine_timestamp": 175835.833,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.981
+  },
+  {
+    "wine_timestamp": 175835.836,
+    "phase": "create-popup-window",
+    "duration_ms": 0.473
+  },
+  {
+    "wine_timestamp": 175835.836,
+    "phase": "popup-layout",
+    "duration_ms": 0.88
+  },
+  {
+    "wine_timestamp": 175835.838,
+    "phase": "show-popup-window",
+    "duration_ms": 1.897
+  },
+  {
+    "wine_timestamp": 175835.84,
+    "phase": "popup-paint",
+    "duration_ms": 1.8
+  },
+  {
+    "wine_timestamp": 175836.318,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175836.326,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.199
+  },
+  {
+    "wine_timestamp": 175836.327,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.395
+  },
+  {
+    "wine_timestamp": 175836.328,
+    "phase": "create-popup-window",
+    "duration_ms": 0.446
+  },
+  {
+    "wine_timestamp": 175836.328,
+    "phase": "popup-layout",
+    "duration_ms": 0.434
+  },
+  {
+    "wine_timestamp": 175836.33,
+    "phase": "show-popup-window",
+    "duration_ms": 1.581
+  },
+  {
+    "wine_timestamp": 175836.331,
+    "phase": "popup-paint",
+    "duration_ms": 1.487
+  },
+  {
+    "wine_timestamp": 175836.775,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175836.78,
+    "phase": "init-menu-callback",
+    "duration_ms": 4.217
+  },
+  {
+    "wine_timestamp": 175836.78,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.059
+  },
+  {
+    "wine_timestamp": 175836.782,
+    "phase": "create-popup-window",
+    "duration_ms": 0.459
+  },
+  {
+    "wine_timestamp": 175836.782,
+    "phase": "popup-layout",
+    "duration_ms": 0.615
+  },
+  {
+    "wine_timestamp": 175836.784,
+    "phase": "show-popup-window",
+    "duration_ms": 1.798
+  },
+  {
+    "wine_timestamp": 175836.786,
+    "phase": "popup-paint",
+    "duration_ms": 1.734
+  },
+  {
+    "wine_timestamp": 175837.233,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175837.238,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.004
+  },
+  {
+    "wine_timestamp": 175837.238,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.222
+  },
+  {
+    "wine_timestamp": 175837.239,
+    "phase": "create-popup-window",
+    "duration_ms": 0.37
+  },
+  {
+    "wine_timestamp": 175837.239,
+    "phase": "popup-layout",
+    "duration_ms": 0.42
+  },
+  {
+    "wine_timestamp": 175837.241,
+    "phase": "show-popup-window",
+    "duration_ms": 1.485
+  },
+  {
+    "wine_timestamp": 175837.242,
+    "phase": "popup-paint",
+    "duration_ms": 1.234
+  },
+  {
+    "wine_timestamp": 175837.68,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.005
+  },
+  {
+    "wine_timestamp": 175837.704,
+    "phase": "init-menu-callback",
+    "duration_ms": 23.56
+  },
+  {
+    "wine_timestamp": 175837.704,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.988
+  },
+  {
+    "wine_timestamp": 175837.706,
+    "phase": "create-popup-window",
+    "duration_ms": 0.495
+  },
+  {
+    "wine_timestamp": 175837.707,
+    "phase": "popup-layout",
+    "duration_ms": 0.632
+  },
+  {
+    "wine_timestamp": 175837.709,
+    "phase": "show-popup-window",
+    "duration_ms": 1.806
+  },
+  {
+    "wine_timestamp": 175837.71,
+    "phase": "popup-paint",
+    "duration_ms": 1.178
+  },
+  {
+    "wine_timestamp": 175838.161,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175838.166,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.824
+  },
+  {
+    "wine_timestamp": 175838.167,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.215
+  },
+  {
+    "wine_timestamp": 175838.167,
+    "phase": "create-popup-window",
+    "duration_ms": 0.437
+  },
+  {
+    "wine_timestamp": 175838.167,
+    "phase": "popup-layout",
+    "duration_ms": 0.418
+  },
+  {
+    "wine_timestamp": 175838.169,
+    "phase": "show-popup-window",
+    "duration_ms": 1.605
+  },
+  {
+    "wine_timestamp": 175838.17,
+    "phase": "popup-paint",
+    "duration_ms": 0.789
+  },
+  {
+    "wine_timestamp": 175838.618,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "wine_timestamp": 175838.628,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.474
+  },
+  {
+    "wine_timestamp": 175838.628,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.387
+  },
+  {
+    "wine_timestamp": 175838.631,
+    "phase": "create-popup-window",
+    "duration_ms": 0.926
+  },
+  {
+    "wine_timestamp": 175838.632,
+    "phase": "popup-layout",
+    "duration_ms": 0.634
+  },
+  {
+    "wine_timestamp": 175838.634,
+    "phase": "show-popup-window",
+    "duration_ms": 2.076
+  },
+  {
+    "wine_timestamp": 175838.635,
+    "phase": "popup-paint",
+    "duration_ms": 1.268
+  },
+  {
+    "wine_timestamp": 175839.063,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175839.07,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.487
+  },
+  {
+    "wine_timestamp": 175839.071,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.355
+  },
+  {
+    "wine_timestamp": 175839.072,
+    "phase": "create-popup-window",
+    "duration_ms": 0.588
+  },
+  {
+    "wine_timestamp": 175839.072,
+    "phase": "popup-layout",
+    "duration_ms": 0.627
+  },
+  {
+    "wine_timestamp": 175839.074,
+    "phase": "show-popup-window",
+    "duration_ms": 1.527
+  },
+  {
+    "wine_timestamp": 175839.075,
+    "phase": "popup-paint",
+    "duration_ms": 1.225
+  },
+  {
+    "wine_timestamp": 175839.539,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175839.546,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.033
+  },
+  {
+    "wine_timestamp": 175839.546,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.734
+  },
+  {
+    "wine_timestamp": 175839.548,
+    "phase": "create-popup-window",
+    "duration_ms": 0.394
+  },
+  {
+    "wine_timestamp": 175839.548,
+    "phase": "popup-layout",
+    "duration_ms": 0.881
+  },
+  {
+    "wine_timestamp": 175839.551,
+    "phase": "show-popup-window",
+    "duration_ms": 2.155
+  },
+  {
+    "wine_timestamp": 175839.553,
+    "phase": "popup-paint",
+    "duration_ms": 1.795
+  },
+  {
+    "wine_timestamp": 175840.006,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175840.01,
+    "phase": "init-menu-callback",
+    "duration_ms": 3.82
+  },
+  {
+    "wine_timestamp": 175840.01,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.17
+  },
+  {
+    "wine_timestamp": 175840.011,
+    "phase": "create-popup-window",
+    "duration_ms": 0.401
+  },
+  {
+    "wine_timestamp": 175840.011,
+    "phase": "popup-layout",
+    "duration_ms": 0.433
+  },
+  {
+    "wine_timestamp": 175840.013,
+    "phase": "show-popup-window",
+    "duration_ms": 1.504
+  },
+  {
+    "wine_timestamp": 175840.013,
+    "phase": "popup-paint",
+    "duration_ms": 0.715
+  },
+  {
+    "wine_timestamp": 175840.465,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175840.473,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.282
+  },
+  {
+    "wine_timestamp": 175840.473,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.745
+  },
+  {
+    "wine_timestamp": 175840.475,
+    "phase": "create-popup-window",
+    "duration_ms": 0.413
+  },
+  {
+    "wine_timestamp": 175840.475,
+    "phase": "popup-layout",
+    "duration_ms": 0.884
+  },
+  {
+    "wine_timestamp": 175840.478,
+    "phase": "show-popup-window",
+    "duration_ms": 2.177
+  },
+  {
+    "wine_timestamp": 175840.48,
+    "phase": "popup-paint",
+    "duration_ms": 1.763
+  },
+  {
+    "wine_timestamp": 175840.948,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175840.952,
+    "phase": "init-menu-callback",
+    "duration_ms": 3.943
+  },
+  {
+    "wine_timestamp": 175840.952,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.171
+  },
+  {
+    "wine_timestamp": 175840.953,
+    "phase": "create-popup-window",
+    "duration_ms": 0.333
+  },
+  {
+    "wine_timestamp": 175840.953,
+    "phase": "popup-layout",
+    "duration_ms": 0.42
+  },
+  {
+    "wine_timestamp": 175840.955,
+    "phase": "show-popup-window",
+    "duration_ms": 1.827
+  },
+  {
+    "wine_timestamp": 175840.956,
+    "phase": "popup-paint",
+    "duration_ms": 1.199
+  },
+  {
+    "wine_timestamp": 175841.424,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175841.431,
+    "phase": "init-menu-callback",
+    "duration_ms": 6.729
+  },
+  {
+    "wine_timestamp": 175841.431,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.642
+  },
+  {
+    "wine_timestamp": 175841.433,
+    "phase": "create-popup-window",
+    "duration_ms": 0.763
+  },
+  {
+    "wine_timestamp": 175841.434,
+    "phase": "popup-layout",
+    "duration_ms": 0.644
+  },
+  {
+    "wine_timestamp": 175841.436,
+    "phase": "show-popup-window",
+    "duration_ms": 1.843
+  },
+  {
+    "wine_timestamp": 175841.437,
+    "phase": "popup-paint",
+    "duration_ms": 1.083
+  },
+  {
+    "wine_timestamp": 175841.892,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175841.899,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.148
+  },
+  {
+    "wine_timestamp": 175841.899,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.367
+  },
+  {
+    "wine_timestamp": 175841.9,
+    "phase": "create-popup-window",
+    "duration_ms": 0.437
+  },
+  {
+    "wine_timestamp": 175841.9,
+    "phase": "popup-layout",
+    "duration_ms": 0.626
+  },
+  {
+    "wine_timestamp": 175841.903,
+    "phase": "show-popup-window",
+    "duration_ms": 1.932
+  },
+  {
+    "wine_timestamp": 175841.904,
+    "phase": "popup-paint",
+    "duration_ms": 0.921
+  },
+  {
+    "wine_timestamp": 175842.354,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "wine_timestamp": 175842.363,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.294
+  },
+  {
+    "wine_timestamp": 175842.363,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.945
+  },
+  {
+    "wine_timestamp": 175842.366,
+    "phase": "create-popup-window",
+    "duration_ms": 0.836
+  },
+  {
+    "wine_timestamp": 175842.366,
+    "phase": "popup-layout",
+    "duration_ms": 0.892
+  },
+  {
+    "wine_timestamp": 175842.369,
+    "phase": "show-popup-window",
+    "duration_ms": 1.966
+  },
+  {
+    "wine_timestamp": 175842.371,
+    "phase": "popup-paint",
+    "duration_ms": 1.825
+  },
+  {
+    "wine_timestamp": 175842.802,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175842.81,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.696
+  },
+  {
+    "wine_timestamp": 175842.81,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.362
+  },
+  {
+    "wine_timestamp": 175842.811,
+    "phase": "create-popup-window",
+    "duration_ms": 0.675
+  },
+  {
+    "wine_timestamp": 175842.812,
+    "phase": "popup-layout",
+    "duration_ms": 0.64
+  },
+  {
+    "wine_timestamp": 175842.814,
+    "phase": "show-popup-window",
+    "duration_ms": 1.818
+  },
+  {
+    "wine_timestamp": 175842.815,
+    "phase": "popup-paint",
+    "duration_ms": 0.818
+  },
+  {
+    "wine_timestamp": 175843.249,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.004
+  },
+  {
+    "wine_timestamp": 175843.258,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.077
+  },
+  {
+    "wine_timestamp": 175843.259,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.313
+  },
+  {
+    "wine_timestamp": 175843.261,
+    "phase": "create-popup-window",
+    "duration_ms": 0.503
+  },
+  {
+    "wine_timestamp": 175843.261,
+    "phase": "popup-layout",
+    "duration_ms": 0.709
+  },
+  {
+    "wine_timestamp": 175843.264,
+    "phase": "show-popup-window",
+    "duration_ms": 2.005
+  },
+  {
+    "wine_timestamp": 175843.266,
+    "phase": "popup-paint",
+    "duration_ms": 1.764
+  },
+  {
+    "wine_timestamp": 175843.734,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175843.743,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.825
+  },
+  {
+    "wine_timestamp": 175843.743,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.391
+  },
+  {
+    "wine_timestamp": 175843.744,
+    "phase": "create-popup-window",
+    "duration_ms": 0.395
+  },
+  {
+    "wine_timestamp": 175843.744,
+    "phase": "popup-layout",
+    "duration_ms": 0.614
+  },
+  {
+    "wine_timestamp": 175843.746,
+    "phase": "show-popup-window",
+    "duration_ms": 1.929
+  },
+  {
+    "wine_timestamp": 175843.747,
+    "phase": "popup-paint",
+    "duration_ms": 0.817
+  },
+  {
+    "wine_timestamp": 175844.213,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175844.222,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.463
+  },
+  {
+    "wine_timestamp": 175844.222,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.096
+  },
+  {
+    "wine_timestamp": 175844.225,
+    "phase": "create-popup-window",
+    "duration_ms": 0.517
+  },
+  {
+    "wine_timestamp": 175844.225,
+    "phase": "popup-layout",
+    "duration_ms": 0.905
+  },
+  {
+    "wine_timestamp": 175844.227,
+    "phase": "show-popup-window",
+    "duration_ms": 1.785
+  },
+  {
+    "wine_timestamp": 175844.229,
+    "phase": "popup-paint",
+    "duration_ms": 1.295
+  },
+  {
+    "wine_timestamp": 175844.735,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175844.743,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.45
+  },
+  {
+    "wine_timestamp": 175844.743,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.451
+  },
+  {
+    "wine_timestamp": 175844.745,
+    "phase": "create-popup-window",
+    "duration_ms": 0.782
+  },
+  {
+    "wine_timestamp": 175844.745,
+    "phase": "popup-layout",
+    "duration_ms": 0.465
+  },
+  {
+    "wine_timestamp": 175844.747,
+    "phase": "show-popup-window",
+    "duration_ms": 1.603
+  },
+  {
+    "wine_timestamp": 175844.748,
+    "phase": "popup-paint",
+    "duration_ms": 1.25
+  },
+  {
+    "wine_timestamp": 175845.167,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175845.172,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.181
+  },
+  {
+    "wine_timestamp": 175845.172,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.102
+  },
+  {
+    "wine_timestamp": 175845.174,
+    "phase": "create-popup-window",
+    "duration_ms": 0.475
+  },
+  {
+    "wine_timestamp": 175845.174,
+    "phase": "popup-layout",
+    "duration_ms": 0.957
+  },
+  {
+    "wine_timestamp": 175845.177,
+    "phase": "show-popup-window",
+    "duration_ms": 2.136
+  },
+  {
+    "wine_timestamp": 175845.179,
+    "phase": "popup-paint",
+    "duration_ms": 1.753
+  },
+  {
+    "wine_timestamp": 175845.58,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175845.586,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.292
+  },
+  {
+    "wine_timestamp": 175845.586,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.197
+  },
+  {
+    "wine_timestamp": 175845.586,
+    "phase": "create-popup-window",
+    "duration_ms": 0.459
+  },
+  {
+    "wine_timestamp": 175845.586,
+    "phase": "popup-layout",
+    "duration_ms": 0.442
+  },
+  {
+    "wine_timestamp": 175845.589,
+    "phase": "show-popup-window",
+    "duration_ms": 1.827
+  },
+  {
+    "wine_timestamp": 175845.59,
+    "phase": "popup-paint",
+    "duration_ms": 0.8
+  },
+  {
+    "wine_timestamp": 175845.981,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175845.989,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.766
+  },
+  {
+    "wine_timestamp": 175845.989,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.989
+  },
+  {
+    "wine_timestamp": 175845.992,
+    "phase": "create-popup-window",
+    "duration_ms": 0.602
+  },
+  {
+    "wine_timestamp": 175845.992,
+    "phase": "popup-layout",
+    "duration_ms": 0.88
+  },
+  {
+    "wine_timestamp": 175845.995,
+    "phase": "show-popup-window",
+    "duration_ms": 1.954
+  },
+  {
+    "wine_timestamp": 175845.996,
+    "phase": "popup-paint",
+    "duration_ms": 1.813
+  },
+  {
+    "wine_timestamp": 175846.403,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175846.409,
+    "phase": "init-menu-callback",
+    "duration_ms": 5.705
+  },
+  {
+    "wine_timestamp": 175846.409,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.222
+  },
+  {
+    "wine_timestamp": 175846.409,
+    "phase": "create-popup-window",
+    "duration_ms": 0.432
+  },
+  {
+    "wine_timestamp": 175846.409,
+    "phase": "popup-layout",
+    "duration_ms": 0.666
+  },
+  {
+    "wine_timestamp": 175846.412,
+    "phase": "show-popup-window",
+    "duration_ms": 1.601
+  },
+  {
+    "wine_timestamp": 175846.413,
+    "phase": "popup-paint",
+    "duration_ms": 0.911
+  },
+  {
+    "wine_timestamp": 175846.804,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175846.813,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.519
+  },
+  {
+    "wine_timestamp": 175846.813,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.224
+  },
+  {
+    "wine_timestamp": 175846.816,
+    "phase": "create-popup-window",
+    "duration_ms": 1.005
+  },
+  {
+    "wine_timestamp": 175846.816,
+    "phase": "popup-layout",
+    "duration_ms": 0.614
+  },
+  {
+    "wine_timestamp": 175846.819,
+    "phase": "show-popup-window",
+    "duration_ms": 1.95
+  },
+  {
+    "wine_timestamp": 175846.82,
+    "phase": "popup-paint",
+    "duration_ms": 1.195
+  },
+  {
+    "wine_timestamp": 175847.217,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175847.226,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.982
+  },
+  {
+    "wine_timestamp": 175847.226,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.423
+  },
+  {
+    "wine_timestamp": 175847.227,
+    "phase": "create-popup-window",
+    "duration_ms": 0.56
+  },
+  {
+    "wine_timestamp": 175847.227,
+    "phase": "popup-layout",
+    "duration_ms": 0.604
+  },
+  {
+    "wine_timestamp": 175847.229,
+    "phase": "show-popup-window",
+    "duration_ms": 1.623
+  },
+  {
+    "wine_timestamp": 175847.231,
+    "phase": "popup-paint",
+    "duration_ms": 1.235
+  },
+  {
+    "wine_timestamp": 175847.638,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175847.647,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.286
+  },
+  {
+    "wine_timestamp": 175847.647,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.222
+  },
+  {
+    "wine_timestamp": 175847.65,
+    "phase": "create-popup-window",
+    "duration_ms": 0.456
+  },
+  {
+    "wine_timestamp": 175847.65,
+    "phase": "popup-layout",
+    "duration_ms": 0.88
+  },
+  {
+    "wine_timestamp": 175847.653,
+    "phase": "show-popup-window",
+    "duration_ms": 1.842
+  },
+  {
+    "wine_timestamp": 175847.654,
+    "phase": "popup-paint",
+    "duration_ms": 1.331
+  },
+  {
+    "wine_timestamp": 175848.058,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175848.067,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.281
+  },
+  {
+    "wine_timestamp": 175848.067,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.406
+  },
+  {
+    "wine_timestamp": 175848.068,
+    "phase": "create-popup-window",
+    "duration_ms": 0.69
+  },
+  {
+    "wine_timestamp": 175848.068,
+    "phase": "popup-layout",
+    "duration_ms": 0.601
+  },
+  {
+    "wine_timestamp": 175848.071,
+    "phase": "show-popup-window",
+    "duration_ms": 1.708
+  },
+  {
+    "wine_timestamp": 175848.072,
+    "phase": "popup-paint",
+    "duration_ms": 1.212
+  },
+  {
+    "wine_timestamp": 175848.49,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175848.499,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.313
+  },
+  {
+    "wine_timestamp": 175848.499,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.091
+  },
+  {
+    "wine_timestamp": 175848.502,
+    "phase": "create-popup-window",
+    "duration_ms": 0.431
+  },
+  {
+    "wine_timestamp": 175848.502,
+    "phase": "popup-layout",
+    "duration_ms": 0.883
+  },
+  {
+    "wine_timestamp": 175848.505,
+    "phase": "show-popup-window",
+    "duration_ms": 1.975
+  },
+  {
+    "wine_timestamp": 175848.506,
+    "phase": "popup-paint",
+    "duration_ms": 1.367
+  },
+  {
+    "wine_timestamp": 175848.922,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175848.931,
+    "phase": "init-menu-callback",
+    "duration_ms": 8.849
+  },
+  {
+    "wine_timestamp": 175848.931,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.436
+  },
+  {
+    "wine_timestamp": 175848.932,
+    "phase": "create-popup-window",
+    "duration_ms": 0.704
+  },
+  {
+    "wine_timestamp": 175848.932,
+    "phase": "popup-layout",
+    "duration_ms": 0.662
+  },
+  {
+    "wine_timestamp": 175848.934,
+    "phase": "show-popup-window",
+    "duration_ms": 1.633
+  },
+  {
+    "wine_timestamp": 175848.935,
+    "phase": "popup-paint",
+    "duration_ms": 0.846
+  },
+  {
+    "wine_timestamp": 175849.34,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175849.349,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.745
+  },
+  {
+    "wine_timestamp": 175849.349,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.419
+  },
+  {
+    "wine_timestamp": 175849.353,
+    "phase": "create-popup-window",
+    "duration_ms": 0.681
+  },
+  {
+    "wine_timestamp": 175849.353,
+    "phase": "popup-layout",
+    "duration_ms": 1.041
+  },
+  {
+    "wine_timestamp": 175849.356,
+    "phase": "show-popup-window",
+    "duration_ms": 1.896
+  },
+  {
+    "wine_timestamp": 175849.358,
+    "phase": "popup-paint",
+    "duration_ms": 1.814
+  },
+  {
+    "wine_timestamp": 175849.761,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175849.772,
+    "phase": "init-menu-callback",
+    "duration_ms": 10.413
+  },
+  {
+    "wine_timestamp": 175849.772,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.552
+  },
+  {
+    "wine_timestamp": 175849.773,
+    "phase": "create-popup-window",
+    "duration_ms": 0.76
+  },
+  {
+    "wine_timestamp": 175849.773,
+    "phase": "popup-layout",
+    "duration_ms": 0.62
+  },
+  {
+    "wine_timestamp": 175849.776,
+    "phase": "show-popup-window",
+    "duration_ms": 1.72
+  },
+  {
+    "wine_timestamp": 175849.777,
+    "phase": "popup-paint",
+    "duration_ms": 0.846
+  },
+  {
+    "wine_timestamp": 175850.204,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175850.213,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.025
+  },
+  {
+    "wine_timestamp": 175850.213,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.098
+  },
+  {
+    "wine_timestamp": 175850.215,
+    "phase": "create-popup-window",
+    "duration_ms": 0.494
+  },
+  {
+    "wine_timestamp": 175850.216,
+    "phase": "popup-layout",
+    "duration_ms": 0.751
+  },
+  {
+    "wine_timestamp": 175850.218,
+    "phase": "show-popup-window",
+    "duration_ms": 2.132
+  },
+  {
+    "wine_timestamp": 175850.22,
+    "phase": "popup-paint",
+    "duration_ms": 1.879
+  },
+  {
+    "wine_timestamp": 175850.654,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175850.664,
+    "phase": "init-menu-callback",
+    "duration_ms": 9.759
+  },
+  {
+    "wine_timestamp": 175850.664,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.574
+  },
+  {
+    "wine_timestamp": 175850.665,
+    "phase": "create-popup-window",
+    "duration_ms": 0.431
+  },
+  {
+    "wine_timestamp": 175850.665,
+    "phase": "popup-layout",
+    "duration_ms": 0.634
+  },
+  {
+    "wine_timestamp": 175850.667,
+    "phase": "show-popup-window",
+    "duration_ms": 1.798
+  },
+  {
+    "wine_timestamp": 175850.669,
+    "phase": "popup-paint",
+    "duration_ms": 1.23
+  },
+  {
+    "wine_timestamp": 175851.084,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175851.098,
+    "phase": "init-menu-callback",
+    "duration_ms": 14.199
+  },
+  {
+    "wine_timestamp": 175851.098,
+    "phase": "init-popup-callback",
+    "duration_ms": 4.776
+  },
+  {
+    "wine_timestamp": 175851.104,
+    "phase": "create-popup-window",
+    "duration_ms": 0.678
+  },
+  {
+    "wine_timestamp": 175851.104,
+    "phase": "popup-layout",
+    "duration_ms": 0.657
+  },
+  {
+    "wine_timestamp": 175851.107,
+    "phase": "show-popup-window",
+    "duration_ms": 2.018
+  },
+  {
+    "wine_timestamp": 175851.108,
+    "phase": "popup-paint",
+    "duration_ms": 1.112
+  },
+  {
+    "wine_timestamp": 175851.522,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "wine_timestamp": 175851.543,
+    "phase": "init-menu-callback",
+    "duration_ms": 21.419
+  },
+  {
+    "wine_timestamp": 175851.543,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.026
+  },
+  {
+    "wine_timestamp": 175851.545,
+    "phase": "create-popup-window",
+    "duration_ms": 0.505
+  },
+  {
+    "wine_timestamp": 175851.545,
+    "phase": "popup-layout",
+    "duration_ms": 0.608
+  },
+  {
+    "wine_timestamp": 175851.547,
+    "phase": "show-popup-window",
+    "duration_ms": 1.751
+  },
+  {
+    "wine_timestamp": 175851.548,
+    "phase": "popup-paint",
+    "duration_ms": 1.178
+  },
+  {
+    "wine_timestamp": 175851.975,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175851.994,
+    "phase": "init-menu-callback",
+    "duration_ms": 18.263
+  },
+  {
+    "wine_timestamp": 175851.994,
+    "phase": "init-popup-callback",
+    "duration_ms": 2.97
+  },
+  {
+    "wine_timestamp": 175851.998,
+    "phase": "create-popup-window",
+    "duration_ms": 0.605
+  },
+  {
+    "wine_timestamp": 175851.998,
+    "phase": "popup-layout",
+    "duration_ms": 0.882
+  },
+  {
+    "wine_timestamp": 175852.001,
+    "phase": "show-popup-window",
+    "duration_ms": 2.069
+  },
+  {
+    "wine_timestamp": 175852.002,
+    "phase": "popup-paint",
+    "duration_ms": 1.246
+  },
+  {
+    "wine_timestamp": 175852.411,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "wine_timestamp": 175852.419,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.645
+  },
+  {
+    "wine_timestamp": 175852.419,
+    "phase": "init-popup-callback",
+    "duration_ms": 0.362
+  },
+  {
+    "wine_timestamp": 175852.42,
+    "phase": "create-popup-window",
+    "duration_ms": 0.515
+  },
+  {
+    "wine_timestamp": 175852.42,
+    "phase": "popup-layout",
+    "duration_ms": 0.424
+  },
+  {
+    "wine_timestamp": 175852.422,
+    "phase": "show-popup-window",
+    "duration_ms": 1.43
+  },
+  {
+    "wine_timestamp": 175852.423,
+    "phase": "popup-paint",
+    "duration_ms": 0.729
+  },
+  {
+    "wine_timestamp": 175852.816,
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.001
+  },
+  {
+    "wine_timestamp": 175852.823,
+    "phase": "init-menu-callback",
+    "duration_ms": 7.047
+  },
+  {
+    "wine_timestamp": 175852.823,
+    "phase": "init-popup-callback",
+    "duration_ms": 1.431
+  },
+  {
+    "wine_timestamp": 175852.825,
+    "phase": "create-popup-window",
+    "duration_ms": 0.652
+  },
+  {
+    "wine_timestamp": 175852.825,
+    "phase": "popup-layout",
+    "duration_ms": 0.961
+  },
+  {
+    "wine_timestamp": 175852.828,
+    "phase": "show-popup-window",
+    "duration_ms": 2.006
+  },
+  {
+    "wine_timestamp": 175852.83,
+    "phase": "popup-paint",
+    "duration_ms": 1.197
+  }
+]

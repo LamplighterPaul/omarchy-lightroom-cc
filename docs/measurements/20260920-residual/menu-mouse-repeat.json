@@ -1,0 +1,386 @@
+{
+  "status": "complete",
+  "openings": [
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858843.7701054,
+        "end_epoch": 1789858843.7701666,
+        "start_monotonic": 175846.980037085,
+        "end_monotonic": 175846.980097788
+      },
+      "map": {
+        "monotonic": 175846.992452576,
+        "window": "1800067",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 12.41549098631367
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858844.2020955,
+        "end_epoch": 1789858844.202158,
+        "start_monotonic": 175847.412027576,
+        "end_monotonic": 175847.412089395
+      },
+      "map": {
+        "monotonic": 175847.422579372,
+        "window": "1800068",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 10.551796003710479
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858844.6154332,
+        "end_epoch": 1789858844.6154928,
+        "start_monotonic": 175847.825365009,
+        "end_monotonic": 175847.825424067
+      },
+      "map": {
+        "monotonic": 175847.834184853,
+        "window": "1800069",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 8.819844020763412
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858845.0163171,
+        "end_epoch": 1789858845.0164163,
+        "start_monotonic": 175848.226248988,
+        "end_monotonic": 175848.226347878
+      },
+      "map": {
+        "monotonic": 175848.240137644,
+        "window": "180006a",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 13.888655987102538
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858845.4381788,
+        "end_epoch": 1789858845.43824,
+        "start_monotonic": 175848.648110669,
+        "end_monotonic": 175848.648171346
+      },
+      "map": {
+        "monotonic": 175848.65734206,
+        "window": "180006b",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 9.231391013599932
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858845.8395686,
+        "end_epoch": 1789858845.8396282,
+        "start_monotonic": 175849.049500364,
+        "end_monotonic": 175849.049559623
+      },
+      "map": {
+        "monotonic": 175849.064456309,
+        "window": "180006c",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 14.955944992834702
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858846.2520642,
+        "end_epoch": 1789858846.252133,
+        "start_monotonic": 175849.461996442,
+        "end_monotonic": 175849.462064236
+      },
+      "map": {
+        "monotonic": 175849.474892379,
+        "window": "180006d",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 12.8959369903896
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858846.6729915,
+        "end_epoch": 1789858846.673078,
+        "start_monotonic": 175849.882923764,
+        "end_monotonic": 175849.883009234
+      },
+      "map": {
+        "monotonic": 175849.898460297,
+        "window": "180006e",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 15.536532999249175
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858847.092955,
+        "end_epoch": 1789858847.0930316,
+        "start_monotonic": 175850.30288689,
+        "end_monotonic": 175850.302962947
+      },
+      "map": {
+        "monotonic": 175850.316330875,
+        "window": "180006f",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 13.443985022604465
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858847.5248892,
+        "end_epoch": 1789858847.5249732,
+        "start_monotonic": 175850.734821432,
+        "end_monotonic": 175850.734904224
+      },
+      "map": {
+        "monotonic": 175850.750228148,
+        "window": "1800070",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 15.406716003781185
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858847.9568477,
+        "end_epoch": 1789858847.9569187,
+        "start_monotonic": 175851.166779546,
+        "end_monotonic": 175851.166850003
+      },
+      "map": {
+        "monotonic": 175851.179856212,
+        "window": "1800071",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 13.076665985863656
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858848.3749127,
+        "end_epoch": 1789858848.3749723,
+        "start_monotonic": 175851.584844423,
+        "end_monotonic": 175851.584903842
+      },
+      "map": {
+        "monotonic": 175851.601349592,
+        "window": "1800072",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 16.505169012816623
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858848.7964823,
+        "end_epoch": 1789858848.7965446,
+        "start_monotonic": 175852.006414249,
+        "end_monotonic": 175852.006475864
+      },
+      "map": {
+        "monotonic": 175852.02114033,
+        "window": "1800073",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 14.72608101903461
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858849.2387927,
+        "end_epoch": 1789858849.23887,
+        "start_monotonic": 175852.448724738,
+        "end_monotonic": 175852.448801356
+      },
+      "map": {
+        "monotonic": 175852.463940522,
+        "window": "1800074",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 15.21578399115242
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858849.6889484,
+        "end_epoch": 1789858849.6890728,
+        "start_monotonic": 175852.898881011,
+        "end_monotonic": 175852.899004266
+      },
+      "map": {
+        "monotonic": 175852.91296961,
+        "window": "1800075",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 14.088599011301994
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858850.1194656,
+        "end_epoch": 1789858850.1195574,
+        "start_monotonic": 175853.329397634,
+        "end_monotonic": 175853.329488618
+      },
+      "map": {
+        "monotonic": 175853.352483364,
+        "window": "1800076",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 23.085730004822835
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858850.5570908,
+        "end_epoch": 1789858850.5571523,
+        "start_monotonic": 175853.76702285,
+        "end_monotonic": 175853.76708349
+      },
+      "map": {
+        "monotonic": 175853.792782422,
+        "window": "1800077",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 25.759572017705068
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858851.0106785,
+        "end_epoch": 1789858851.010738,
+        "start_monotonic": 175854.220610331,
+        "end_monotonic": 175854.22066909
+      },
+      "map": {
+        "monotonic": 175854.246191813,
+        "window": "1800078",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 25.581482012057677
+    },
+    {
+      "action": "menu-open",
+      "phase": {
+        "action": "menu-open",
+        "start_epoch": 1789858851.4465413,
+        "end_epoch": 1789858851.4466002,
+        "start_monotonic": 175854.656473007,
+        "end_monotonic": 175854.656531379
+      },
+      "map": {
+        "monotonic": 175854.667580455,
+        "window": "1800079",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 11.107447993708774
+    },
+    {
+      "action": "edit-menu-click",
+      "phase": {
+        "action": "edit-menu-click",
+        "start_epoch": 1789858851.8513265,
+        "end_epoch": 1789858851.8513858,
+        "start_monotonic": 175855.061258264,
+        "end_monotonic": 175855.061317066
+      },
+      "map": {
+        "monotonic": 175855.074117181,
+        "window": "180007a",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 12.858917005360126
+    }
+  ],
+  "note": "Input submission to X11 map receipt, not visible display latency."
+}

@@ -86,22 +86,28 @@ int main(int argc, char **argv)
     struct wl_shm_pool *pool = wl_shm_create_pool(shm, fd, length);
     struct wl_buffer *buffer = wl_shm_pool_create_buffer(pool, 0, w, h, w * 4, WL_SHM_FORMAT_ARGB8888);
     wl_shm_pool_destroy(pool); close(fd);
-    puts("frame,epoch,capture_ms,mean_luma,dark_fraction");
+    puts("frame,epoch,capture_ms,mean_luma,dark_fraction,background_fraction,monotonic");
     for (int i = 0; i < frames; i++) {
         double start = seconds(CLOCK_MONOTONIC); completed = 0;
         weston_capture_source_v1_capture(source, buffer);
         while (!completed && !failed) if (wl_display_dispatch(display) < 0) failed = 1;
         if (failed || width != w || height != h) return 5;
         double end = seconds(CLOCK_MONOTONIC), epoch = seconds(CLOCK_REALTIME), total = 0;
-        unsigned count = 0, dark = 0;
+        unsigned count = 0, dark = 0, background = 0;
         for (int y = h / 5; y < h * 3 / 4; y += 8) for (int x = w / 3; x < w * 2 / 3; x += 8) {
             uint32_t p = pixels[y * w + x];
             double luma = .2126 * ((p >> 16) & 255) + .7152 * ((p >> 8) & 255) + .0722 * (p & 255);
-            total += luma; dark += luma < 16; count++;
+            total += luma; dark += luma < 16;
+            /* The reproduced loupe PATCOPY uses RGB 28,28,28. Keep this
+             * separate from dark photograph pixels; neither proves a flash
+             * without checking the image region and interaction state. */
+            background += (p & 0xffffff) == 0x1c1c1c;
+            count++;
         }
         char path[4096];
         if (snprintf(path, sizeof(path), "%s/frame-%04d.png", argv[1], i) >= sizeof(path) || !save_png(path, pixels, w, h)) return 6;
-        printf("%d,%.6f,%.3f,%.3f,%.6f\n", i, epoch, (end-start)*1000, total/count, (double)dark/count); fflush(stdout);
+        printf("%d,%.6f,%.3f,%.3f,%.6f,%.6f,%.9f\n", i, epoch, (end-start)*1000,
+               total/count, (double)dark/count, (double)background/count, end); fflush(stdout);
         double delay = 1.0/fps - (seconds(CLOCK_MONOTONIC) - start);
         if (delay > 0) { struct timespec t = {(time_t)delay, (long)((delay-(time_t)delay)*1e9)}; nanosleep(&t, NULL); }
     }
