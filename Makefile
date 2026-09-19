@@ -8,6 +8,7 @@ install:
 	install -Dm644 diagnostics/webview-capture.mjs $(DESTDIR)$(PREFIX)/share/omarchy-lightroom-cc/tools/webview-capture.mjs
 	install -Dm644 diagnostics/monitor.py $(DESTDIR)$(PREFIX)/share/omarchy-lightroom-cc/diagnostics/monitor.py
 	install -Dm644 diagnostics/resources.py $(DESTDIR)$(PREFIX)/share/omarchy-lightroom-cc/diagnostics/resources.py
+	install -Dm644 diagnostics/stall-trace.py $(DESTDIR)$(PREFIX)/share/omarchy-lightroom-cc/diagnostics/stall-trace.py
 
 check:
 	python3 -m unittest discover -s tests -v

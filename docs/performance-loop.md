@@ -104,3 +104,27 @@ pressure. Missing interfaces are omitted. Policy clocks are sampled context,
 not effective per-thread frequency or proof of throttling. This recorder never
 changes priority, governor, turbo or the power profile. Its one-second sampling
 cannot attribute an individual short stall; use a targeted trace for that.
+
+## Short thread trace
+
+While reproducing a stall, run `lightroom-omarchy-proton trace 20` alongside the
+MangoHud frame-time recording. It samples the main Linux thread every ~50 ms,
+plus process I/O counters, into a timestamped JSONL file. It does not capture
+stacks, credentials, filenames or photos, and does not change system policy.
+The source tool `diagnostics/stall-trace.py` also accepts repeatable `--tid`
+options for identified render/worker threads, or an expensive `--all-threads`.
+
+A local five-second idle validation measured ~1.6% of one CPU core for the
+main-thread sampler, versus ~22% for all 129 threads. These are sampler overhead
+measurements, not Lightroom improvements. Do not leave all-thread mode running
+as an overlay. Each trace includes scan duration and sampler CPU cost.
+
+Kernel scheduler statistics were disabled on the test host. In that state the
+trace deliberately omits runnable-queue delay: stale nonzero counters cannot
+prove zero contention. CPU runtime, sampled wait channel and I/O remain useful
+context, but cannot independently identify a GPU stall or prove the main thread
+caused a frame spike. Read the [kernel scheduler statistics documentation](https://www.kernel.org/doc/html/latest/scheduler/sched-stats.html).
+
+With Intel's active P-state driver, `powersave` does not mean the CPU is fixed
+at its lowest clock. Energy preference and turbo policy matter; see the
+[Intel P-state documentation](https://www.kernel.org/doc/html/latest/admin-guide/pm/intel_pstate.html).

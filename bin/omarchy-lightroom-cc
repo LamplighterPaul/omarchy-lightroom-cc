@@ -807,7 +807,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runner", choices=("adobe", "staging", "proton", "omarchy", "lightroom-omarchy-proton"), default="adobe")
     parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
-    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "repair-performance", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate", "run-perf", "stage-mangohud", "measure"))
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "repair-performance", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate", "run-perf", "stage-mangohud", "measure", "trace"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
     if args.command in ("run", "run-perf", "run-debug", "cc", "install-cc", "experiment-webview") and dispatch_desktop():
@@ -838,6 +838,16 @@ def main():
         CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
     if args.command == "doctor": doctor()
     elif args.command == "stage-mangohud": stage_mangohud()
+    elif args.command == "trace":
+        recorder = next((p for p in (SCRIPT.parent.parent / "diagnostics/stall-trace.py",
+            SCRIPT.parent.parent / "share" / APP / "diagnostics/stall-trace.py") if p.is_file()), None)
+        if recorder is None:
+            raise RuntimeError("Thread recorder missing; run make install")
+        seconds = args.args[0] if args.args else "20"
+        stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+        output = DATA / "measurements" / f"{stamp}-threads.jsonl"
+        print(f"Recording main-thread timing to {output}. Reproduce the stall now.", flush=True)
+        run([sys.executable, recorder, "--prefix", PREFIX, "--seconds", seconds, "--output", output])
     elif args.command == "measure":
         monitor = next((p for p in (SCRIPT.parent.parent / "diagnostics/monitor.py",
             SCRIPT.parent.parent / "share" / APP / "diagnostics/monitor.py") if p.is_file()), None)
