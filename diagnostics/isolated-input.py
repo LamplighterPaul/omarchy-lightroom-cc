@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'record', 'menu-open', 'escape', 'loupe', 'close'])
+parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'record', 'menu-open', 'edit-menu-open', 'escape', 'loupe', 'close'])
 args = parser.parse_args()
 if os.environ.get('WAYLAND_DISPLAY') != 'lightroom-test' or os.environ.get('DISPLAY') != ':1':
     raise SystemExit('Refusing input outside the dedicated lightroom-test/:1 fixture')
@@ -70,7 +70,7 @@ phase_start = time.time()
 if args.action=='maximize':
     x.XMoveResizeWindow(d,w,0,0,2832,1692);x.XFlush(d)
 elif args.action=='zoom':
-    key(ord('z'),1);key(ord('z'),0)
+    key(ord(' '),1);key(ord(' '),0)
 elif args.action=='loupe':
     key(ord('d'),1);key(ord('d'),0)
 elif args.action=='close':
@@ -82,6 +82,8 @@ elif args.action=='menu-open':
     print('Menu origin:',left.value,top.value)
     t.XTestFakeMotionEvent(d,-1,left.value+round(width*.432),top.value+30,0)
     t.XTestFakeButtonEvent(d,1,1,0);t.XTestFakeButtonEvent(d,1,0,0);x.XFlush(d)
+elif args.action=='edit-menu-open':
+    key(0xffe9,1);key(ord('e'),1);key(ord('e'),0);key(0xffe9,0)
 elif args.action=='escape':
     key(0xff1b,1);key(0xff1b,0)
 elif args.action=='record':

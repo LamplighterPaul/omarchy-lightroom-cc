@@ -1,0 +1,380 @@
+{
+  "case": "dxvk-before",
+  "limiter": "dxvk",
+  "power_profile": "performance",
+  "phases": [
+    {
+      "action": "pan",
+      "start_epoch": 1789843951.578017,
+      "end_epoch": 1789843961.817219
+    },
+    {
+      "action": "menus",
+      "start_epoch": 1789843961.9470909,
+      "end_epoch": 1789843966.9486291
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789843968.7520971,
+      "end_epoch": 1789843978.9099712
+    },
+    {
+      "action": "menus",
+      "start_epoch": 1789843978.9727767,
+      "end_epoch": 1789843983.9742734
+    }
+  ],
+  "rows": [
+    {
+      "wine_seconds": 160963.25,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.008
+    },
+    {
+      "wine_seconds": 160963.268,
+      "phase": "init-menu-callback",
+      "duration_ms": 17.521
+    },
+    {
+      "wine_seconds": 160963.269,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.823
+    },
+    {
+      "wine_seconds": 160963.271,
+      "phase": "create-popup-window",
+      "duration_ms": 1.091
+    },
+    {
+      "wine_seconds": 160963.271,
+      "phase": "popup-layout",
+      "duration_ms": 1.768
+    },
+    {
+      "wine_seconds": 160963.277,
+      "phase": "show-popup-window",
+      "duration_ms": 3.948
+    },
+    {
+      "wine_seconds": 160963.28,
+      "phase": "popup-paint",
+      "duration_ms": 3.563
+    },
+    {
+      "wine_seconds": 160964.089,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.004
+    },
+    {
+      "wine_seconds": 160964.099,
+      "phase": "init-menu-callback",
+      "duration_ms": 9.521
+    },
+    {
+      "wine_seconds": 160964.099,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.441
+    },
+    {
+      "wine_seconds": 160964.1,
+      "phase": "create-popup-window",
+      "duration_ms": 0.451
+    },
+    {
+      "wine_seconds": 160964.1,
+      "phase": "popup-layout",
+      "duration_ms": 0.706
+    },
+    {
+      "wine_seconds": 160964.103,
+      "phase": "show-popup-window",
+      "duration_ms": 1.879
+    },
+    {
+      "wine_seconds": 160964.104,
+      "phase": "popup-paint",
+      "duration_ms": 1.357
+    },
+    {
+      "wine_seconds": 160965.069,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.004
+    },
+    {
+      "wine_seconds": 160965.078,
+      "phase": "init-menu-callback",
+      "duration_ms": 9.027
+    },
+    {
+      "wine_seconds": 160965.079,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.358
+    },
+    {
+      "wine_seconds": 160965.08,
+      "phase": "create-popup-window",
+      "duration_ms": 0.414
+    },
+    {
+      "wine_seconds": 160965.08,
+      "phase": "popup-layout",
+      "duration_ms": 0.717
+    },
+    {
+      "wine_seconds": 160965.082,
+      "phase": "show-popup-window",
+      "duration_ms": 1.407
+    },
+    {
+      "wine_seconds": 160965.083,
+      "phase": "popup-paint",
+      "duration_ms": 1.795
+    },
+    {
+      "wine_seconds": 160966.073,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.004
+    },
+    {
+      "wine_seconds": 160966.082,
+      "phase": "init-menu-callback",
+      "duration_ms": 8.7
+    },
+    {
+      "wine_seconds": 160966.083,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.362
+    },
+    {
+      "wine_seconds": 160966.084,
+      "phase": "create-popup-window",
+      "duration_ms": 0.727
+    },
+    {
+      "wine_seconds": 160966.084,
+      "phase": "popup-layout",
+      "duration_ms": 0.66
+    },
+    {
+      "wine_seconds": 160966.086,
+      "phase": "show-popup-window",
+      "duration_ms": 1.554
+    },
+    {
+      "wine_seconds": 160966.087,
+      "phase": "popup-paint",
+      "duration_ms": 1.357
+    },
+    {
+      "wine_seconds": 160967.069,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.003
+    },
+    {
+      "wine_seconds": 160967.078,
+      "phase": "init-menu-callback",
+      "duration_ms": 9.027
+    },
+    {
+      "wine_seconds": 160967.078,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.495
+    },
+    {
+      "wine_seconds": 160967.079,
+      "phase": "create-popup-window",
+      "duration_ms": 0.474
+    },
+    {
+      "wine_seconds": 160967.079,
+      "phase": "popup-layout",
+      "duration_ms": 0.625
+    },
+    {
+      "wine_seconds": 160967.081,
+      "phase": "show-popup-window",
+      "duration_ms": 1.692
+    },
+    {
+      "wine_seconds": 160967.082,
+      "phase": "popup-paint",
+      "duration_ms": 0.93
+    },
+    {
+      "wine_seconds": 160980.087,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.003
+    },
+    {
+      "wine_seconds": 160980.097,
+      "phase": "init-menu-callback",
+      "duration_ms": 10.075
+    },
+    {
+      "wine_seconds": 160980.097,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.395
+    },
+    {
+      "wine_seconds": 160980.098,
+      "phase": "create-popup-window",
+      "duration_ms": 0.54
+    },
+    {
+      "wine_seconds": 160980.098,
+      "phase": "popup-layout",
+      "duration_ms": 0.798
+    },
+    {
+      "wine_seconds": 160980.101,
+      "phase": "show-popup-window",
+      "duration_ms": 2.064
+    },
+    {
+      "wine_seconds": 160980.102,
+      "phase": "popup-paint",
+      "duration_ms": 1.1
+    },
+    {
+      "wine_seconds": 160981.111,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.003
+    },
+    {
+      "wine_seconds": 160981.12,
+      "phase": "init-menu-callback",
+      "duration_ms": 9.005
+    },
+    {
+      "wine_seconds": 160981.121,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.344
+    },
+    {
+      "wine_seconds": 160981.122,
+      "phase": "create-popup-window",
+      "duration_ms": 0.615
+    },
+    {
+      "wine_seconds": 160981.122,
+      "phase": "popup-layout",
+      "duration_ms": 0.531
+    },
+    {
+      "wine_seconds": 160981.124,
+      "phase": "show-popup-window",
+      "duration_ms": 1.878
+    },
+    {
+      "wine_seconds": 160981.125,
+      "phase": "popup-paint",
+      "duration_ms": 0.901
+    },
+    {
+      "wine_seconds": 160982.114,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.004
+    },
+    {
+      "wine_seconds": 160982.122,
+      "phase": "init-menu-callback",
+      "duration_ms": 8.188
+    },
+    {
+      "wine_seconds": 160982.123,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.858
+    },
+    {
+      "wine_seconds": 160982.124,
+      "phase": "create-popup-window",
+      "duration_ms": 0.575
+    },
+    {
+      "wine_seconds": 160982.124,
+      "phase": "popup-layout",
+      "duration_ms": 0.77
+    },
+    {
+      "wine_seconds": 160982.127,
+      "phase": "show-popup-window",
+      "duration_ms": 2.062
+    },
+    {
+      "wine_seconds": 160982.128,
+      "phase": "popup-paint",
+      "duration_ms": 1.063
+    },
+    {
+      "wine_seconds": 160983.113,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.004
+    },
+    {
+      "wine_seconds": 160983.135,
+      "phase": "init-menu-callback",
+      "duration_ms": 21.733
+    },
+    {
+      "wine_seconds": 160983.136,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.644
+    },
+    {
+      "wine_seconds": 160983.137,
+      "phase": "create-popup-window",
+      "duration_ms": 0.671
+    },
+    {
+      "wine_seconds": 160983.137,
+      "phase": "popup-layout",
+      "duration_ms": 0.706
+    },
+    {
+      "wine_seconds": 160983.14,
+      "phase": "show-popup-window",
+      "duration_ms": 2.019
+    },
+    {
+      "wine_seconds": 160983.141,
+      "phase": "popup-paint",
+      "duration_ms": 1.359
+    },
+    {
+      "wine_seconds": 160984.133,
+      "phase": "enter-menu-callback",
+      "duration_ms": 0.003
+    },
+    {
+      "wine_seconds": 160984.139,
+      "phase": "init-menu-callback",
+      "duration_ms": 5.891
+    },
+    {
+      "wine_seconds": 160984.139,
+      "phase": "init-popup-callback",
+      "duration_ms": 0.443
+    },
+    {
+      "wine_seconds": 160984.14,
+      "phase": "create-popup-window",
+      "duration_ms": 0.681
+    },
+    {
+      "wine_seconds": 160984.14,
+      "phase": "popup-layout",
+      "duration_ms": 0.658
+    },
+    {
+      "wine_seconds": 160984.143,
+      "phase": "show-popup-window",
+      "duration_ms": 2.053
+    },
+    {
+      "wine_seconds": 160984.144,
+      "phase": "popup-paint",
+      "duration_ms": 1.272
+    }
+  ],
+  "interrupted": false
+}

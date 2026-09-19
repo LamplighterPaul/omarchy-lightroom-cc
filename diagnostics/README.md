@@ -51,3 +51,13 @@ policy, CPU clocks, Xe GPU clocks, thermal-throttle counters and the main
 process's scheduler/affinity/cgroup limits. It is read-only. Ancestor cgroups
 can cover other applications; their usage counters are not Lightroom usage.
 Thermal counters are cumulative, so correlate **increments** with an interaction.
+
+## Composited appearance capture
+
+`build-composited-capture.sh` builds a read-only client for the staged Weston's
+output-capture protocol. Start the isolated fixture with `--capture` to authorize
+it. See [the flicker report](../docs/flicker-2026-09-19.md) for usage and measured
+overhead limitations. Capture photos stay local; commit only numeric timings.
+
+The real-input helper uses Lightroom Desktop's **Space** zoom shortcut. `Z`
+sets a pick flag in this application and must not be used to test zoom.

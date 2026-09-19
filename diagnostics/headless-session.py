@@ -12,6 +12,8 @@ from resources import snapshot
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('action', choices=['stage', 'clone', 'start'])
+parser.add_argument('--capture', action='store_true',
+                    help='Enable composited screenshots on this private test display.')
 args = parser.parse_args()
 data = Path(os.environ.get('LRCC_DATA', Path.home()/'.local/share/omarchy-lightroom-cc')).resolve()
 root = data/'tools/weston/usr'
@@ -70,4 +72,6 @@ path={root}/lib/weston/weston-keyboard
     command = [str(binary), '--backend=headless', '--renderer=gl', '--socket=lightroom-test',
                '--width=2880', '--height=1800', '--refresh-rate=120000', '--no-xwm-decorations',
                f'--config={config}', f'--log={state / "weston.log"}']
+    if args.capture:
+        command += ['--debug', '--debug-scopes=log']
     os.execve(binary, command, env)

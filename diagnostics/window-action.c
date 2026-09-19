@@ -15,7 +15,7 @@ static BOOL CALLBACK visit(HWND w, LPARAM unused){
  if(!strcmp(action,"preferences")||!strcmp(action,"list-menu")){menu(w,GetMenu(w));}
  else if(!strcmp(action,"menu-open")){PostMessageW(w,WM_SYSCOMMAND,SC_KEYMENU,'f');}
  else if(!strcmp(action,"menu-close")){PostMessageW(w,WM_CANCELMODE,0,0);PostMessageW(w,WM_KEYDOWN,VK_ESCAPE,0);PostMessageW(w,WM_KEYUP,VK_ESCAPE,0);}
- else if(!strcmp(action,"zoom")){PostMessageW(w,WM_KEYDOWN,0x5a,0x002c0001);PostMessageW(w,WM_CHAR,0x7a,0x002c0001);PostMessageW(w,WM_KEYUP,0x5a,0xc02c0001);}
+ else if(!strcmp(action,"zoom")){PostMessageW(w,WM_KEYDOWN,VK_SPACE,0x00390001);PostMessageW(w,WM_CHAR,0x20,0x00390001);PostMessageW(w,WM_KEYUP,VK_SPACE,0xc0390001);}
  else if(!strcmp(action,"pan")){
  SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
  GetClientRect(w,&r); POINT pt={r.right*4/10,r.bottom*4/10};
