@@ -41,6 +41,49 @@ class LauncherTest(unittest.TestCase):
         self.assertEqual(self.app.desktop_scale(monitors, [{"id": 10, "monitor": "internal"}]), 192)
         self.assertEqual(self.app.desktop_scale(monitors, []), 96)
 
+    def test_candidate_runtime_is_named_and_identified(self):
+        runtime = self.app.DATA / 'runtimes/candidate'
+        runtime.mkdir(parents=True)
+        (runtime / 'lightroom-omarchy-proton.json').write_text(json.dumps({'name': 'lightroom-omarchy-proton'}))
+        self.assertEqual(self.app.selected_proton_runtime('candidate'), runtime / 'files')
+        for invalid in ('../candidate', '/candidate', 'missing'):
+            with self.assertRaises(RuntimeError):
+                self.app.selected_proton_runtime(invalid)
+
+    def test_runtime_switch_guard_uses_live_mappings_and_resolved_prefix(self):
+        proc = self.root / 'proc/123'
+        proc.mkdir(parents=True)
+        self.app.PREFIX.mkdir(parents=True)
+        (self.app.PREFIX / 'pfx').symlink_to('.')
+        (proc / 'environ').write_bytes(b'WINEPREFIX=' + os.fsencode(self.app.PREFIX / 'pfx') + b'\0')
+        maps = proc / 'maps'
+        maps.write_text('0-1 r-xp 0 00:00 0 /other/files/lib/wine/x86_64-unix/ntdll.so\n')
+        self.assertEqual(self.app.conflicting_prefix_runtimes(proc.parent), [123])
+        maps.write_text(f'0-1 r-xp 0 00:00 0 {self.app.RUNTIME}/lib/wine/x86_64-unix/ntdll.so\n')
+        self.assertEqual(self.app.conflicting_prefix_runtimes(proc.parent), [])
+        maps.write_text('')
+        (proc / 'exe').symlink_to('/other/files/bin/wineserver')
+        self.assertEqual(self.app.conflicting_prefix_runtimes(proc.parent), [123])
+        (proc / 'environ').write_bytes(b'WINEPREFIX=/unrelated\0')
+        self.assertEqual(self.app.conflicting_prefix_runtimes(proc.parent), [])
+
+    def test_candidate_retention_default_and_explicit_rollback(self):
+        wine = self.app.RUNTIME / 'bin/wine'
+        wine.parent.mkdir(parents=True)
+        wine.touch()
+        self.app.PROTON = True
+        self.app.RUNNER = 'lightroom-omarchy-proton'
+        (self.app.PREFIX.parent / 'profile.json').write_text(json.dumps({'windows_username': 'test'}))
+        (self.app.RUNTIME.parent / 'lightroom-omarchy-proton.json').write_text(json.dumps({
+            'recommended_environment': {'LIGHTROOM_OMARCHY_RETAIN_LOUPE': '1'}}))
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(self.app.environment()['LIGHTROOM_OMARCHY_RETAIN_LOUPE'], '1')
+            with patch.dict(os.environ, {'LRCC_RETAIN_LOUPE': '0'}):
+                self.assertEqual(self.app.environment()['LIGHTROOM_OMARCHY_RETAIN_LOUPE'], '0')
+            with patch.dict(os.environ, {'LRCC_RETAIN_LOUPE': 'invalid'}):
+                with self.assertRaises(RuntimeError):
+                    self.app.environment()
+
     def test_fractional_scale_and_invalid_scale(self):
         self.assertEqual(self.app.desktop_scale([{"name": "panel", "scale": 1.5, "focused": True}], []), 144)
         with self.assertRaises(RuntimeError):

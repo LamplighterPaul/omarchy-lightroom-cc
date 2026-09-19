@@ -83,6 +83,22 @@ lightroom-omarchy-proton measure 30   # resource timeline for an existing sessio
 In performance mode, Shift+F2 records up to 60 seconds of MangoHud data locally.
 See [the reproducible test protocol](docs/performance-loop.md).
 
+The separate `11.7-3-rc1` candidate targets the photo's dark background repaint.
+Its [regression and warm-pacing measurements](docs/loupe-retention-2026-09-19.md)
+do not establish sustained display FPS or eliminate all menu stalls. Stage it
+using the Proton repository's pinned candidate recipe first. After closing
+Lightroom and stopping its prefix, select it explicitly:
+
+```sh
+lightroom-omarchy-proton --runtime lightroom-omarchy-proton-11.7-3-rc1 run-perf
+```
+
+The stable runtime remains the default. The launcher refuses to start a different
+runtime while that prefix has live Wine processes using another one. Candidate
+metadata enables photo retention; set `LRCC_RETAIN_LOUPE=0` for an explicit
+comparison. The selected runtime follows the usual silent Super+0 launch and
+desktop scaling rules. `LRCC_PREFIX` still selects an isolated prefix for tests.
+
 ## Credits and license
 
 Original launcher, diagnostics, build scripts, tests and documentation:

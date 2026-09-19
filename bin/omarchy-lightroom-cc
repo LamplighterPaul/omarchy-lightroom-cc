@@ -103,6 +103,14 @@ def environment():
             # Use this Proton build's replacements, including in migrated prefixes
             # that previously selected standalone native component experiments.
             env["WINEDLLOVERRIDES"] = env.get("WINEDLLOVERRIDES", "") + ";shcore,d2d1=b"
+            metadata = RUNTIME.parent / "lightroom-omarchy-proton.json"
+            defaults = json.loads(metadata.read_text()).get("recommended_environment", {}) if metadata.is_file() else {}
+            retain = env.get("LRCC_RETAIN_LOUPE", env.get("LIGHTROOM_OMARCHY_RETAIN_LOUPE",
+                             defaults.get("LIGHTROOM_OMARCHY_RETAIN_LOUPE")))
+            if retain is not None:
+                if retain not in ("0", "1"):
+                    raise RuntimeError("LRCC_RETAIN_LOUPE must be 0 or 1")
+                env["LIGHTROOM_OMARCHY_RETAIN_LOUPE"] = retain
             presentation = env.get("LRCC_PRESENTATION", "fast")
             if presentation not in ("fast", "upstream"):
                 raise RuntimeError("LRCC_PRESENTATION must be fast or upstream")
@@ -509,9 +517,50 @@ def restore_d2d():
     print("Restored the original Wine Direct2D component.")
 
 
+def selected_proton_runtime(name):
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", name):
+        raise RuntimeError("--runtime expects a directory name under the application runtimes directory")
+    runtime = DATA / "runtimes" / name
+    metadata = runtime / "lightroom-omarchy-proton.json"
+    if not metadata.is_file() or json.loads(metadata.read_text()).get("name") != "lightroom-omarchy-proton":
+        raise RuntimeError(f"Not a staged lightroom-omarchy-proton runtime: {name}")
+    return runtime / "files"
+
+
+def conflicting_prefix_runtimes(proc_root=Path('/proc')):
+    """Identify actually mapped Wine runtimes; do not infer liveness from files."""
+    conflicts = []
+    for proc in proc_root.glob('[0-9]*'):
+        try:
+            prefix = next((v[11:] for v in (proc / 'environ').read_bytes().split(b'\0')
+                           if v.startswith(b'WINEPREFIX=')), None)
+            if prefix is None or Path(os.fsdecode(prefix)).resolve() != PREFIX.resolve():
+                continue
+            if (proc / 'exe').is_symlink():
+                executable = (proc / 'exe').resolve()
+                if executable.name in ('wineserver', 'wineserver64') and not executable.is_relative_to(RUNTIME.resolve()):
+                    conflicts.append(int(proc.name))
+                    continue
+            for line in (proc / 'maps').read_text().splitlines():
+                fields = line.split(maxsplit=5)
+                if len(fields) < 6:
+                    continue
+                mapped = fields[5].removesuffix(' (deleted)')
+                if mapped.endswith(('/x86_64-unix/ntdll.so', '/i386-unix/ntdll.so')):
+                    if not Path(mapped).resolve().is_relative_to(RUNTIME.resolve()):
+                        conflicts.append(int(proc.name))
+                    break
+        except (OSError, ValueError):
+            continue
+    return conflicts
+
+
 def launch(exe, label, args):
     if not exe.is_file():
         raise RuntimeError(f"{label} is not installed: {exe}")
+    if RUNNER == "lightroom-omarchy-proton" and (conflicts := conflicting_prefix_runtimes()):
+        raise RuntimeError(f"This prefix still has processes using another runtime: {conflicts}. "
+                           "Close Lightroom and stop that prefix before switching runtimes.")
     def start(log):
         sync_display_scale(log)
         if RUNNER == "lightroom-omarchy-proton":
@@ -823,9 +872,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runner", choices=("adobe", "staging", "proton", "omarchy", "lightroom-omarchy-proton"), default="adobe")
     parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
+    parser.add_argument("--runtime", help="Staged lightroom-omarchy-proton runtime directory name")
     parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "repair-performance", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate", "run-perf", "stage-mangohud", "measure", "trace"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
+    if args.runtime and args.runner != "lightroom-omarchy-proton":
+        parser.error("--runtime is only supported by lightroom-omarchy-proton")
     if args.command in ("run", "run-perf", "run-debug", "cc", "install-cc", "experiment-webview") and dispatch_desktop():
         return
     GRAPHICS = args.graphics
@@ -838,7 +890,7 @@ def main():
     elif args.runner == "lightroom-omarchy-proton":
         PROTON = True
         PREFIX = DATA / "experiments/lightroom-omarchy-proton/prefix"
-        RUNTIME = DATA / "runtimes/lightroom-omarchy-proton/files"
+        RUNTIME = selected_proton_runtime(args.runtime) if args.runtime else DATA / "runtimes/lightroom-omarchy-proton/files"
         LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
         CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
     elif args.runner in ("proton", "omarchy"):
