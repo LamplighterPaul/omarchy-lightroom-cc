@@ -1,0 +1,88 @@
+{
+  "seconds": 10.11,
+  "cpu_percent": 8.6,
+  "rss_mib": 2720.6,
+  "pss_mib": 2539.2,
+  "gpu_resident_mib": 2587.6,
+  "exited_processes": 0,
+  "note": "100% CPU = one core. CPU covers surviving processes; PSS apportions shared pages. GPU allocations may overlap CPU memory and other clients; do not add them to PSS.",
+  "processes": [
+    {
+      "name": "lightroom.exe",
+      "cpu_percent": 5.04,
+      "rss_mib": 2449.5,
+      "pss_mib": 2410.0,
+      "gpu_resident_mib": 2577.6
+    },
+    {
+      "name": "explorer.exe",
+      "cpu_percent": 0.0,
+      "rss_mib": 110.1,
+      "pss_mib": 46.4,
+      "gpu_resident_mib": 10.0
+    },
+    {
+      "name": "wineserver",
+      "cpu_percent": 1.09,
+      "rss_mib": 21.2,
+      "pss_mib": 19.3,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "winedevice.exe",
+      "cpu_percent": 2.27,
+      "rss_mib": 28.6,
+      "pss_mib": 14.0,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "Adobe Crash Pro",
+      "cpu_percent": 0.1,
+      "rss_mib": 25.9,
+      "pss_mib": 11.8,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "plugplay.exe",
+      "cpu_percent": 0.0,
+      "rss_mib": 22.0,
+      "pss_mib": 8.6,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "services.exe",
+      "cpu_percent": 0.0,
+      "rss_mib": 13.6,
+      "pss_mib": 6.8,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "winedevice.exe",
+      "cpu_percent": 0.1,
+      "rss_mib": 14.6,
+      "pss_mib": 6.8,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "lsass.exe",
+      "cpu_percent": 0.0,
+      "rss_mib": 13.1,
+      "pss_mib": 5.9,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "rpcss.exe",
+      "cpu_percent": 0.0,
+      "rss_mib": 11.4,
+      "pss_mib": 5.0,
+      "gpu_resident_mib": 0.0
+    },
+    {
+      "name": "svchost.exe",
+      "cpu_percent": 0.0,
+      "rss_mib": 10.7,
+      "pss_mib": 4.5,
+      "gpu_resident_mib": 0.0
+    }
+  ]
+}

@@ -1,10 +1,18 @@
 # omarchy-lightroom-cc
 
 An open-source compatibility experiment by **[Paul Zammit](https://github.com/LamplighterPaul)**
-to run Adobe **Lightroom CC (cloud)** locally on Omarchy, with an isolated Wine
-setup and desktop integration.
+to run Adobe **Lightroom CC (cloud)** locally on Omarchy, with a dedicated GE-Proton runtime
+and desktop integration.
 
-**Status · 16 September 2026 · cloud library loads; sign-in survives restart**
+**Status · 19 September 2026 · custom Proton running; performance investigation active**
+
+[lightroom-omarchy-proton](https://github.com/LamplighterPaul/lightroom-omarchy-proton)
+now runs the signed-in cloud library through UMU and Steam Runtime 4, with
+2x monitor scaling and centered menu colours from the current Omarchy theme.
+The operator reports improved stability; dark flicker and choppy panning remain.
+See the [Proton migration and performance tools report](docs/proton-2026-09-19.md).
+The [earlier performance report](docs/performance-2026-09-19.md) covers the
+standalone Wine baseline. Neither 60/120 FPS nor native performance parity is verified.
 
 Genuine Adobe sign-in **succeeded**, and Lightroom now loads the cloud library
 and opens full-size photos. Disabling the optional AdobeGrowthSDK for Lightroom
@@ -59,11 +67,21 @@ cd omarchy-lightroom-cc
 make check
 ```
 
-Full GE-Proton through UMU and Steam Linux Runtime was tested on both Xwayland
-and native Wayland. Its sign-in window stayed blank. The successful sign-in
-combination used standalone Wine Staging, DXVK and Adobe's own Chromium helper.
-Android and macOS compatibility remain untested fallback ideas. Photoshop has
-not been validated by this project.
+The custom Proton build preserves the original Windows username for encrypted
+credential migration and implements the firewall COM enumerator that caused a
+startup crash. Fresh Proton sign-in remains a separate unverified workflow.
+The preserved standalone Wine installation is available for rollback.
+
+```sh
+make install
+lightroom-omarchy-proton run          # silently on Super+0
+lightroom-omarchy-proton stage-mangohud
+lightroom-omarchy-proton run-perf     # close Lightroom first; optional overlay
+lightroom-omarchy-proton measure 30   # resource timeline for an existing session
+```
+
+In performance mode, Shift+F2 records up to 60 seconds of MangoHud data locally.
+See [the reproducible test protocol](docs/performance-loop.md).
 
 ## Credits and license
 

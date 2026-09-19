@@ -1,5 +1,11 @@
 # Experimental Direct2D patch
 
+The separate `shcore-monitor-scale.patch` implements the monitor scale API used
+by Lightroom. It is a Wine-derived LGPL-2.1-or-later change, developed here against
+Valve Wine commit `46b29104e3741fe23bf5e2547196a253aab88c89` and built for the local
+component test against Wine 11.10. See `scripts/build-shcore.py` and the
+[performance report](../docs/performance-2026-09-19.md). It does not change color handling.
+
 Extracted from 6im0n/lightroom-classic-on-linux commit
 `7df91da9301dfb31eb228abac76972a9081e3fd2`,
 `resources/patches/wine/d2d1-lightroom.patch` (effect.c hunk only).

@@ -1,0 +1,5 @@
+round_trips=20000 elapsed_ms=209.734
+round_trips=20000 elapsed_ms=193.843
+round_trips=20000 elapsed_ms=200.161
+round_trips=20000 elapsed_ms=189.839
+round_trips=20000 elapsed_ms=180.794

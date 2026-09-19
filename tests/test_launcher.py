@@ -35,6 +35,91 @@ class LauncherTest(unittest.TestCase):
         self.assertEqual(env["WINE"], str(wine))
         self.assertEqual(env["WINESERVER"], str(wine.parent / "wineserver"))
 
+    def test_scale_follows_destination_monitor_not_current_focus(self):
+        monitors = [{"name": "internal", "scale": 2, "focused": False},
+                    {"name": "external", "scale": 1, "focused": True}]
+        self.assertEqual(self.app.desktop_scale(monitors, [{"id": 10, "monitor": "internal"}]), 192)
+        self.assertEqual(self.app.desktop_scale(monitors, []), 96)
+
+    def test_fractional_scale_and_invalid_scale(self):
+        self.assertEqual(self.app.desktop_scale([{"name": "panel", "scale": 1.5, "focused": True}], []), 144)
+        with self.assertRaises(RuntimeError):
+            self.app.desktop_scale([{"name": "panel", "scale": 0, "focused": True}], [])
+
+    def test_theme_rejects_registry_injection(self):
+        palette = {key: "#1a1b26" for key in ("background", "foreground", "accent",
+                    "lighter_background", "dark_background", "dark_foreground")}
+        registry = self.app.theme_registry(palette)
+        self.assertIn('"Menu"="26 27 38"', registry)
+        palette['accent'] = '#ffffff"\n[HKEY_CURRENT_USER\\Unrelated]'
+        with self.assertRaises(ValueError):
+            self.app.theme_registry(palette)
+
+    def test_full_proton_preserves_migrated_identity(self):
+        wine = self.app.RUNTIME / "bin/wine"
+        wine.parent.mkdir(parents=True)
+        wine.touch()
+        self.app.PROTON = True
+        self.app.RUNNER = "lightroom-omarchy-proton"
+        (self.app.PREFIX.parent / "profile.json").write_text(json.dumps({"windows_username": "original-user"}))
+        with patch.dict(os.environ, {"LIGHTROOM_OMARCHY_USERNAME": "unrelated-user"}):
+            env = self.app.environment()
+        self.assertEqual(env["LIGHTROOM_OMARCHY_USERNAME"], "original-user")
+        self.assertEqual(env["LIGHTROOM_OMARCHY_CENTER_MENUS"], "1")
+        self.assertEqual(env["PROTONPATH"], str(self.app.RUNTIME.parent))
+
+    def test_dispatch_rejects_hyprland_error_even_on_zero_exit(self):
+        with patch.dict(os.environ, {"HYPRLAND_INSTANCE_SIGNATURE": "test", "LRCC_DISPATCHED": "0"}), \
+             patch.object(self.app.subprocess, "check_output", return_value="error: invalid rule"):
+            with self.assertRaisesRegex(RuntimeError, "rejected"):
+                self.app.dispatch_desktop()
+
+    def performance_fixture(self):
+        archive = self.root / "graphics.tar.gz"
+        with tarfile.open(archive, "w:gz") as t:
+            for arch in ("x86_64-windows", "i386-windows"):
+                for component, names in (("dxvk", ("dxgi.dll", "d3d11.dll")),
+                                         ("vkd3d-proton", ("d3d12.dll", "d3d12core.dll"))):
+                    for name in names:
+                        member = tarfile.TarInfo(f"bundle/files/lib/wine/{component}/{arch}/{name}")
+                        member.size = 2
+                        t.addfile(member, io.BytesIO(b"MZ"))
+        shcore = self.app.DATA / "patches/shcore.dll"
+        shcore.parent.mkdir(parents=True)
+        shcore.write_bytes(b"MZ-shcore")
+        shcore.with_suffix('.json').write_text(json.dumps({"dll_sha256": self.app.digest(shcore)}))
+        for directory in ("system32", "syswow64"):
+            (self.app.PREFIX / "drive_c/windows" / directory).mkdir(parents=True)
+        prefs = self.app.PREFIX / "drive_c/users/test/AppData/Roaming/Adobe/Lightroom CC/Preferences/Lightroom CC Preferences.agprefs"
+        prefs.parent.mkdir(parents=True)
+        prefs.write_text('gpu4setting = "auto",\nuseGPUforComputeCB = false,\nuseGPUforDisplayCB = true,\n')
+        return archive, prefs
+
+    def test_performance_profile_validates_preferences_before_stopping_or_writing(self):
+        archive, prefs = self.performance_fixture()
+        prefs.write_text('gpu4setting = "auto",\n')
+        with patch.object(self.app, "fetch", return_value=archive), \
+             patch.object(self.app, "manifest", return_value={"omarchy-proton": {"filename": "bundle.tar.gz"}}), \
+             patch.object(self.app, "run") as execute:
+            with self.assertRaisesRegex(RuntimeError, "Missing or ambiguous preference"):
+                self.app.repair_performance()
+        execute.assert_not_called()
+        self.assertFalse((self.app.PREFIX / "drive_c/windows/system32/shcore.dll").exists())
+
+    def test_performance_profile_preserves_first_preferences_backup(self):
+        archive, prefs = self.performance_fixture()
+        original = prefs.read_text()
+        with patch.object(self.app, "fetch", return_value=archive), \
+             patch.object(self.app, "manifest", return_value={"omarchy-proton": {"filename": "bundle.tar.gz"}}), \
+             patch.object(self.app, "run"), patch.object(self.app, "wine"), \
+             patch.object(self.app, "environment", return_value={}), contextlib.redirect_stdout(io.StringIO()):
+            self.app.repair_performance()
+            self.app.repair_performance()
+        self.assertIn('useGPUforComputeCB = true', prefs.read_text())
+        backups = list((self.app.DATA / "patches/performance-backups").rglob('*.agprefs'))
+        self.assertEqual(len(backups), 1)
+        self.assertEqual(backups[0].read_text(), original)
+
     def test_download_checksum_failure_never_promotes_partial(self):
         spec = {"asset": {"filename": "asset.bin", "url": "https://example.invalid/asset", "sha256": hashlib.sha256(b"good").hexdigest()}}
         def download(args):

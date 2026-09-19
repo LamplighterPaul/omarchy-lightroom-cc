@@ -1,0 +1,32 @@
+diff --git i/dlls/shcore/main.c w/dlls/shcore/main.c
+index 426a842..65a68b6 100644
+--- i/dlls/shcore/main.c
++++ w/dlls/shcore/main.c
+@@ -80,9 +80,26 @@ HRESULT WINAPI GetDpiForMonitor(HMONITOR monitor, MONITOR_DPI_TYPE type, UINT *x
+ 
+ HRESULT WINAPI GetScaleFactorForMonitor(HMONITOR monitor, DEVICE_SCALE_FACTOR *scale)
+ {
+-    FIXME("(%p %p): stub\n", monitor, scale);
++    static const unsigned int factors[] = {100, 120, 125, 140, 150, 160, 175,
++                                          180, 200, 225, 250, 300, 350, 400, 450, 500};
++    DPI_AWARENESS_CONTEXT previous;
++    UINT x, y, percent, i, best = 0;
++    DWORD error;
++    BOOL result;
+ 
++    TRACE("(%p %p)\n", monitor, scale);
++    if (!scale) return E_INVALIDARG;
+     *scale = SCALE_100_PERCENT;
++    /* The scale is a monitor property, independent of the caller's awareness. */
++    previous = SetThreadDpiAwarenessContext( DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE );
++    result = GetDpiForMonitorInternal( monitor, MDT_EFFECTIVE_DPI, &x, &y );
++    error = GetLastError();
++    if (previous) SetThreadDpiAwarenessContext( previous );
++    if (!result) return HRESULT_FROM_WIN32( error );
++    percent = MulDiv( x, 100, 96 );
++    for (i = 1; i < ARRAY_SIZE(factors); ++i)
++        if (abs((int)percent - (int)factors[i]) < abs((int)percent - (int)factors[best])) best = i;
++    *scale = factors[best];
+     return S_OK;
+ }
+ 

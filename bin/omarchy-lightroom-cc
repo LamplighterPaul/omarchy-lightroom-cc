@@ -7,12 +7,15 @@ import io
 import json
 import lzma
 import os
+import re
+import shlex
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tarfile
 import tempfile
+import tomllib
 import zipfile
 
 APP = "omarchy-lightroom-cc"
@@ -22,6 +25,7 @@ RUNTIME = DATA / "runtimes/wine-adobe-11.10"
 PROTON = False
 GRAPHICS = "x11"
 RUNNER = "adobe"
+WORKSPACE = 10  # Omarchy's Super+0.
 TOOLS = DATA / "tools/usr/bin"
 SCRIPT = Path(__file__).resolve()
 MANIFEST = next((p for p in (SCRIPT.parent.parent / "manifest.json",
@@ -86,10 +90,55 @@ def environment():
                WINEDEBUG=env.get("LRCC_WINEDEBUG", "-all,err+all"))
     if PROTON:
         env.update(PROTONPATH=str(RUNTIME.parent), GAMEID="umu-default",
-                   PROTON_LOG="1", PROTON_LOG_DIR=str(DATA / "logs"),
+                   PROTON_LOG="1" if "LRCC_WINEDEBUG" in env else "0", PROTON_LOG_DIR=str(DATA / "logs"),
+                   PROTON_USE_XALIA="0",
                    UMU_LOG="info", PROTONFIXES_DISABLE="1",
                    PROTON_ENABLE_WAYLAND="1" if GRAPHICS == "wayland" else "0")
+        if RUNNER == "lightroom-omarchy-proton":
+            profile = json.loads((PREFIX.parent / "profile.json").read_text())
+            env.update(LIGHTROOM_OMARCHY_USERNAME=profile["windows_username"],
+                       LIGHTROOM_OMARCHY_CENTER_MENUS="1", GAMEID="umu-lightroom-omarchy-proton")
+            # Use this Proton build's replacements, including in migrated prefixes
+            # that previously selected standalone native component experiments.
+            env["WINEDLLOVERRIDES"] = env.get("WINEDLLOVERRIDES", "") + ";shcore,d2d1=b"
+    if env.get("LRCC_PERF") == "1":
+        layers = DATA / "tools/mangohud/layers"
+        if (layers / "MangoHud.x86_64.json").is_file():
+            output = DATA / "measurements/mangohud"
+            output.mkdir(parents=True, exist_ok=True)
+            env.update(MANGOHUD="1", VK_ADD_IMPLICIT_LAYER_PATH=str(layers),
+                       MANGOHUD_CONFIGFILE=str(DATA / "performance.conf"))
+        else:
+            env["DXVK_HUD"] = "fps,frametimes,memory,gpuload,compiler,scale=2"
     return env
+
+
+def stage_mangohud():
+    """Install a pinned, application-local Vulkan overlay, without system changes."""
+    archive = fetch("mangohud")
+    root = DATA / "tools/mangohud"
+    root.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="lrcc-hud-") as temporary:
+        with tarfile.open(archive) as package:
+            package.extractall(temporary, filter="data")
+        with tarfile.open(Path(temporary) / "MangoHud/MangoHud-package.tar") as package:
+            package.extractall(root, filter="data")
+    layers = root / "layers"
+    layers.mkdir(exist_ok=True)
+    # Lightroom is 64-bit; scope discovery to this launcher and architecture.
+    source = root / "usr/share/vulkan/implicit_layer.d/MangoHud.x86_64.json"
+    layer = json.loads(source.read_text())
+    layer["layer"]["library_path"] = str(root / "usr/lib/mangohud/lib64/libMangoHud.so")
+    (layers / source.name).write_text(json.dumps(layer, indent=2) + "\n")
+    output = DATA / "measurements/mangohud"
+    output.mkdir(parents=True, exist_ok=True)
+    config = DATA / "performance.conf"
+    if not config.exists():
+        config.write_text("fps\nframetime\nframe_timing\ncpu_stats\ngpu_stats\nram\nvram\n"
+                          "font_size=28\nposition=top-left\nlog_interval=0\nlog_duration=60\n"
+                          "toggle_logging=Shift_L+F2\npermit_upload=0\n"
+                          f"output_folder={output}\n")
+    print("MangoHud staged. Run lightroom-omarchy-proton run-perf; Shift+F2 records 60 seconds.")
 
 
 def wine(*args, **kwargs):
@@ -436,7 +485,201 @@ def restore_d2d():
 def launch(exe, label, args):
     if not exe.is_file():
         raise RuntimeError(f"{label} is not installed: {exe}")
-    logged(label, lambda log: wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log))
+    def start(log):
+        sync_display_scale(log)
+        if RUNNER == "lightroom-omarchy-proton":
+            sync_theme(log)
+        wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log)
+    logged(label, start)
+
+
+def desktop_scale(monitors, workspaces):
+    """Use the destination workspace's monitor, falling back to the focused one."""
+    target = next((w.get("monitor") for w in workspaces if w.get("id") == WORKSPACE), None)
+    monitor = next((m for m in monitors if m.get("name") == target), None)
+    monitor = monitor or next((m for m in monitors if m.get("focused")), None)
+    if not monitor:
+        raise RuntimeError("Cannot determine Lightroom's target monitor scale")
+    scale = float(monitor["scale"])
+    if not 0.5 <= scale <= 4:
+        raise RuntimeError(f"Invalid monitor scale: {scale}")
+    return round(96 * scale)
+
+
+def theme_registry(palette):
+    """Only Windows chrome/system controls; Adobe paints its own photo interface."""
+    def rgb(key):
+        value = palette[key]
+        if not isinstance(value, str) or not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+            raise ValueError(f"Invalid Omarchy theme colour: {key}")
+        return " ".join(str(int(value[n:n+2], 16)) for n in (1, 3, 5))
+    keys = {"Menu": "background", "MenuBar": "background", "MenuText": "foreground",
+            "MenuHilight": "accent", "Hilight": "accent", "HilightText": "background",
+            "ButtonFace": "background", "ButtonText": "foreground",
+            "ButtonHilight": "lighter_background", "ButtonShadow": "dark_background",
+            "GrayText": "dark_foreground", "Window": "background", "WindowText": "foreground"}
+    lines = ["Windows Registry Editor Version 5.00", "", r"[HKEY_CURRENT_USER\Control Panel\Colors]"]
+    lines += [f'"{name}"="{rgb(key)}"' for name, key in keys.items()]
+    lines += ["", r"[HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics]",
+              '"MenuHeight"="-420"', "",
+              r"[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ThemeManager]",
+              '"ThemeActive"="1"', ""]
+    return "\r\n".join(lines)
+
+
+def sync_theme(log):
+    state = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state"))
+    colours = state / "omarchy/current/theme/colors.toml"
+    if not colours.is_file():
+        print("Omarchy palette unavailable; retaining current Windows menu colours.", flush=True)
+        return
+    registry = theme_registry(tomllib.loads(colours.read_text()))
+    # Migrating standalone Wine can remove external-font registrations. Adobe's
+    # DirectWrite layouts require Tahoma even though Proton already ships it.
+    for name in ("tahoma.ttf", "tahomabd.ttf"):
+        if not (RUNTIME / "share/wine/fonts" / name).is_file():
+            raise RuntimeError(f"Proton is missing its bundled font: {name}")
+    for key in (r"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Fonts",
+                r"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Fonts"):
+        registry += (f"\r\n[{key}]\r\n" + '"Tahoma (TrueType)"="tahoma.ttf"\r\n'
+                     + '"Tahoma Bold (TrueType)"="tahomabd.ttf"\r\n')
+    stamp = hashlib.sha256(registry.encode()).hexdigest()
+    marker = PREFIX.parent / "theme.json"
+    if marker.exists() and json.loads(marker.read_text()).get("sha256") == stamp:
+        return
+    backup = PREFIX.parent / "theme-backup"
+    backup.mkdir(exist_ok=True)
+    for label, key in (("colours", r"HKCU\Control Panel\Colors"),
+                       ("metrics", r"HKCU\Control Panel\Desktop\WindowMetrics"),
+                       ("theme", r"HKCU\Software\Microsoft\Windows\CurrentVersion\ThemeManager")):
+        saved = backup / f"{label}.reg"
+        if not saved.exists():
+            wine("reg", "export", key, "Z:" + str(saved).replace("/", "\\"), "/y", stdout=log, stderr=log)
+    path = PREFIX.parent / "omarchy-theme.reg"
+    path.write_text(registry, encoding="utf-16")
+    wine("reg", "import", "Z:" + str(path).replace("/", "\\"), stdout=log, stderr=log)
+    marker.write_text(json.dumps({"sha256": stamp, "source": str(colours)}, indent=2) + "\n")
+    print("Applied current Omarchy palette to Windows menus and dialogs.", flush=True)
+
+
+def sync_display_scale(log):
+    if not os.environ.get("HYPRLAND_INSTANCE_SIGNATURE"):
+        return
+    monitors = json.loads(subprocess.check_output(["hyprctl", "monitors", "-j"], text=True))
+    workspaces = json.loads(subprocess.check_output(["hyprctl", "workspaces", "-j"], text=True))
+    dpi = desktop_scale(monitors, workspaces)
+    # When Xwayland itself scales windows, Wine must not apply the scale twice.
+    if GRAPHICS == "x11":
+        option = json.loads(subprocess.check_output(
+            ["hyprctl", "getoption", "xwayland:force_zero_scaling", "-j"], text=True))
+        if not option.get("bool", option.get("int", False)):
+            dpi = 96
+    print(f"Desktop scale: {dpi / 96:g}x ({dpi} Wine DPI)", flush=True)
+    wine("reg", "add", r"HKCU\Control Panel\Desktop", "/v", "LogPixels",
+         "/t", "REG_DWORD", "/d", str(dpi), "/f", stdout=log, stderr=log)
+
+
+def dispatch_desktop():
+    """Preserve shell arguments and caller configuration across Hyprland's shell."""
+    if not os.environ.get("HYPRLAND_INSTANCE_SIGNATURE") or os.environ.get("LRCC_DISPATCHED") == "1":
+        return False
+    variables = [f"{k}={v}" for k, v in os.environ.items()
+                 if k.startswith("LRCC_") or k in ("DISPLAY", "WAYLAND_DISPLAY", "XAUTHORITY")]
+    command = shlex.join(["env", *variables, "LRCC_DISPATCHED=1", str(SCRIPT), *sys.argv[1:]])
+    # json quoting is used for a Lua string, not shell escaping.
+    expression = f'hl.dsp.exec_cmd({json.dumps(command, ensure_ascii=False)}, {{workspace="10 silent", no_initial_focus=true}})'
+    result = subprocess.check_output(["hyprctl", "dispatch", expression], text=True)
+    if result.strip() != "ok":
+        raise RuntimeError(f"Hyprland rejected Lightroom launch: {result.strip()}")
+    print("Launched on Super+0 (workspace 10), without switching focus.")
+    return True
+
+
+def stage_omarchy():
+    archive = fetch("omarchy-proton")
+    with tarfile.open(archive) as package:
+        package.extractall(DATA / "runtimes", filter="data")
+    destination = DATA / "experiments/omarchy-proton/prefix"
+    source = DATA / "experiments/wine-staging-11.17/prefix"
+    if not (source / "system.reg").exists():
+        raise RuntimeError("A working staging prefix is required for the comparison")
+    if not destination.exists():
+        # Refuse to copy a live database/registry snapshot.
+        for proc in Path("/proc").glob("[0-9]*/environ"):
+            try:
+                if f"WINEPREFIX={source}".encode() in proc.read_bytes().split(b"\0"):
+                    raise RuntimeError("Close the staging runner before copying its prefix")
+            except (PermissionError, ProcessLookupError, FileNotFoundError):
+                pass
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        run(["cp", "-a", "--reflink=auto", source, destination])
+    print("Omarchy Proton candidate staged separately from the working installation.")
+
+
+def repair_performance():
+    """Install the validated component experiment in the selected, closed prefix."""
+    if PROTON:
+        raise RuntimeError("This component profile is for standalone Wine; use --runner staging")
+    shcore = DATA / "patches/shcore.dll"
+    metadata = json.loads(shcore.with_suffix(".json").read_text())
+    if digest(shcore) != metadata["dll_sha256"]:
+        raise RuntimeError("Monitor-scale DLL checksum mismatch; rebuild it first")
+    archive = fetch("omarchy-proton")
+    bundle = manifest()["omarchy-proton"]["filename"].removesuffix(".tar.gz")
+    payload = {}
+    with tarfile.open(archive) as package:
+        for arch, directory in (("x86_64-windows", "system32"), ("i386-windows", "syswow64")):
+            for component, names in (("dxvk", ("dxgi.dll", "d3d11.dll")),
+                                     ("vkd3d-proton", ("d3d12.dll", "d3d12core.dll"))):
+                for name in names:
+                    member = package.getmember(f"{bundle}/files/lib/wine/{component}/{arch}/{name}")
+                    if not member.isfile():
+                        raise RuntimeError("Unexpected graphics payload")
+                    payload[Path("drive_c/windows") / directory / name] = package.extractfile(member).read()
+    payload[Path("drive_c/windows/system32/shcore.dll")] = shcore.read_bytes()
+    for proc in Path("/proc").glob("[0-9]*"):
+        try:
+            if (f"WINEPREFIX={PREFIX}".encode() in (proc / "environ").read_bytes().split(b"\0")
+                    and (proc / "comm").read_text().strip().lower() == "lightroom.exe"):
+                raise RuntimeError("Close Lightroom normally before applying the performance profile")
+        except (FileNotFoundError, PermissionError, ProcessLookupError):
+            continue
+    preferences = list(PREFIX.glob("drive_c/users/*/AppData/Roaming/Adobe/Lightroom CC/Preferences/Lightroom CC Preferences.agprefs"))
+    preferences = list({p.resolve(): p for p in preferences}.values())
+    if len(preferences) != 1:
+        raise RuntimeError("Expected one Lightroom preferences file")
+    prefs = preferences[0]
+    text = prefs.read_text()
+    for key, value in (("gpu4setting", '"custom"'), ("useGPUforComputeCB", "true"),
+                       ("useGPUforDisplayCB", "true")):
+        text, count = re.subn(r"(?m)^(\s*" + key + r"\s*=\s*)[^,]+,", r"\g<1>" + value + ",", text)
+        if count != 1:
+            raise RuntimeError(f"Missing or ambiguous preference: {key}")
+    try:
+        run([RUNTIME / "bin/wineserver", "-k"], env=environment())
+    except subprocess.CalledProcessError as exc:
+        if exc.returncode != 1:  # wineserver returns 1 when this prefix has no server.
+            raise
+    backup = DATA / "patches/performance-backups" / hashlib.sha256(str(PREFIX).encode()).hexdigest()[:16]
+    backup.mkdir(parents=True, exist_ok=True, mode=0o700)
+    for relative in [*payload, prefs.relative_to(PREFIX), Path("user.reg")]:
+        target = PREFIX / relative
+        original = backup / relative
+        if target.exists() and not original.exists():
+            original.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(target, original)
+    for relative, content in payload.items():
+        target = PREFIX / relative
+        temporary = target.with_suffix(".dll.new")
+        temporary.write_bytes(content)
+        temporary.replace(target)
+    prefs.write_text(text)
+    wine("reg", "add", r"HKCU\Software\Wine\AppDefaults\lightroom.exe\DllOverrides",
+         "/v", "shcore", "/d", "native,builtin", "/f")
+    (backup / "profile.json").write_text(json.dumps({"prefix": str(PREFIX),
+        "graphics": manifest()["omarchy-proton"], "scale": metadata,
+        "gpu_image_processing": True, "interactive_performance_verified": False}, indent=2) + "\n")
+    print(f"Installed graphics, DPI and GPU-processing profile. Originals: {backup}")
 
 
 def repair_growth_sdk():
@@ -533,7 +776,8 @@ def integrate():
     # The executable path in a desktop entry uses its own escaping rules.
     def quote(value):
         return '"' + str(value).replace("\\", "\\\\").replace('"', '\\"').replace("`", "\\`").replace("$", "\\$").replace("%", "%%") + '"'
-    (dest / f"{APP}.desktop").write_text(f'[Desktop Entry]\nType=Application\nName=Lightroom CC\n'
+    name = "Lightroom (Omarchy Proton)" if RUNNER == "lightroom-omarchy-proton" else "Lightroom CC"
+    (dest / f"{APP}.desktop").write_text(f'[Desktop Entry]\nType=Application\nName={name}\n'
         f'Comment=Adobe Lightroom CC on Omarchy\nExec=env {quote("LRCC_DATA=" + str(DATA))} {quote(SCRIPT)} --runner {RUNNER} --graphics {GRAPHICS} run\n'
         'Icon=camera-photo\nTerminal=false\nCategories=Graphics;Photography;\nStartupNotify=true\n')
     print(f"Installed {dest / (APP + '.desktop')}")
@@ -542,11 +786,13 @@ def integrate():
 def main():
     global PREFIX, RUNTIME, LR, CC, PROTON, GRAPHICS, RUNNER
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--runner", choices=("adobe", "staging", "proton"), default="adobe")
+    parser.add_argument("--runner", choices=("adobe", "staging", "proton", "omarchy", "lightroom-omarchy-proton"), default="adobe")
     parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
-    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate"))
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "repair-performance", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate", "run-perf", "stage-mangohud", "measure"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
+    if args.command in ("run", "run-perf", "run-debug", "cc", "install-cc", "experiment-webview") and dispatch_desktop():
+        return
     GRAPHICS = args.graphics
     RUNNER = args.runner
     if args.runner == "staging":
@@ -554,13 +800,33 @@ def main():
         RUNTIME = DATA / "runtimes/wine-staging-11.17/usr"
         LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
         CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
-    elif args.runner == "proton":
+    elif args.runner == "lightroom-omarchy-proton":
         PROTON = True
-        PREFIX = DATA / "experiments/proton-ge/prefix"
-        RUNTIME = DATA / "runtimes/GE-Proton11-6-x86_64/files"
+        PREFIX = DATA / "experiments/lightroom-omarchy-proton/prefix"
+        RUNTIME = DATA / "runtimes/lightroom-omarchy-proton/files"
+        LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
+        CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
+    elif args.runner in ("proton", "omarchy"):
+        PROTON = True
+        PREFIX = DATA / ("experiments/omarchy-proton/prefix" if args.runner == "omarchy" else "experiments/proton-ge/prefix")
+        bundle = manifest()["omarchy-proton" if args.runner == "omarchy" else "proton-ge"]["filename"].removesuffix(".tar.gz")
+        RUNTIME = DATA / "runtimes" / bundle / "files"
+        LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
+        CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
+    if os.environ.get("LRCC_PREFIX"):
+        PREFIX = Path(os.environ["LRCC_PREFIX"]).expanduser().resolve()
         LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
         CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
     if args.command == "doctor": doctor()
+    elif args.command == "stage-mangohud": stage_mangohud()
+    elif args.command == "measure":
+        monitor = next((p for p in (SCRIPT.parent.parent / "diagnostics/monitor.py",
+            SCRIPT.parent.parent / "share" / APP / "diagnostics/monitor.py") if p.is_file()), None)
+        if monitor is None:
+            raise RuntimeError("Performance recorder missing; run make install")
+        seconds = args.args[0] if args.args else "30"
+        run([sys.executable, monitor, PREFIX, "--seconds", seconds,
+             "--output", DATA / "measurements"])
     elif args.command == "status": print(json.dumps(status(), indent=2))
     elif args.command == "fetch": bootstrap()
     elif args.command == "prepare": prepare()
@@ -575,8 +841,10 @@ def main():
     elif args.command == "repair-dxvk": repair_dxvk()
     elif args.command == "repair-growth-sdk": repair_growth_sdk()
     elif args.command == "repair-d3d12": repair_d3d12()
+    elif args.command == "repair-performance": repair_performance()
     elif args.command == "stage-webview-148": stage_webview148()
-    elif args.command == "stage-proton": stage_proton()
+    elif args.command == "stage-proton":
+        stage_omarchy() if args.runner == "omarchy" else stage_proton()
     elif args.command == "stage-staging": stage_staging()
     elif args.command == "stage-adobe-browser": stage_adobe_browser()
     elif args.command == "use-installed-webview": select_webview()
@@ -597,6 +865,9 @@ def main():
     elif args.command == "install-cc": install_cc(args.args[0] if args.args else None)
     elif args.command == "cc": launch(CC, "creative-cloud", ["--disable-gpu", "--disable-gpu-compositing", *args.args])
     elif args.command == "run": launch(LR, "lightroom", args.args)
+    elif args.command == "run-perf":
+        os.environ["LRCC_PERF"] = "1"
+        launch(LR, "lightroom-performance", args.args)
     elif args.command == "run-debug":
         os.environ["LRCC_WINEDEBUG"] = "-all,+seh,+loaddll,warn+d2d,fixme+d2d,err+all"
         launch(LR, "lightroom-debug", args.args)

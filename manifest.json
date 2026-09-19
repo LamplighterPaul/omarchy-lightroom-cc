@@ -76,5 +76,18 @@
     "filename": "wine-staging-11.17-1-x86_64.pkg.tar.zst",
     "url": "https://stable-mirror.omarchy.org/extra/os/x86_64/wine-staging-11.17-1-x86_64.pkg.tar.zst",
     "sha256": "d4f8c250128c95abe4dbe0e5d3cdedd7fb4a88706a92b3e30fb85c42f1b95b74"
+  },
+  "omarchy-proton": {
+    "filename": "GE-Proton11-7-x86_64.tar.gz",
+    "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton11-7/GE-Proton11-7-x86_64.tar.gz",
+    "sha256": "c5448b76a230384e2d7bc6beb5ccb97bafb7e2c3b6c527cb03a1a546bbcb00a0",
+    "upstream_tag": "GE-Proton11-7",
+    "source_commit": "c191f35dcebbeccfacd3b4c6f6eea026e588c1c2",
+    "status": "candidate; upstream binary, not a custom build"
+  },
+  "mangohud": {
+    "filename": "MangoHud-0.8.4.r0.g992103e.tar.gz",
+    "url": "https://github.com/flightlessmango/MangoHud/releases/download/v0.8.4/MangoHud-0.8.4.r0.g992103e.tar.gz",
+    "sha256": "aa0b2a009552f5e7c50baabf361267a79ea5e5c0fea440786f3b202d51f57753"
   }
 }

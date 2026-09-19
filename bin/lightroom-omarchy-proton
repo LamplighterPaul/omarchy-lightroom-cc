@@ -1,0 +1,3 @@
+#!/bin/sh
+# Full Proton via UMU/Steam Linux Runtime. Legacy runners remain explicit options.
+exec "$(dirname "$0")/omarchy-lightroom-cc" --runner lightroom-omarchy-proton "$@"

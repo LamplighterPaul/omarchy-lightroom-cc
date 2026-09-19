@@ -77,6 +77,7 @@ static BOOL CALLBACK window(HWND wnd, LPARAM unused) {
     if (IsWindowVisible(wnd)) {
         wchar_t cls[128]; RECT r; GetClassNameW(wnd, cls, 128); GetWindowRect(wnd, &r);
         wprintf(L"Window %p class %ls rect %ld,%ld %ldx%ld\n", (void*)wnd,cls,r.left,r.top,r.right-r.left,r.bottom-r.top);
+        printf("DPI: window=%u system=%u\n", GetDpiForWindow(wnd), GetDpiForSystem());
         if (responsiveness && !wcscmp(cls, L"Lightroom CC Main Window")) {
             DWORD_PTR reply = 0;
             ULONGLONG start = GetTickCount64();
