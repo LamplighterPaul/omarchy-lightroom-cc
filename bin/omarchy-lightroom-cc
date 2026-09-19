@@ -84,6 +84,7 @@ def environment():
     if not (RUNTIME / "bin/wine").is_file():
         raise RuntimeError("Runtime missing. Run: omarchy-lightroom-cc fetch")
     env = os.environ.copy()
+    mango_limiter = False
     env.update(WINEPREFIX=str(PREFIX), WINEARCH="win64", WINE=str(RUNTIME / "bin/wine"),
                WINESERVER=str(RUNTIME / "bin/wineserver"),
                PATH=f"{RUNTIME / 'bin'}:{TOOLS}:{env.get('PATH', '')}",
@@ -106,19 +107,34 @@ def environment():
             if presentation not in ("fast", "upstream"):
                 raise RuntimeError("LRCC_PRESENTATION must be fast or upstream")
             if presentation == "fast":
+                limiter = env.get("LRCC_LIMITER", "dxvk")
+                if limiter not in ("dxvk", "mangohud"):
+                    raise RuntimeError("LRCC_LIMITER must be dxvk or mangohud")
+                mango_limiter = limiter == "mangohud"
+                if mango_limiter and not (DATA / "tools/mangohud/layers/MangoHud.x86_64.json").is_file():
+                    raise RuntimeError("MangoHud limiter missing; run lightroom-omarchy-proton stage-mangohud")
                 # Measured on the isolated 120 Hz fixture. Let the compositor
                 # schedule display updates; bound production to the monitor.
-                options = f"dxgi.syncInterval = 0; dxgi.maxFrameRate = {PRESENT_HZ}"
+                options = f"dxgi.syncInterval = 0; dxgi.maxFrameRate = {0 if mango_limiter else PRESENT_HZ}"
                 if env.get("DXVK_CONFIG"):
                     options += "; " + env["DXVK_CONFIG"]
                 env["DXVK_CONFIG"] = options
-    if env.get("LRCC_PERF") == "1":
+    if env.get("LRCC_PERF") == "1" or mango_limiter:
         layers = DATA / "tools/mangohud/layers"
         if (layers / "MangoHud.x86_64.json").is_file():
             output = DATA / "measurements/mangohud"
             output.mkdir(parents=True, exist_ok=True)
             env.update(MANGOHUD="1", VK_ADD_IMPLICIT_LAYER_PATH=str(layers),
                        MANGOHUD_CONFIGFILE=env.get("LRCC_HUD_CONFIG", str(DATA / "performance.conf")))
+            if mango_limiter:
+                # MangoHud ignores its config file when an env config exists
+                # unless read_cfg is explicit. Preserve logging and 2x HUD sizing.
+                options = f"read_cfg=1,fps_limit={PRESENT_HZ},fps_limit_method=late"
+                if env.get("LRCC_PERF") != "1":
+                    options += ",no_display=1"
+                if env.get("MANGOHUD_CONFIG"):
+                    options += "," + env["MANGOHUD_CONFIG"]
+                env["MANGOHUD_CONFIG"] = options
         else:
             env["DXVK_HUD"] = "fps,frametimes,memory,gpuload,compiler,scale=2"
     return env

@@ -1,0 +1,44 @@
+[
+  {
+    "case": "mango120",
+    "config": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 0; fps_limit=120\nfps_limit_method=late\n",
+    "runs": [
+      {
+        "samples": 980,
+        "p50_ms": 8.331,
+        "p95_ms": 8.567,
+        "p99_ms": 8.683,
+        "max_ms": 16.882,
+        "over_16_67_percent": 0.1,
+        "over_8_33_percent": 50.4,
+        "files": [
+          "lightroom_2026-09-19_19-59-21.csv"
+        ]
+      },
+      {
+        "samples": 981,
+        "p50_ms": 8.334,
+        "p95_ms": 8.585,
+        "p99_ms": 8.742,
+        "max_ms": 9.154,
+        "over_16_67_percent": 0.0,
+        "over_8_33_percent": 51.2,
+        "files": [
+          "lightroom_2026-09-19_19-59-21.csv"
+        ]
+      },
+      {
+        "samples": 980,
+        "p50_ms": 8.331,
+        "p95_ms": 8.552,
+        "p99_ms": 8.706,
+        "max_ms": 27.486,
+        "over_16_67_percent": 0.1,
+        "over_8_33_percent": 50.6,
+        "files": [
+          "lightroom_2026-09-19_19-59-21.csv"
+        ]
+      }
+    ]
+  }
+]

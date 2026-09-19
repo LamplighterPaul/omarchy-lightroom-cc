@@ -1,0 +1,21 @@
+{
+  "case": "mango120",
+  "config": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 0; fps_limit=120\nfps_limit_method=late\n",
+  "phases": [
+    {
+      "action": "pan",
+      "start_epoch": 1789840822.26476,
+      "end_epoch": 1789840832.4347146
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789840832.5400195,
+      "end_epoch": 1789840842.717582
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789840842.8110056,
+      "end_epoch": 1789840852.9891033
+    }
+  ]
+}

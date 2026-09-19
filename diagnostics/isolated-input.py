@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'record', 'menu-open', 'escape', 'loupe'])
+parser.add_argument('action', choices=['zoom', 'pan', 'menus', 'maximize', 'record', 'menu-open', 'escape', 'loupe', 'close'])
 args = parser.parse_args()
 if os.environ.get('WAYLAND_DISPLAY') != 'lightroom-test' or os.environ.get('DISPLAY') != ':1':
     raise SystemExit('Refusing input outside the dedicated lightroom-test/:1 fixture')
@@ -73,6 +73,8 @@ elif args.action=='zoom':
     key(ord('z'),1);key(ord('z'),0)
 elif args.action=='loupe':
     key(ord('d'),1);key(ord('d'),0)
+elif args.action=='close':
+    key(0xffe3,1);key(ord('q'),1);time.sleep(.05);key(ord('q'),0);key(0xffe3,0)
 elif args.action=='menu-open':
     left=c.c_int();top=c.c_int();child=c.c_ulong()
     x.XTranslateCoordinates(d,w,root,0,0,c.byref(left),c.byref(top),c.byref(child))

@@ -70,7 +70,7 @@ DISPLAY=:1 WAYLAND_DISPLAY=lightroom-test LRCC_DISPATCHED=1 \
 ```
 
 `isolated-input.py` supports `maximize`, `loupe`, `zoom`, `pan`, `menu-open`,
-`escape`, `menus`, and `record`. Set both display variables as above. It verifies
+`escape`, `menus`, `record`, and `close` (requests Ctrl+Q; verify exit). Set both display variables as above. It verifies
 that the X display belongs to the dedicated headless Weston before sending any
 input. `pan` holds a real button and moves back and forth for about ten seconds;
 input timestamps are written to `measurements/isolated-input.jsonl`.
@@ -128,3 +128,20 @@ caused a frame spike. Read the [kernel scheduler statistics documentation](https
 With Intel's active P-state driver, `powersave` does not mean the CPU is fixed
 at its lowest clock. Energy preference and turbo policy matter; see the
 [Intel P-state documentation](https://www.kernel.org/doc/html/latest/admin-guide/pm/intel_pstate.html).
+
+## Optional MangoHud limiter
+
+A separate A/B/A run found tighter photo-pan cadence with MangoHud's late
+limiter than with DXVK's internal cap. After closing Lightroom normally:
+
+```sh
+LRCC_LIMITER=mangohud lightroom-omarchy-proton run-perf
+```
+
+This requires the staged MangoHud layer, disables DXVK's cap, and sets MangoHud's
+cap from the destination monitor. It works with normal `run` too, with the HUD
+hidden. Explicit `DXVK_CONFIG` and `MANGOHUD_CONFIG` remain user overrides; do not
+add a second limiter when making comparisons. `LRCC_PRESENTATION=upstream`
+bypasses this presentation profile. The default remains `LRCC_LIMITER=dxvk`
+pending broader live compositor, menu and colour/flicker validation.
+See [the limiter comparison](limiters-2026-09-19.md).

@@ -1,0 +1,44 @@
+[
+  {
+    "case": "dxvk120-repeat",
+    "config": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 120; ",
+    "runs": [
+      {
+        "samples": 977,
+        "p50_ms": 8.265,
+        "p95_ms": 10.344,
+        "p99_ms": 11.673,
+        "max_ms": 25.779,
+        "over_16_67_percent": 0.1,
+        "over_8_33_percent": 45.8,
+        "files": [
+          "lightroom_2026-09-19_20-01-10.csv"
+        ]
+      },
+      {
+        "samples": 977,
+        "p50_ms": 8.22,
+        "p95_ms": 10.435,
+        "p99_ms": 11.4,
+        "max_ms": 51.631,
+        "over_16_67_percent": 0.1,
+        "over_8_33_percent": 45.9,
+        "files": [
+          "lightroom_2026-09-19_20-01-10.csv"
+        ]
+      },
+      {
+        "samples": 973,
+        "p50_ms": 8.245,
+        "p95_ms": 10.831,
+        "p99_ms": 12.893,
+        "max_ms": 57.414,
+        "over_16_67_percent": 0.5,
+        "over_8_33_percent": 46.5,
+        "files": [
+          "lightroom_2026-09-19_20-01-10.csv"
+        ]
+      }
+    ]
+  }
+]

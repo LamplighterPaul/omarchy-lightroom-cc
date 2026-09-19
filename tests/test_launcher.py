@@ -77,6 +77,29 @@ class LauncherTest(unittest.TestCase):
             env = self.app.environment()
         self.assertEqual(env.get("DXVK_CONFIG"), os.environ.get("DXVK_CONFIG"))
 
+    def test_mangohud_limiter_requires_layer_and_avoids_two_caps(self):
+        wine = self.app.RUNTIME / "bin/wine"
+        wine.parent.mkdir(parents=True)
+        wine.touch()
+        self.app.PROTON = True
+        self.app.RUNNER = "lightroom-omarchy-proton"
+        self.app.PRESENT_HZ = 120
+        (self.app.PREFIX.parent / "profile.json").write_text(json.dumps({"windows_username": "test"}))
+        with patch.dict(os.environ, {"LRCC_LIMITER": "mangohud", "LRCC_PERF": "0"}):
+            with self.assertRaisesRegex(RuntimeError, "limiter missing"):
+                self.app.environment()
+            layer = self.app.DATA / "tools/mangohud/layers/MangoHud.x86_64.json"
+            layer.parent.mkdir(parents=True)
+            layer.write_text('{}')
+            env = self.app.environment()
+            self.assertIn("dxgi.maxFrameRate = 0", env["DXVK_CONFIG"])
+            self.assertEqual(env["MANGOHUD"], "1")
+            self.assertIn("read_cfg=1", env["MANGOHUD_CONFIG"])
+            self.assertIn("fps_limit=120,fps_limit_method=late", env["MANGOHUD_CONFIG"])
+            self.assertIn("no_display=1", env["MANGOHUD_CONFIG"])
+            with patch.dict(os.environ, {"LRCC_PERF": "1"}):
+                self.assertNotIn("no_display=1", self.app.environment()["MANGOHUD_CONFIG"])
+
     def test_dispatch_rejects_hyprland_error_even_on_zero_exit(self):
         with patch.dict(os.environ, {"HYPRLAND_INSTANCE_SIGNATURE": "test", "LRCC_DISPATCHED": "0"}), \
              patch.object(self.app.subprocess, "check_output", return_value="error: invalid rule"):

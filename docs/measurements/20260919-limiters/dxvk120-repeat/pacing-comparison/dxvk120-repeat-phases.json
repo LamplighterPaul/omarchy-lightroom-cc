@@ -1,0 +1,21 @@
+{
+  "case": "dxvk120-repeat",
+  "config": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 120; ",
+  "phases": [
+    {
+      "action": "pan",
+      "start_epoch": 1789840931.9599905,
+      "end_epoch": 1789840942.1112888
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789840942.180521,
+      "end_epoch": 1789840952.3450298
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789840952.4335592,
+      "end_epoch": 1789840962.607151
+    }
+  ]
+}
