@@ -43,3 +43,11 @@ timer, wait and work objects. It also covers cancellation and an empty pool.
 Run only in a disposable or isolated prefix: the baseline runtime deliberately
 hits its assertion in the timer case. See
 [the candidate report](../docs/threadpool-2026-09-19.md) for evidence and limits.
+
+## Resource limits and power
+
+`lightroom-omarchy-proton measure 30` records CPU/memory/DRM activity, power
+policy, CPU clocks, Xe GPU clocks, thermal-throttle counters and the main
+process's scheduler/affinity/cgroup limits. It is read-only. Ancestor cgroups
+can cover other applications; their usage counters are not Lightroom usage.
+Thermal counters are cumulative, so correlate **increments** with an interaction.

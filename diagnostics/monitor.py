@@ -35,6 +35,57 @@ def host_state():
             pass
     if clocks:
         result['cpu_policy_mhz'] = dict(min=min(clocks), max=max(clocks), mean=sum(clocks)/len(clocks))
+    gpu_clocks = {}
+    for directory in Path('/sys/class/drm').glob('card*/device/tile*/gt*/freq*'):
+        values = {}
+        for name in ('act_freq', 'cur_freq', 'min_freq', 'max_freq', 'rp0_freq', 'power_profile'):
+            try:
+                values[name] = (directory / name).read_text().strip()
+            except OSError:
+                pass
+        if values:
+            gpu_clocks[str(directory.relative_to('/sys/class/drm'))] = values
+    if gpu_clocks:
+        result['xe_gpu_frequency_mhz'] = gpu_clocks
+    throttles = {}
+    for path in Path('/sys/devices/system/cpu').glob('cpu[0-9]*/thermal_throttle/*throttle_count'):
+        try:
+            throttles[f'{path.parent.parent.name}/{path.name}'] = int(path.read_text())
+        except (OSError, ValueError):
+            pass
+    if throttles:
+        result['thermal_throttle_counts'] = throttles
+    return result
+
+
+def process_constraints(pid):
+    """Capture effective placement and every cgroup ancestor, including quotas."""
+    result = {}
+    try:
+        result.update(nice=os.getpriority(os.PRIO_PROCESS, pid),
+                      cpu_affinity=sorted(os.sched_getaffinity(pid)),
+                      scheduler_policy=os.sched_getscheduler(pid))
+        membership = (Path('/proc') / str(pid) / 'cgroup').read_text().splitlines()
+        relative = next(line[3:] for line in membership if line.startswith('0::'))
+        root = Path('/sys/fs/cgroup')
+        group = root / relative.lstrip('/')
+        ancestors = []
+        while group.is_relative_to(root):
+            values = {}
+            for name in ('cpu.max', 'cpu.weight', 'cpu.stat', 'cpuset.cpus.effective',
+                         'memory.max', 'memory.high'):
+                try:
+                    values[name] = (group / name).read_text().strip()
+                except OSError:
+                    pass
+            # Ancestors can cover other apps. Do not attribute their usage to Lightroom.
+            ancestors.append(dict(level=len(ancestors), **values))
+            if group == root:
+                break
+            group = group.parent
+        result['cgroup_ancestors'] = ancestors
+    except (OSError, StopIteration):
+        pass
     return result
 
 
@@ -72,12 +123,16 @@ def record(prefix, seconds, interval=1):
             cpu_percent=round(sum(r['cpu_percent'] or 0 for r in rows), 2),
             pss_mib=round(sum(r['pss_mib'] for r in rows), 2),
             gpu_engine_percent=engines, processes=rows, host=host_state(),
+            main_process_constraints={str(pid): process_constraints(pid)
+                for pid, item in after.items() if item['name'].lower() == 'lightroom.exe'},
             exited_processes=len(set(before)-set(after))))
         before, last = after, now
     return dict(started_utc=utc,
         duration=round(last-started, 3), interval=interval,
         note='CPU 100% = one core. GPU percentages are per DRM client/engine, not whole-GPU utilization. '
              'PSS apportions shared memory. Exited/new processes can make CPU incomplete. '
+             'Throttle counts are cumulative: compare changes during this run, not absolute values. '
+             'Cgroup ancestor counters may include other applications. GPU clocks are instantaneous. '
              'This records resources, not presentation FPS. Match with MangoHud and an actual interaction.',
         samples=samples)
 
