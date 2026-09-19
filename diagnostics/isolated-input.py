@@ -67,6 +67,7 @@ def key(symbol,pressed):
     t.XTestFakeKeyEvent(d,x.XKeysymToKeycode(d,symbol),pressed,0);x.XFlush(d)
 
 phase_start = time.time()
+monotonic_start = time.monotonic()
 if args.action in ('maximize', 'resize-small'):
     width, height = (2832, 1692) if args.action == 'maximize' else (2304, 1440)
     x.XMoveResizeWindow(d,w,0,0,width,height);x.XFlush(d)
@@ -110,7 +111,8 @@ else:
         dx=(step if step<120 else 240-step)*3
         t.XTestFakeMotionEvent(d,-1,cx+dx,cy,0);x.XFlush(d);time.sleep(1/120)
     t.XTestFakeButtonEvent(d,1,0,0);x.XFlush(d)
-phase = dict(action=args.action, start_epoch=phase_start, end_epoch=time.time())
+phase = dict(action=args.action, start_epoch=phase_start, end_epoch=time.time(),
+             start_monotonic=monotonic_start, end_monotonic=time.monotonic())
 log = Path.home()/'.local/share/omarchy-lightroom-cc/measurements/isolated-input.jsonl'
 with log.open('a') as stream: stream.write(json.dumps(phase)+'\n')
 print(json.dumps(phase), flush=True)

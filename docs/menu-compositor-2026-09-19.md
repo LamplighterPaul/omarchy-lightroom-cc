@@ -49,3 +49,19 @@ current stable runtime. It is not evidence that every menu stall is fixed, nor
 an end-to-end latency benchmark. The user's desktop comparison and remaining
 input/render queue delays still need observation. The separate Proton photo
 retention candidate and its component hashes are unchanged.
+
+## Input-to-X11 mapping check
+
+A read-only X11 listener on the private display timestamped `MapNotify` events
+for matching override-redirect windows. Five File-menu mouse clicks produced
+471×546 popups at the same position. Input submission to event receipt took
+22.350, 27.357, 8.864, 11.013 and 8.118 ms. Input and event timestamps use the
+same host monotonic clock; the input interval starts immediately before the
+helper's coordinate lookup and XTest submission. Event receipt also includes
+the observer's scheduling delay. No pixel readback ran during this check.
+
+This small sample covers more of the input path than the callback timers, but
+X11 mapping still precedes final visible pixels. It cannot prove desktop
+input-to-display latency or exclude occasional long stalls. The observer source
+is [x11-menu-events.c](../diagnostics/x11-menu-events.c), and the inputs, events
+and matches are in [the numeric artifacts](measurements/20260919-menu-desktop/).

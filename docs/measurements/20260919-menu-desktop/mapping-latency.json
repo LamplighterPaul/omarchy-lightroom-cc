@@ -1,0 +1,112 @@
+[
+  {
+    "input": {
+      "action": "menu-open",
+      "start_epoch": 1789852395.179087,
+      "end_epoch": 1789852395.1791492,
+      "start_monotonic": 169398.389018601,
+      "end_monotonic": 169398.389080454
+    },
+    "matches": [
+      {
+        "event": "map",
+        "epoch": "1789852395.201437235",
+        "monotonic": "169398.411368301",
+        "window": "1800014",
+        "x": "1182",
+        "y": "57",
+        "width": "471",
+        "height": "546"
+      }
+    ],
+    "input_to_map_ms": 22.35
+  },
+  {
+    "input": {
+      "action": "menu-open",
+      "start_epoch": 1789852396.0006971,
+      "end_epoch": 1789852396.0007792,
+      "start_monotonic": 169399.2106292,
+      "end_monotonic": 169399.210710456
+    },
+    "matches": [
+      {
+        "event": "map",
+        "epoch": "1789852396.028054714",
+        "monotonic": "169399.237985773",
+        "window": "1800015",
+        "x": "1182",
+        "y": "57",
+        "width": "471",
+        "height": "546"
+      }
+    ],
+    "input_to_map_ms": 27.357
+  },
+  {
+    "input": {
+      "action": "menu-open",
+      "start_epoch": 1789852396.8383617,
+      "end_epoch": 1789852396.8384242,
+      "start_monotonic": 169400.048293404,
+      "end_monotonic": 169400.048355588
+    },
+    "matches": [
+      {
+        "event": "map",
+        "epoch": "1789852396.847225904",
+        "monotonic": "169400.057156990",
+        "window": "1800016",
+        "x": "1182",
+        "y": "57",
+        "width": "471",
+        "height": "546"
+      }
+    ],
+    "input_to_map_ms": 8.864
+  },
+  {
+    "input": {
+      "action": "menu-open",
+      "start_epoch": 1789852397.6885555,
+      "end_epoch": 1789852397.6886168,
+      "start_monotonic": 169400.898487295,
+      "end_monotonic": 169400.898548003
+    },
+    "matches": [
+      {
+        "event": "map",
+        "epoch": "1789852397.699568987",
+        "monotonic": "169400.909499917",
+        "window": "1800017",
+        "x": "1182",
+        "y": "57",
+        "width": "471",
+        "height": "546"
+      }
+    ],
+    "input_to_map_ms": 11.013
+  },
+  {
+    "input": {
+      "action": "menu-open",
+      "start_epoch": 1789852398.5135028,
+      "end_epoch": 1789852398.5135899,
+      "start_monotonic": 169401.723434523,
+      "end_monotonic": 169401.723521007
+    },
+    "matches": [
+      {
+        "event": "map",
+        "epoch": "1789852398.521620989",
+        "monotonic": "169401.731552121",
+        "window": "1800018",
+        "x": "1182",
+        "y": "57",
+        "width": "471",
+        "height": "546"
+      }
+    ],
+    "input_to_map_ms": 8.118
+  }
+]

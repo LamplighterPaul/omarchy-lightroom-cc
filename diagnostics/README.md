@@ -80,3 +80,15 @@ correctness, not performance.
 The resource recorder also includes CPU policy ceilings, AC connection, RAPL
 power constraints and CPU temperatures. Power constraints are configured limits,
 not measured watts; unavailable privileged energy counters are not guessed.
+
+
+## Private menu mapping timestamps
+
+Build `x11-menu-events.c` with `cc -O2 -Wall ... -lX11` and run it for 1–60 seconds
+on `DISPLAY=:1 WAYLAND_DISPLAY=lightroom-test`. It observes root `MapNotify`
+events for Lightroom override-redirect windows without redirecting input or
+reading pixels. Use `isolated-input.py menu-open` followed by two `escape`
+actions; its JSON now includes monotonic input boundaries. Join those with the
+observer's monotonic timestamps. Mapping is not proof of visible output; see
+[the compositor investigation](../docs/menu-compositor-2026-09-19.md). The input
+helper still validates private-compositor ownership before sending events.
