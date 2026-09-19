@@ -1,0 +1,35 @@
+{
+  "pan": {
+    "frames": 260,
+    "blank_frames": 0,
+    "distinct_rounded_means": 115,
+    "max_background_fraction": 0.0,
+    "darkest": {
+      "frame": "frame-0147.png",
+      "mean": 70.05260416666667,
+      "background_fraction": 0.0
+    }
+  },
+  "zoom": {
+    "frames": 260,
+    "blank_frames": 0,
+    "distinct_rounded_means": 34,
+    "max_background_fraction": 3.90625e-05,
+    "darkest": {
+      "frame": "frame-0000.png",
+      "mean": 105.73998697916667,
+      "background_fraction": 0.0
+    }
+  },
+  "photos": {
+    "frames": 260,
+    "blank_frames": 0,
+    "distinct_rounded_means": 3,
+    "max_background_fraction": 0.0,
+    "darkest": {
+      "frame": "frame-0040.png",
+      "mean": 69.18001302083333,
+      "background_fraction": 0.0
+    }
+  }
+}

@@ -100,6 +100,14 @@ and MangoHud are staged, select the profile for future launches:
 lightroom-omarchy-proton use-profile performance
 ```
 
+On supported hybrid CPUs, the performance launcher requests a higher performance
+level for Lightroom's main UI thread. CPU affinity stays unchanged, and new
+workers do not inherit the UI boost. This reduced measured keyboard-menu
+opening time by about 30% on the test laptop. It does not remove every stall.
+For a comparison, close Lightroom normally and launch with
+`LRCC_UI_BOOST=off lightroom-omarchy-proton run`.
+See [the scheduling measurements](docs/ui-scheduling-2026-09-20.md).
+
 Close Lightroom normally, then stop any remaining prefix services before the
 first runtime switch:
 

@@ -55,6 +55,30 @@ class LauncherTest(unittest.TestCase):
         self.assertEqual(self.app.desktop_scale(monitors, [{"id": 10, "monitor": "internal"}]), 192)
         self.assertEqual(self.app.desktop_scale(monitors, []), 96)
 
+    def test_ui_hint_is_scoped_to_performance_lightroom_and_has_opt_out(self):
+        self.app.RUNNER = 'lightroom-omarchy-proton'
+        self.app.ACTIVE_PROFILE = 'performance'
+        with patch.dict(os.environ, {}, clear=True), patch.object(self.app.subprocess, 'Popen') as spawn:
+            self.app.start_ui_hint(self.app.CC, io.StringIO())
+            spawn.assert_not_called()
+            self.app.start_ui_hint(self.app.LR, io.StringIO())
+            self.assertIn(str(self.app.PREFIX), spawn.call_args.args[0])
+            self.assertIn(str(self.app.RUNTIME), spawn.call_args.args[0])
+        with patch.dict(os.environ, {'LRCC_UI_BOOST': 'off'}), patch.object(self.app.subprocess, 'Popen') as spawn:
+            self.assertIsNone(self.app.start_ui_hint(self.app.LR, io.StringIO()))
+            spawn.assert_not_called()
+        self.app.ACTIVE_PROFILE = 'stable'
+        with patch.dict(os.environ, {}, clear=True), patch.object(self.app.subprocess, 'Popen') as spawn:
+            self.assertIsNone(self.app.start_ui_hint(self.app.LR, io.StringIO()))
+            spawn.assert_not_called()
+
+    def test_ui_hint_helper_failure_does_not_prevent_launch(self):
+        self.app.RUNNER = 'lightroom-omarchy-proton'
+        self.app.ACTIVE_PROFILE = 'performance'
+        with patch.dict(os.environ, {}, clear=True), \
+             patch.object(self.app.subprocess, 'Popen', side_effect=OSError('unavailable')):
+            self.assertIsNone(self.app.start_ui_hint(self.app.LR, io.StringIO()))
+
     def test_candidate_runtime_is_named_and_identified(self):
         runtime = self.app.DATA / 'runtimes/candidate'
         runtime.mkdir(parents=True)

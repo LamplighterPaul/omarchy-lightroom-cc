@@ -633,8 +633,33 @@ def launch(exe, label, args):
         sync_display_scale(log)
         if RUNNER == "lightroom-omarchy-proton":
             sync_theme(log)
-        wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log)
+        hint = start_ui_hint(exe, log)
+        try:
+            wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log)
+        finally:
+            if hint is not None and hint.poll() is None:
+                hint.terminate()
+                hint.wait(timeout=5)
     logged(label, start)
+
+
+def start_ui_hint(exe, log):
+    mode = os.environ.get("LRCC_UI_BOOST", "auto" if ACTIVE_PROFILE == "performance" else "off")
+    if mode not in ("auto", "off"):
+        raise RuntimeError("LRCC_UI_BOOST must be auto or off")
+    if mode == "off" or RUNNER != "lightroom-omarchy-proton" or exe != LR:
+        return None
+    helper = next((p for p in (SCRIPT.parent.parent / "diagnostics/ui-scheduler.py",
+        SCRIPT.parent.parent / "share" / APP / "diagnostics/ui-scheduler.py") if p.is_file()), None)
+    if helper is None:
+        print("UI scheduling helper unavailable; using normal scheduling.", file=log, flush=True)
+        return None
+    try:
+        return subprocess.Popen([sys.executable, str(helper), "--prefix", str(PREFIX),
+                                 "--runtime", str(RUNTIME)], stdout=log, stderr=log)
+    except OSError as exc:
+        print(f"UI scheduling helper unavailable: {exc}; using normal scheduling.", file=log, flush=True)
+        return None
 
 
 def destination_monitor(monitors, workspaces):
@@ -972,6 +997,7 @@ def browser_status():
 
 def status():
     return {"data": str(DATA), "prefix": str(PREFIX), "selected_profile": ACTIVE_PROFILE,
+            "ui_boost_requested": os.environ.get("LRCC_UI_BOOST", "auto" if ACTIVE_PROFILE == "performance" else "off"),
             "selected_runtime": str(RUNTIME.parent), "runtime_present": (RUNTIME / "bin/wine").is_file(),
             "runtime_switch_pending": RUNNER == "lightroom-omarchy-proton" and bool(conflicting_prefix_runtimes()),
             "prefix_created": (PREFIX / "system.reg").is_file(),
