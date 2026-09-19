@@ -9,6 +9,7 @@ import lzma
 import os
 import re
 import shlex
+import stat
 from pathlib import Path
 import shutil
 import subprocess
@@ -730,6 +731,68 @@ def sync_display_scale(log):
          "/t", "REG_DWORD", "/d", str(dpi), "/f", stdout=log, stderr=log)
 
 
+def restore_xwayland_socket(display, socket_root=Path('/tmp/.X11-unix'), proc_root=Path('/proc')):
+    """Restore only a missing local socket backed by our live Xwayland listener."""
+    match = re.fullmatch(r':(\d+)(?:\.\d+)?', display)
+    if not match:
+        return False
+    number = match[1]
+    target = socket_root / f'X{number}'
+    alternate = socket_root / f'X{number}_'
+    if os.path.lexists(target):
+        return False
+    try:
+        info = alternate.lstat()
+        if info.st_uid != os.getuid() or not stat.S_ISSOCK(info.st_mode):
+            return False
+        inodes = {line.split()[6] for line in (proc_root / 'net/unix').read_text().splitlines()[1:]
+                  if len(line.split()) == 8 and line.split()[7] == str(alternate)
+                  and line.split()[3:6] == ['00010000', '0001', '01']}
+        for proc in proc_root.glob('[0-9]*'):
+            try:
+                args = (proc / 'cmdline').read_bytes().split(b'\0')
+                if (proc.stat().st_uid != os.getuid() or len(args) < 2
+                        or Path(os.fsdecode(args[0])).name != 'Xwayland'
+                        or args[1] != f':{number}'.encode()):
+                    continue
+                if any(os.readlink(fd) in {f'socket:[{inode}]' for inode in inodes}
+                       for fd in (proc / 'fd').iterdir()):
+                    target.symlink_to(alternate.name)  # Never overwrite an existing endpoint.
+                    return True
+            except (OSError, ValueError):
+                continue
+    except OSError:
+        pass
+    return False
+
+
+def check_x11_display():
+    display = os.environ.get('DISPLAY', '')
+    probe = '''import ctypes, sys
+x = ctypes.CDLL("libX11.so.6")
+x.XOpenDisplay.argtypes = [ctypes.c_char_p]
+x.XOpenDisplay.restype = ctypes.c_void_p
+x.XCloseDisplay.argtypes = [ctypes.c_void_p]
+d = x.XOpenDisplay(sys.argv[1].encode())
+if not d: sys.exit(1)
+x.XCloseDisplay(d)
+'''
+    def connected():
+        try:
+            return subprocess.run([sys.executable, '-c', probe, display],
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                                  timeout=5).returncode == 0
+        except subprocess.TimeoutExpired:
+            return False
+    if display and connected():
+        return
+    if display and restore_xwayland_socket(display) and connected():
+        print(f'Restored the live Xwayland socket for {display}.', flush=True)
+        return
+    raise RuntimeError(f'Cannot connect to the X11 desktop ({display or "DISPLAY unset"}). '
+                       'Lightroom has not been started; check the desktop Xwayland connection.')
+
+
 def dispatch_desktop():
     """Preserve shell arguments and caller configuration across Hyprland's shell."""
     if not os.environ.get("HYPRLAND_INSTANCE_SIGNATURE") or os.environ.get("LRCC_DISPATCHED") == "1":
@@ -737,12 +800,17 @@ def dispatch_desktop():
     variables = [f"{k}={v}" for k, v in os.environ.items()
                  if k.startswith("LRCC_") or k in ("DISPLAY", "WAYLAND_DISPLAY", "XAUTHORITY")]
     command = shlex.join(["env", *variables, "LRCC_DISPATCHED=1", str(SCRIPT), *sys.argv[1:]])
+    logs = DATA / 'logs'
+    logs.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
+    output = logs / f'{stamp}-launcher.log'
+    command += f' > {shlex.quote(str(output))} 2>&1'
     # json quoting is used for a Lua string, not shell escaping.
     expression = f'hl.dsp.exec_cmd({json.dumps(command, ensure_ascii=False)}, {{workspace="10 silent", no_initial_focus=true}})'
     result = subprocess.check_output(["hyprctl", "dispatch", expression], text=True)
     if result.strip() != "ok":
         raise RuntimeError(f"Hyprland rejected Lightroom launch: {result.strip()}")
-    print("Launched on Super+0 (workspace 10), without switching focus.")
+    print(f"Launch requested on Super+0 (workspace 10), without switching focus.\nLauncher log: {output}")
     return True
 
 
@@ -951,8 +1019,11 @@ def main():
         parser.error("--runtime is only supported by lightroom-omarchy-proton")
     if args.profile and (args.runner != "lightroom-omarchy-proton" or args.runtime):
         parser.error("--profile requires lightroom-omarchy-proton and cannot be combined with --runtime")
-    if args.command in ("run", "run-perf", "run-debug", "cc", "install-cc", "experiment-webview") and dispatch_desktop():
-        return
+    if args.command in ("run", "run-perf", "run-debug", "cc", "install-cc", "experiment-webview"):
+        if args.graphics == 'x11':
+            check_x11_display()
+        if dispatch_desktop():
+            return
     GRAPHICS = args.graphics
     RUNNER = args.runner
     if args.command == "use-profile":

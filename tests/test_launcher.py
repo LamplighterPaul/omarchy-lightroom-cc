@@ -6,6 +6,7 @@ import io
 import json
 import lzma
 import os
+import socket
 from pathlib import Path
 import tarfile
 import tempfile
@@ -241,6 +242,50 @@ class LauncherTest(unittest.TestCase):
              patch.object(self.app.subprocess, "check_output", return_value="error: invalid rule"):
             with self.assertRaisesRegex(RuntimeError, "rejected"):
                 self.app.dispatch_desktop()
+
+    def socket_fixture(self):
+        sockets = self.root / 'sockets'
+        sockets.mkdir()
+        alternate = sockets / 'X0_'
+        server = socket.socket(socket.AF_UNIX)
+        self.addCleanup(server.close)
+        server.bind(str(alternate))
+        proc = self.root / 'proc'
+        (proc / 'net').mkdir(parents=True)
+        (proc / 'net/unix').write_text('header\n'
+            f'0000: 00000002 00000000 00010000 0001 01 123 {alternate}\n')
+        (proc / '42/fd').mkdir(parents=True)
+        (proc / '42/cmdline').write_bytes(b'/usr/bin/Xwayland\0:0\0-rootless\0')
+        (proc / '42/fd/5').symlink_to('socket:[123]')
+        return sockets, proc
+
+    def test_socket_repair_requires_matching_live_xwayland_listener(self):
+        sockets, proc = self.socket_fixture()
+        self.assertFalse(self.app.restore_xwayland_socket(':1', sockets, proc))
+        (proc / '42/cmdline').write_bytes(b'/usr/bin/unrelated\0:0\0')
+        self.assertFalse(self.app.restore_xwayland_socket(':0', sockets, proc))
+        (proc / '42/cmdline').write_bytes(b'/usr/bin/Xwayland\0:0\0')
+        self.assertTrue(self.app.restore_xwayland_socket(':0', sockets, proc))
+        self.assertEqual((sockets / 'X0').resolve(), sockets / 'X0_')
+        self.assertFalse(self.app.restore_xwayland_socket(':0', sockets, proc))
+
+    def test_socket_repair_preserves_existing_endpoint(self):
+        sockets, proc = self.socket_fixture()
+        (sockets / 'X0').symlink_to('missing')
+        self.assertFalse(self.app.restore_xwayland_socket(':0', sockets, proc))
+        self.assertEqual(os.readlink(sockets / 'X0'), 'missing')
+
+    def test_unreachable_display_prevents_dispatch_and_prefix_work(self):
+        with patch.dict(os.environ, {'DISPLAY': ':0'}), \
+             patch.object(self.app.sys, 'argv', ['launcher', '--runner', 'lightroom-omarchy-proton', 'run']), \
+             patch.object(self.app.subprocess, 'run', return_value=type('Result', (), {'returncode': 1})()), \
+             patch.object(self.app, 'restore_xwayland_socket', return_value=False), \
+             patch.object(self.app, 'dispatch_desktop') as dispatch, \
+             patch.object(self.app, 'launch') as launch:
+            with self.assertRaisesRegex(RuntimeError, 'Cannot connect'):
+                self.app.main()
+            dispatch.assert_not_called()
+            launch.assert_not_called()
 
     def performance_fixture(self):
         archive = self.root / "graphics.tar.gz"
