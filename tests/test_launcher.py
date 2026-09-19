@@ -35,6 +35,19 @@ class LauncherTest(unittest.TestCase):
         self.assertEqual(env["WINE"], str(wine))
         self.assertEqual(env["WINESERVER"], str(wine.parent / "wineserver"))
 
+    def test_custom_proton_launch_does_not_wait_for_its_own_helpers(self):
+        self.app.PROTON = True
+        self.app.RUNNER = "lightroom-omarchy-proton"
+        with patch.object(self.app, "environment", return_value={}), patch.object(self.app, "run") as run:
+            self.app.wine(Path("/prefix/Adobe/lightroom.exe"))
+            self.assertEqual(run.call_args.kwargs["env"]["PROTON_VERB"], "run")
+        with patch.object(self.app, "environment", return_value={"PROTON_VERB": "waitforexitandrun"}), patch.object(self.app, "run") as run:
+            self.app.wine(Path("/prefix/Adobe/lightroom.exe"))
+            self.assertEqual(run.call_args.kwargs["env"]["PROTON_VERB"], "waitforexitandrun")
+        with patch.object(self.app, "environment", return_value={"PROTON_VERB": "run"}), patch.object(self.app, "run") as run:
+            self.app.wine("reg", "query", "HKCU")
+            self.assertEqual(run.call_args.kwargs["env"]["PROTON_VERB"], "runinprefix")
+
     def test_scale_follows_destination_monitor_not_current_focus(self):
         monitors = [{"name": "internal", "scale": 2, "focused": False},
                     {"name": "external", "scale": 1, "focused": True}]

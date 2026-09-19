@@ -1,0 +1,422 @@
+[
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 7.566
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.192
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.396
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.557
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.966
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.173
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.021
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 8.407
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.404
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.64
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.644
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.752
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.174
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 7.547
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.36
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.517
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.615
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.61
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.83
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 8.312
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.298
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.506
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.514
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.665
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.424
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 7.592
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.329
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.429
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.638
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.505
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.207
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 4.59
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.188
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.356
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.439
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.678
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.204
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 4.269
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.168
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.34
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.419
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.298
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.875
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 8.736
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.304
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.517
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.483
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 2.177
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.287
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 7.888
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.318
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.459
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.62
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.484
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.151
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 4.374
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.254
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.529
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.428
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.572
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.93
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 8.48
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.349
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.397
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.617
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.768
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.958
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.002
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 4.226
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.224
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.349
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.42
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 2.097
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.855
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 8.178
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.325
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.47
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.653
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.598
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 0.812
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 8.016
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.336
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.787
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.707
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.494
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.187
+  },
+  {
+    "phase": "enter-menu-callback",
+    "duration_ms": 0.003
+  },
+  {
+    "phase": "init-menu-callback",
+    "duration_ms": 10.043
+  },
+  {
+    "phase": "init-popup-callback",
+    "duration_ms": 0.405
+  },
+  {
+    "phase": "create-popup-window",
+    "duration_ms": 0.783
+  },
+  {
+    "phase": "popup-layout",
+    "duration_ms": 0.72
+  },
+  {
+    "phase": "show-popup-window",
+    "duration_ms": 1.575
+  },
+  {
+    "phase": "popup-paint",
+    "duration_ms": 1.212
+  }
+]

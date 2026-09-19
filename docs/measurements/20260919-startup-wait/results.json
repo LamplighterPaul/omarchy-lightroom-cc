@@ -1,0 +1,47 @@
+[
+  {
+    "label": "wait-a",
+    "verb": "waitforexitandrun",
+    "launch_start_monotonic": 170992.903490102,
+    "first_photo_monotonic": 171033.701788399,
+    "first_photo_seconds": 40.798298296984285,
+    "app_pid": 2397380,
+    "launcher_pid": 2396043,
+    "quit_confirmed": true,
+    "quit_note": "Absent on explicit recheck after original 15-second observation expired"
+  },
+  {
+    "label": "run-b",
+    "verb": "run",
+    "launch_start_monotonic": 171112.61915837,
+    "first_photo_monotonic": 171125.457788708,
+    "first_photo_seconds": 12.83863033799571,
+    "app_pid": 2401345,
+    "launcher_pid": 2401070,
+    "quit_confirmed": true,
+    "launcher_status_after_quit": null
+  },
+  {
+    "label": "wait-a2",
+    "verb": "waitforexitandrun",
+    "first_photo_seconds": null,
+    "first_photo_seconds_lower_bound": 100,
+    "first_photo_monotonic": 171248.321724219,
+    "app_pid": 2406386,
+    "observation": "100-second observer deadline expired while launch remained live; recheck found committed photo trace and rendered signed-in library. No duplicate launch.",
+    "quit_confirmed": true
+  },
+  {
+    "label": "default-b2",
+    "verb": null,
+    "launch_start_monotonic": 171309.203869524,
+    "first_photo_monotonic": 171322.843645776,
+    "first_photo_seconds": 13.639776252006413,
+    "app_pid": 2409795,
+    "launcher_pid": 2409452,
+    "quit_confirmed": true,
+    "launcher_status_after_quit": null,
+    "resolved_verb": "run",
+    "configuration": "Installed launcher default; PROTON_VERB omitted"
+  }
+]

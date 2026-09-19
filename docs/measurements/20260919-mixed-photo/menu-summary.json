@@ -1,0 +1,37 @@
+{
+  "create-popup-window": {
+    "count": 15,
+    "median_ms": 0.47,
+    "max_ms": 0.787
+  },
+  "enter-menu-callback": {
+    "count": 15,
+    "median_ms": 0.003,
+    "max_ms": 0.021
+  },
+  "init-menu-callback": {
+    "count": 15,
+    "median_ms": 7.888,
+    "max_ms": 10.043
+  },
+  "init-popup-callback": {
+    "count": 15,
+    "median_ms": 0.318,
+    "max_ms": 0.405
+  },
+  "popup-layout": {
+    "count": 15,
+    "median_ms": 0.615,
+    "max_ms": 0.72
+  },
+  "popup-paint": {
+    "count": 15,
+    "median_ms": 1.173,
+    "max_ms": 1.424
+  },
+  "show-popup-window": {
+    "count": 15,
+    "median_ms": 1.61,
+    "max_ms": 2.177
+  }
+}

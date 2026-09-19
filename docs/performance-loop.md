@@ -152,3 +152,8 @@ The [photo presentation investigation](photo-presentation-2026-09-19.md) adds an
 opt-in driver trace and decoder for individual loupe surfaces. Use
 `isolated-input.py pan-vertical` when horizontal movement is clamped; verify
 that photo submissions and visible content actually change before scoring.
+
+The [mixed-photo run](mixed-photo-2026-09-19.md) covers photo selection, zoom,
+vertical pans and menus, including the remaining occasional submission stalls.
+The launcher also [removes an unnecessary startup wait](startup-wait-2026-09-19.md)
+between its configuration helpers and Lightroom.

@@ -1,0 +1,8 @@
+{
+  "action": "pan-vertical",
+  "start_epoch": 1789853842.0302215,
+  "end_epoch": 1789853852.159068,
+  "start_monotonic": 170845.240153538,
+  "end_monotonic": 170855.36900556,
+  "label": "photo-1-pan"
+}

@@ -181,6 +181,12 @@ def wine(*args, **kwargs):
     env = environment()
     if PROTON and Path(str(args[0])).name.lower() != "lightroom.exe":
         env.update(PROTON_VERB="runinprefix", PROTON_LOG="0")
+    elif PROTON and RUNNER == "lightroom-omarchy-proton":
+        # Scale/theme helpers already used this same runtime. Waiting for their
+        # server to exit adds its idle timeout before Lightroom can start.
+        # "run" retains Proton's normal prefix/session setup; launch() rejects
+        # live processes from a different runtime before any helper is run.
+        env.setdefault("PROTON_VERB", "run")
     return run([command, *args], env=env, **kwargs)
 
 

@@ -1,0 +1,122 @@
+[
+  {
+    "action": "next-photo",
+    "start_epoch": 1789853834.9452248,
+    "end_epoch": 1789853834.945294,
+    "start_monotonic": 170838.155156509,
+    "end_monotonic": 170838.15522511,
+    "label": "photo-1-select"
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789853838.9833956,
+    "end_epoch": 1789853838.9834652,
+    "start_monotonic": 170842.19332773,
+    "end_monotonic": 170842.193396491,
+    "label": "photo-1-zoom"
+  },
+  {
+    "action": "pan-vertical",
+    "start_epoch": 1789853842.0302215,
+    "end_epoch": 1789853852.159068,
+    "start_monotonic": 170845.240153538,
+    "end_monotonic": 170855.36900556,
+    "label": "photo-1-pan"
+  },
+  {
+    "action": "menus",
+    "start_epoch": 1789853853.209105,
+    "end_epoch": 1789853858.2611601,
+    "start_monotonic": 170856.419036788,
+    "end_monotonic": 170861.471095492,
+    "label": "photo-1-menus"
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789853860.3139167,
+    "end_epoch": 1789853860.3140051,
+    "start_monotonic": 170863.523848553,
+    "end_monotonic": 170863.523936626,
+    "label": "photo-1-zoom-return"
+  },
+  {
+    "action": "next-photo",
+    "start_epoch": 1789853862.3582253,
+    "end_epoch": 1789853862.3583186,
+    "start_monotonic": 170865.568157431,
+    "end_monotonic": 170865.568249817,
+    "label": "photo-2-select"
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789853866.4079516,
+    "end_epoch": 1789853866.4080234,
+    "start_monotonic": 170869.617883803,
+    "end_monotonic": 170869.617954523,
+    "label": "photo-2-zoom"
+  },
+  {
+    "action": "pan-vertical",
+    "start_epoch": 1789853869.4426076,
+    "end_epoch": 1789853879.572635,
+    "start_monotonic": 170872.652539525,
+    "end_monotonic": 170882.782568843,
+    "label": "photo-2-pan"
+  },
+  {
+    "action": "menus",
+    "start_epoch": 1789853880.6106741,
+    "end_epoch": 1789853885.6627584,
+    "start_monotonic": 170883.820605983,
+    "end_monotonic": 170888.872690805,
+    "label": "photo-2-menus"
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789853887.6979928,
+    "end_epoch": 1789853887.6980665,
+    "start_monotonic": 170890.907924743,
+    "end_monotonic": 170890.907997698,
+    "label": "photo-2-zoom-return"
+  },
+  {
+    "action": "next-photo",
+    "start_epoch": 1789853889.745484,
+    "end_epoch": 1789853889.7455676,
+    "start_monotonic": 170892.955415994,
+    "end_monotonic": 170892.955498643,
+    "label": "photo-3-select"
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789853893.781254,
+    "end_epoch": 1789853893.781379,
+    "start_monotonic": 170896.991186424,
+    "end_monotonic": 170896.991310338,
+    "label": "photo-3-zoom"
+  },
+  {
+    "action": "pan-vertical",
+    "start_epoch": 1789853896.8163228,
+    "end_epoch": 1789853906.9488075,
+    "start_monotonic": 170900.026254672,
+    "end_monotonic": 170910.158741771,
+    "label": "photo-3-pan"
+  },
+  {
+    "action": "menus",
+    "start_epoch": 1789853907.9819121,
+    "end_epoch": 1789853913.0338745,
+    "start_monotonic": 170911.191844267,
+    "end_monotonic": 170916.243806712,
+    "label": "photo-3-menus"
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789853915.087561,
+    "end_epoch": 1789853915.087634,
+    "start_monotonic": 170918.29749353,
+    "end_monotonic": 170918.297565697,
+    "label": "photo-3-zoom-return"
+  }
+]
