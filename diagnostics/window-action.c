@@ -13,6 +13,8 @@ static BOOL CALLBACK visit(HWND w, LPARAM unused){
  RECT r;GetClientRect(w,&r);printf("Client %ld x %ld\n",r.right,r.bottom);
  if(!strcmp(action,"click-relative")){x=x*r.right/10000;y=y*r.bottom/10000;action="click";}
  if(!strcmp(action,"preferences")||!strcmp(action,"list-menu")){menu(w,GetMenu(w));}
+ else if(!strcmp(action,"menu-open")){PostMessageW(w,WM_SYSCOMMAND,SC_KEYMENU,'f');}
+ else if(!strcmp(action,"menu-close")){PostMessageW(w,WM_CANCELMODE,0,0);PostMessageW(w,WM_KEYDOWN,VK_ESCAPE,0);PostMessageW(w,WM_KEYUP,VK_ESCAPE,0);}
  else if(!strcmp(action,"zoom")){PostMessageW(w,WM_KEYDOWN,0x5a,0x002c0001);PostMessageW(w,WM_CHAR,0x7a,0x002c0001);PostMessageW(w,WM_KEYUP,0x5a,0xc02c0001);}
  else if(!strcmp(action,"pan")){
  SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);

@@ -97,7 +97,7 @@ def environment():
         if RUNNER == "lightroom-omarchy-proton":
             profile = json.loads((PREFIX.parent / "profile.json").read_text())
             env.update(LIGHTROOM_OMARCHY_USERNAME=profile["windows_username"],
-                       LIGHTROOM_OMARCHY_CENTER_MENUS="1", GAMEID="umu-lightroom-omarchy-proton")
+                       LIGHTROOM_OMARCHY_CENTER_MENUS="1", GAMEID="umu-lightroomomarchyproton")
             # Use this Proton build's replacements, including in migrated prefixes
             # that previously selected standalone native component experiments.
             env["WINEDLLOVERRIDES"] = env.get("WINEDLLOVERRIDES", "") + ";shcore,d2d1=b"
@@ -136,7 +136,7 @@ def stage_mangohud():
     if not config.exists():
         config.write_text("fps\nframetime\nframe_timing\ncpu_stats\ngpu_stats\nram\nvram\n"
                           "font_size=28\nposition=top-left\nlog_interval=0\nlog_duration=60\n"
-                          "toggle_logging=Shift_L+F2\npermit_upload=0\n"
+                          "toggle_logging=Shift_L+F2\npermit_upload=0\ncontrol=lightroom-perf-%p\n"
                           f"output_folder={output}\n")
     print("MangoHud staged. Run lightroom-omarchy-proton run-perf; Shift+F2 records 60 seconds.")
 

@@ -12,6 +12,7 @@ from resources import snapshot
 
 def record(prefix, seconds, interval=1):
     hz = os.sysconf('SC_CLK_TCK')
+    utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
     started = last = time.monotonic()
     before = snapshot(prefix)
     samples = []
@@ -45,7 +46,7 @@ def record(prefix, seconds, interval=1):
             gpu_engine_percent=engines, processes=rows,
             exited_processes=len(set(before)-set(after))))
         before, last = after, now
-    return dict(started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    return dict(started_utc=utc,
         duration=round(last-started, 3), interval=interval,
         note='CPU 100% = one core. GPU percentages are per DRM client/engine, not whole-GPU utilization. '
              'PSS apportions shared memory. Exited/new processes can make CPU incomplete. '
