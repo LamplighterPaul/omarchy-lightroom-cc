@@ -1,0 +1,13 @@
+[
+  {
+    "pid": 2459336,
+    "environment": {
+      "DISPLAY": ":1",
+      "PROTON_VERB": "run",
+      "DXVK_CONFIG": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 0",
+      "MANGOHUD_CONFIG": "read_cfg=1,fps_limit=120,fps_limit_method=late,no_display=1",
+      "LIGHTROOM_OMARCHY_RETAIN_LOUPE": "1"
+    },
+    "runtime_mapped": true
+  }
+]

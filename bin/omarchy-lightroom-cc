@@ -25,6 +25,9 @@ RUNTIME = DATA / "runtimes/wine-adobe-11.10"
 PROTON = False
 GRAPHICS = "x11"
 RUNNER = "adobe"
+ACTIVE_PROFILE = None
+PROFILE_LIMITER = None
+PROFILE_RETAIN = None
 WORKSPACE = 10  # Omarchy's Super+0.
 PRESENT_HZ = 60  # Conservative cap when no compositor refresh rate is available.
 TOOLS = DATA / "tools/usr/bin"
@@ -106,7 +109,7 @@ def environment():
             metadata = RUNTIME.parent / "lightroom-omarchy-proton.json"
             defaults = json.loads(metadata.read_text()).get("recommended_environment", {}) if metadata.is_file() else {}
             retain = env.get("LRCC_RETAIN_LOUPE", env.get("LIGHTROOM_OMARCHY_RETAIN_LOUPE",
-                             defaults.get("LIGHTROOM_OMARCHY_RETAIN_LOUPE")))
+                             PROFILE_RETAIN or defaults.get("LIGHTROOM_OMARCHY_RETAIN_LOUPE")))
             if retain is not None:
                 if retain not in ("0", "1"):
                     raise RuntimeError("LRCC_RETAIN_LOUPE must be 0 or 1")
@@ -115,7 +118,7 @@ def environment():
             if presentation not in ("fast", "upstream"):
                 raise RuntimeError("LRCC_PRESENTATION must be fast or upstream")
             if presentation == "fast":
-                limiter = env.get("LRCC_LIMITER", "dxvk")
+                limiter = env.get("LRCC_LIMITER", PROFILE_LIMITER or "dxvk")
                 if limiter not in ("dxvk", "mangohud"):
                     raise RuntimeError("LRCC_LIMITER must be dxvk or mangohud")
                 mango_limiter = limiter == "mangohud"
@@ -533,6 +536,64 @@ def selected_proton_runtime(name):
     return runtime / "files"
 
 
+def saved_profile():
+    path = DATA / "launch-profile.json"
+    if not path.exists():
+        return "stable"
+    try:
+        state = json.loads(path.read_text())
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("Invalid saved launch profile; use-profile stable restores it") from exc
+    if state.get("schema") != 1 or state.get("profile") not in ("stable", "performance"):
+        raise RuntimeError("Invalid saved launch profile; use --profile stable or use-profile stable to recover")
+    return state["profile"]
+
+
+def configure_profile(name):
+    global ACTIVE_PROFILE, PROFILE_LIMITER, PROFILE_RETAIN
+    if name not in ("stable", "performance"):
+        raise RuntimeError("Profile must be stable or performance")
+    if name == "stable":
+        ACTIVE_PROFILE, PROFILE_LIMITER, PROFILE_RETAIN = name, "dxvk", None
+        return DATA / "runtimes/lightroom-omarchy-proton/files"
+    definition = next((p for p in (SCRIPT.parent.parent / "config/performance-profile.json",
+        SCRIPT.parent.parent / "share" / APP / "performance-profile.json") if p.is_file()), None)
+    if definition is None:
+        raise RuntimeError("Performance profile definition missing; run make install")
+    spec = json.loads(definition.read_text())
+    runtime = selected_proton_runtime(spec["runtime"])
+    metadata = json.loads((runtime.parent / "lightroom-omarchy-proton.json").read_text())
+    if metadata.get("version") != spec["version"]:
+        raise RuntimeError("Performance runtime version does not match the tested profile")
+    for relative, expected in spec["components"].items():
+        component = runtime.parent / relative
+        if not component.is_relative_to(runtime.parent) or ".." in Path(relative).parts:
+            raise RuntimeError("Invalid component path in performance profile")
+        if not component.is_file() or digest(component) != expected:
+            raise RuntimeError(f"Performance component differs from the tested build: {relative}")
+    if not (runtime / "bin/wine").is_file():
+        raise RuntimeError("Performance runtime executable is missing")
+    if not (DATA / "tools/mangohud/layers/MangoHud.x86_64.json").is_file():
+        raise RuntimeError("Performance profile needs the staged limiter; run lightroom-omarchy-proton stage-mangohud")
+    ACTIVE_PROFILE, PROFILE_LIMITER, PROFILE_RETAIN = name, spec["limiter"], spec["retain_loupe"]
+    return runtime
+
+
+def save_profile(name):
+    # Validate all candidate bytes before changing a persistent preference.
+    runtime = configure_profile(name)
+    DATA.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", dir=DATA, prefix=".launch-profile-", delete=False) as stream:
+        json.dump({"schema": 1, "profile": name}, stream)
+        stream.write("\n")
+        temporary = Path(stream.name)
+    try:
+        temporary.replace(DATA / "launch-profile.json")
+    finally:
+        temporary.unlink(missing_ok=True)
+    print(f"Next launch: {name} profile ({runtime.parent.name}). Close the current Lightroom session before switching runtimes.")
+
+
 def conflicting_prefix_runtimes(proc_root=Path('/proc')):
     """Identify actually mapped Wine runtimes; do not infer liveness from files."""
     conflicts = []
@@ -842,7 +903,9 @@ def browser_status():
 
 
 def status():
-    return {"data": str(DATA), "prefix": str(PREFIX), "runtime_present": (RUNTIME / "bin/wine").is_file(),
+    return {"data": str(DATA), "prefix": str(PREFIX), "selected_profile": ACTIVE_PROFILE,
+            "selected_runtime": str(RUNTIME.parent), "runtime_present": (RUNTIME / "bin/wine").is_file(),
+            "runtime_switch_pending": RUNNER == "lightroom-omarchy-proton" and bool(conflicting_prefix_runtimes()),
             "prefix_created": (PREFIX / "system.reg").is_file(),
             "dependencies_prepared": (DATA / "prepared.json").is_file(),
             "creative_cloud_exe_present": CC.is_file(), "lightroom_exe_present": LR.is_file(),
@@ -858,7 +921,7 @@ def doctor():
     print(json.dumps(result, indent=2))
 
 
-def integrate():
+def integrate(runtime=None, profile=None):
     if not LR.is_file():
         raise RuntimeError("Install Lightroom before adding its desktop entry")
     dest = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "applications"
@@ -867,8 +930,9 @@ def integrate():
     def quote(value):
         return '"' + str(value).replace("\\", "\\\\").replace('"', '\\"').replace("`", "\\`").replace("$", "\\$").replace("%", "%%") + '"'
     name = "Lightroom (Omarchy Proton)" if RUNNER == "lightroom-omarchy-proton" else "Lightroom CC"
+    selection = f" --runtime {quote(runtime)}" if runtime else f" --profile {profile}" if profile else ""
     (dest / f"{APP}.desktop").write_text(f'[Desktop Entry]\nType=Application\nName={name}\n'
-        f'Comment=Adobe Lightroom CC on Omarchy\nExec=env {quote("LRCC_DATA=" + str(DATA))} {quote(SCRIPT)} --runner {RUNNER} --graphics {GRAPHICS} run\n'
+        f'Comment=Adobe Lightroom CC on Omarchy\nExec=env {quote("LRCC_DATA=" + str(DATA))} {quote(SCRIPT)} --runner {RUNNER} --graphics {GRAPHICS}{selection} run\n'
         'Icon=camera-photo\nTerminal=false\nCategories=Graphics;Photography;\nStartupNotify=true\n')
     print(f"Installed {dest / (APP + '.desktop')}")
 
@@ -879,15 +943,27 @@ def main():
     parser.add_argument("--runner", choices=("adobe", "staging", "proton", "omarchy", "lightroom-omarchy-proton"), default="adobe")
     parser.add_argument("--graphics", choices=("x11", "wayland"), default="x11")
     parser.add_argument("--runtime", help="Staged lightroom-omarchy-proton runtime directory name")
-    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "repair-performance", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate", "run-perf", "stage-mangohud", "measure", "trace"))
+    parser.add_argument("--profile", choices=("stable", "performance"), help="Override the saved Lightroom launch profile")
+    parser.add_argument("command", choices=("doctor", "status", "fetch", "prepare", "initialize-runner", "repair-vcrun", "repair-browser", "repair-webview", "repair-webview-rendering", "repair-dxvk", "repair-growth-sdk", "repair-d3d12", "repair-performance", "stage-webview-148", "stage-proton", "stage-staging", "stage-adobe-browser", "use-installed-webview", "stage-lightroom", "experiment-d2d", "restore-d2d", "experiment-webview", "browser-status", "capture-webview", "install-cc", "cc", "run", "run-debug", "native-debug", "debug", "ui", "stop", "integrate", "run-perf", "stage-mangohud", "measure", "trace", "use-profile"))
     parser.add_argument("args", nargs="*")
     args = parser.parse_args()
     if args.runtime and args.runner != "lightroom-omarchy-proton":
         parser.error("--runtime is only supported by lightroom-omarchy-proton")
+    if args.profile and (args.runner != "lightroom-omarchy-proton" or args.runtime):
+        parser.error("--profile requires lightroom-omarchy-proton and cannot be combined with --runtime")
     if args.command in ("run", "run-perf", "run-debug", "cc", "install-cc", "experiment-webview") and dispatch_desktop():
         return
     GRAPHICS = args.graphics
     RUNNER = args.runner
+    if args.command == "use-profile":
+        if RUNNER != "lightroom-omarchy-proton" or args.runtime or args.profile or len(args.args) != 1:
+            parser.error("Use lightroom-omarchy-proton use-profile stable|performance")
+        save_profile(args.args[0])
+        return
+    if args.command == "stage-mangohud":
+        # Repair must remain available if a saved profile's limiter is missing.
+        stage_mangohud()
+        return
     if args.runner == "staging":
         PREFIX = DATA / "experiments/wine-staging-11.17/prefix"
         RUNTIME = DATA / "runtimes/wine-staging-11.17/usr"
@@ -896,7 +972,7 @@ def main():
     elif args.runner == "lightroom-omarchy-proton":
         PROTON = True
         PREFIX = DATA / "experiments/lightroom-omarchy-proton/prefix"
-        RUNTIME = selected_proton_runtime(args.runtime) if args.runtime else DATA / "runtimes/lightroom-omarchy-proton/files"
+        RUNTIME = selected_proton_runtime(args.runtime) if args.runtime else configure_profile(args.profile or saved_profile())
         LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
         CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
     elif args.runner in ("proton", "omarchy"):
@@ -911,7 +987,6 @@ def main():
         LR = PREFIX / "drive_c/Program Files/Adobe/Adobe Lightroom CC/lightroom.exe"
         CC = PREFIX / "drive_c/Program Files/Adobe/Adobe Creative Cloud/ACC/Creative Cloud.exe"
     if args.command == "doctor": doctor()
-    elif args.command == "stage-mangohud": stage_mangohud()
     elif args.command == "trace":
         recorder = next((p for p in (SCRIPT.parent.parent / "diagnostics/stall-trace.py",
             SCRIPT.parent.parent / "share" / APP / "diagnostics/stall-trace.py") if p.is_file()), None)
@@ -989,7 +1064,7 @@ def main():
     elif args.command == "debug": debug(args.args)
     elif args.command == "ui": wine(DATA / "tools/lightroom-ui.exe", *args.args)
     elif args.command == "stop": run([RUNTIME / "bin/wineserver", "-k"], env=environment())
-    elif args.command == "integrate": integrate()
+    elif args.command == "integrate": integrate(args.runtime, args.profile)
 
 
 if __name__ == "__main__":

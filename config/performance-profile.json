@@ -1,0 +1,23 @@
+{
+  "runtime": "lightroom-omarchy-proton-11.7-3-rc1",
+  "version": "11.7-3-rc1",
+  "components": {
+    "files/lib/wine/x86_64-windows/advapi32.dll": "0983c5028949991d31195a0b80de0ca0b514923de692fdfa1c88aa2b7561c6e1",
+    "files/lib/wine/i386-windows/advapi32.dll": "dd57fa612e8ed4db83b15a45d22eefac739ffaa9219ba6d1ad3be4c62ef27de5",
+    "files/lib/wine/x86_64-windows/shcore.dll": "90b778175f93138ea788b9b90884ead42207ed26f88bce6283907b6a7c4cb1ee",
+    "files/lib/wine/i386-windows/shcore.dll": "1af1f5f4131eae6b08028eb484994349a2dc295b6fbd81e0833e26e1f3dd48fb",
+    "files/lib/wine/x86_64-windows/d2d1.dll": "52cfc269d63329366761751362e540d26ab0ddaa886f89372d9c9b6013c16c4c",
+    "files/lib/wine/i386-windows/d2d1.dll": "cf782559c778b55d4319586800b3db2b183a0feb5fba34aaa281693e30c085da",
+    "files/lib/wine/x86_64-windows/hnetcfg.dll": "8acd1549479e6934b31babdf7ab2ef6277d3dda0d8f9d0d058974482446cc62e",
+    "files/lib/wine/i386-windows/hnetcfg.dll": "d2f9c92ac57c854f3c568ec17ef90557b394e173220b93ae6fabd4419851375f",
+    "files/lib/wine/x86_64-windows/uiautomationcore.dll": "80802ec5f5ecb86293c5f5d817456f324766464a324b4ae40b68ae043265dab6",
+    "files/lib/wine/i386-windows/uiautomationcore.dll": "e6e4bbd6547ad98016f635775a51d0ae20bf7ec33a2e2cd9114fee4a8af25b64",
+    "files/lib/wine/x86_64-unix/win32u.so": "8fd85ef6cd113ad0bcde589246c84f7fe179b5b503ec489ae2bc988191b9e693",
+    "files/lib/wine/x86_64-windows/ntdll.dll": "bab6b6a540ce729ebbb4f653b42a99f28f5d6d91b0b35d0f4f6efd764c2efc62",
+    "files/lib/wine/i386-windows/ntdll.dll": "ce784f23eb1e2f37462fcc5cbea23e49c75aee0ab948824a4133f9bdafd43e1a",
+    "files/lib/wine/x86_64-unix/winex11.so": "ede2fd9dbe769966907a475f49b45d5058c68cac9273ef69fc48b559343dbc58"
+  },
+  "limiter": "mangohud",
+  "retain_loupe": "1",
+  "validation_report": "docs/loupe-retention-2026-09-19.md"
+}

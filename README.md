@@ -93,12 +93,36 @@ Lightroom and stopping its prefix, select it explicitly:
 LRCC_LIMITER=mangohud lightroom-omarchy-proton --runtime lightroom-omarchy-proton-11.7-3-rc1 run-perf
 ```
 
-The stable runtime remains the default. The launcher refuses to start a different
-runtime while that prefix has live Wine processes using another one. Candidate
-metadata enables photo retention; set `LRCC_RETAIN_LOUPE=0` for an explicit
-comparison. The selected runtime follows the usual silent Super+0 launch and
-desktop scaling rules. `LRCC_PREFIX` still selects an isolated prefix for tests.
-The command uses the staged MangoHud limiter to match the measured configuration.
+Named profiles keep the tested runtime and limiter together. After the candidate
+and MangoHud are staged, select the profile for future launches:
+
+```sh
+lightroom-omarchy-proton use-profile performance
+```
+
+Close Lightroom normally, then stop any remaining prefix services before the
+first runtime switch:
+
+```sh
+lightroom-omarchy-proton stop
+lightroom-omarchy-proton run
+```
+
+`run` keeps the overlay hidden; `run-perf` shows it. The existing desktop shortcut
+follows the saved profile. `--profile stable run` overrides it for one launch;
+`use-profile stable` restores the stable default. Close Lightroom and stop its
+prefix before switching back too. A fresh installation defaults to stable until
+a profile is selected. `status` reports the selected profile and whether an old
+runtime is still running.
+
+The performance profile verifies all 14 pinned candidate components before
+selection and launch. It enables photo retention and the measured late limiter;
+explicit `LRCC_RETAIN_LOUPE` and `LRCC_LIMITER` values remain overrides. It does
+not change photo-processing preferences, credentials, or the current running
+session. `--runtime` remains an explicit experimental override and cannot be
+combined with `--profile`. Silent Super+0 launch and desktop scaling rules apply
+to both profiles. `LRCC_PREFIX` still selects an isolated prefix for tests.
+See [profile validation and remaining limits](docs/launch-profiles-2026-09-20.md).
 
 For Omarchy's desktop integration, [the Lightroom window rule](config/lightroom-hyprland.lua)
 keeps launches on Super+0 and disables compositor fades for its Windows menus.

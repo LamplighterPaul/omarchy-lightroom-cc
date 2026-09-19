@@ -63,6 +63,86 @@ class LauncherTest(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 self.app.selected_proton_runtime(invalid)
 
+    def staged_profile(self):
+        self.app.SCRIPT = self.root / 'bin/launcher'
+        config = self.root / 'config/performance-profile.json'
+        config.parent.mkdir()
+        runtime = self.app.DATA / 'runtimes/tested'
+        component = runtime / 'files/lib/test.dll'
+        component.parent.mkdir(parents=True)
+        component.write_bytes(b'tested component')
+        (runtime / 'files/bin').mkdir()
+        (runtime / 'files/bin/wine').touch()
+        (runtime / 'lightroom-omarchy-proton.json').write_text(json.dumps({
+            'name': 'lightroom-omarchy-proton', 'version': 'test'}))
+        config.write_text(json.dumps({'runtime': 'tested', 'version': 'test',
+            'components': {'files/lib/test.dll': hashlib.sha256(component.read_bytes()).hexdigest()},
+            'limiter': 'mangohud', 'retain_loupe': '1'}))
+        layer = self.app.DATA / 'tools/mangohud/layers/MangoHud.x86_64.json'
+        layer.parent.mkdir(parents=True)
+        layer.touch()
+        return runtime, component, layer
+
+    def test_profile_selection_is_persistent_and_rejects_modified_build(self):
+        runtime, component, layer = self.staged_profile()
+        self.assertEqual(self.app.saved_profile(), 'stable')
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.app.save_profile('performance')
+            self.assertEqual(self.app.saved_profile(), 'performance')
+            self.assertEqual(self.app.configure_profile('performance'), runtime / 'files')
+            self.app.save_profile('stable')
+        component.write_bytes(b'unreviewed replacement')
+        with self.assertRaisesRegex(RuntimeError, 'differs from the tested build'):
+            self.app.save_profile('performance')
+        self.assertEqual(self.app.saved_profile(), 'stable')
+
+    def test_profile_requires_limiter_but_stable_recovery_does_not(self):
+        runtime, component, layer = self.staged_profile()
+        layer.unlink()
+        with self.assertRaisesRegex(RuntimeError, 'staged limiter'):
+            self.app.save_profile('performance')
+        self.assertFalse((self.app.DATA / 'launch-profile.json').exists())
+        (self.app.DATA / 'launch-profile.json').write_text('{broken')
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.app.save_profile('stable')
+        self.assertEqual(self.app.saved_profile(), 'stable')
+
+    def test_limiter_repair_does_not_require_a_working_saved_profile(self):
+        with patch('sys.argv', ['launcher', '--runner', 'lightroom-omarchy-proton', 'stage-mangohud']), \
+             patch.object(self.app, 'stage_mangohud') as stage, \
+             patch.object(self.app, 'configure_profile') as configure:
+            self.app.main()
+        stage.assert_called_once()
+        configure.assert_not_called()
+
+    def test_profile_binds_limiter_and_retention_with_explicit_overrides(self):
+        self.staged_profile()
+        self.app.RUNTIME = self.app.configure_profile('performance')
+        self.app.PROTON = True
+        self.app.RUNNER = 'lightroom-omarchy-proton'
+        self.app.PRESENT_HZ = 120
+        (self.app.PREFIX.parent / 'profile.json').write_text(json.dumps({'windows_username': 'test'}))
+        with patch.dict(os.environ, {}, clear=True):
+            env = self.app.environment()
+            self.assertIn('dxgi.maxFrameRate = 0', env['DXVK_CONFIG'])
+            self.assertIn('fps_limit=120,fps_limit_method=late', env['MANGOHUD_CONFIG'])
+            self.assertEqual(env['LIGHTROOM_OMARCHY_RETAIN_LOUPE'], '1')
+            with patch.dict(os.environ, {'LRCC_LIMITER': 'dxvk', 'LRCC_RETAIN_LOUPE': '0'}):
+                env = self.app.environment()
+                self.assertIn('dxgi.maxFrameRate = 120', env['DXVK_CONFIG'])
+                self.assertEqual(env['LIGHTROOM_OMARCHY_RETAIN_LOUPE'], '0')
+
+    def test_runtime_conflict_stops_launch_before_configuration_helpers(self):
+        self.app.RUNNER = 'lightroom-omarchy-proton'
+        self.app.LR.parent.mkdir(parents=True)
+        self.app.LR.touch()
+        with patch.object(self.app, 'conflicting_prefix_runtimes', return_value=[123]), \
+             patch.object(self.app, 'sync_display_scale') as scale, patch.object(self.app, 'wine') as wine:
+            with self.assertRaisesRegex(RuntimeError, 'another runtime'):
+                self.app.launch(self.app.LR, 'lightroom', [])
+        scale.assert_not_called()
+        wine.assert_not_called()
+
     def test_runtime_switch_guard_uses_live_mappings_and_resolved_prefix(self):
         proc = self.root / 'proc/123'
         proc.mkdir(parents=True)
@@ -243,6 +323,11 @@ class LauncherTest(unittest.TestCase):
             self.app.integrate()
         entry = (self.root / 'applications/omarchy-lightroom-cc.desktop').read_text()
         self.assertIn('--runner staging --graphics x11 run', entry)
+        self.app.RUNNER = 'lightroom-omarchy-proton'
+        with patch.dict(os.environ, {'XDG_DATA_HOME': str(self.root)}), contextlib.redirect_stdout(io.StringIO()):
+            self.app.integrate(profile='performance')
+        entry = (self.root / 'applications/omarchy-lightroom-cc.desktop').read_text()
+        self.assertIn('--profile performance run', entry)
 
     def test_verified_cache_does_not_access_network(self):
         dest = self.app.DATA / "cache/asset.bin"
