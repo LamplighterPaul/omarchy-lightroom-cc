@@ -100,6 +100,12 @@ comparison. The selected runtime follows the usual silent Super+0 launch and
 desktop scaling rules. `LRCC_PREFIX` still selects an isolated prefix for tests.
 The command uses the staged MangoHud limiter to match the measured configuration.
 
+For Omarchy's desktop integration, [the Lightroom window rule](config/lightroom-hyprland.lua)
+keeps launches on Super+0 and disables compositor fades for its Windows menus.
+Merge it into the user Hyprland Lua config after Omarchy defaults; preserve any
+other personal rules. The [desktop menu investigation](docs/menu-compositor-2026-09-19.md)
+records the evidence and live configuration checks.
+
 ## Credits and license
 
 Original launcher, diagnostics, build scripts, tests and documentation:
