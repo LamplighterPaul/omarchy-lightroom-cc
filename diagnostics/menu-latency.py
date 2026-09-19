@@ -20,6 +20,8 @@ def main():
     parser.add_argument('output', type=Path)
     parser.add_argument('--pairs', type=int, default=10)
     parser.add_argument('--input', choices=('mixed', 'mouse', 'keyboard'), default='mouse')
+    parser.add_argument('--view', choices=('photo', 'grid'), default='photo',
+                        help='Explicit view after clearing menu navigation (Escape may leave the photo)')
     args = parser.parse_args()
     if not 1 <= args.pairs <= 30:
         parser.error('--pairs must be between 1 and 30')
@@ -38,6 +40,10 @@ def main():
 
     action('escape')
     action('escape')
+    preparation = action('loupe' if args.view == 'photo' else 'grid')
+    # Keep the view-change input out of the menu measurement. Inspect a settled
+    # fixture screenshot as well; this delay alone does not prove startup idle.
+    time.sleep(2)
     observer = subprocess.Popen([str(data / 'tools/x11-menu-events'), '60'],
                                 env=env, stdout=subprocess.PIPE, text=True)
     events = queue.Queue()
@@ -48,7 +54,8 @@ def main():
         events.put(None)
 
     threading.Thread(target=reader, daemon=True).start()
-    result = {'status': 'incomplete', 'openings': [],
+    result = {'status': 'incomplete', 'openings': [], 'view': args.view,
+              'preparation': preparation,
               'note': 'Input submission to X11 map receipt, not visible display latency.'}
     try:
         if not events.get(timeout=5).startswith('event,') or not events.get(timeout=5).startswith('ready,'):
