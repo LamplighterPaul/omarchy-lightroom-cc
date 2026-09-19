@@ -1,0 +1,17 @@
+[
+  {
+    "filename": "weston-15.0.1-3-x86_64.pkg.tar.zst",
+    "url": "https://geo.mirror.pkgbuild.com/extra/os/x86_64/weston-15.0.1-3-x86_64.pkg.tar.zst",
+    "sha256": "92fe0bfe2cf1ae02105b0e6573f6695c6bbd4637c9a6b20299a6fea8c3d23b4d"
+  },
+  {
+    "filename": "colord-1.4.8-1-x86_64.pkg.tar.zst",
+    "url": "https://geo.mirror.pkgbuild.com/extra/os/x86_64/colord-1.4.8-1-x86_64.pkg.tar.zst",
+    "sha256": "a03489fdc2093ef8d3dcdb2f57c6c642356ca4232bbad77de092e5f31ae95f19"
+  },
+  {
+    "filename": "libgusb-0.4.9-2-x86_64.pkg.tar.zst",
+    "url": "https://geo.mirror.pkgbuild.com/extra/os/x86_64/libgusb-0.4.9-2-x86_64.pkg.tar.zst",
+    "sha256": "433495cbfe5d8b7b0b6f8b7ee09cc308461a2fdfd66edee0227d1a4b02d31a3b"
+  }
+]

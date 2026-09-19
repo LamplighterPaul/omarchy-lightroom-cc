@@ -1,0 +1,26 @@
+{
+  "case": "baseline",
+  "config": "",
+  "phases": [
+    {
+      "action": "pan",
+      "start_epoch": 1789838936.5995152,
+      "end_epoch": 1789838946.7572198
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789838947.371961,
+      "end_epoch": 1789838957.5017767
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789838958.105804,
+      "end_epoch": 1789838968.2977848
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789838968.9124236,
+      "end_epoch": 1789838979.1097517
+    }
+  ]
+}

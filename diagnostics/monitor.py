@@ -10,6 +10,34 @@ import time
 from resources import snapshot
 
 
+def host_state():
+    """Read policy and pressure without changing power or scheduler settings."""
+    paths = {
+        'platform_profile': '/sys/firmware/acpi/platform_profile',
+        'governor': '/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor',
+        'energy_preference': '/sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference',
+        'no_turbo': '/sys/devices/system/cpu/intel_pstate/no_turbo',
+        'cpu_pressure': '/proc/pressure/cpu',
+        'memory_pressure': '/proc/pressure/memory',
+        'io_pressure': '/proc/pressure/io',
+    }
+    result = {}
+    for name, path in paths.items():
+        try:
+            result[name] = Path(path).read_text().strip()
+        except OSError:
+            pass
+    clocks = []
+    for path in Path('/sys/devices/system/cpu/cpufreq').glob('policy*/scaling_cur_freq'):
+        try:
+            clocks.append(int(path.read_text()) / 1000)
+        except (OSError, ValueError):
+            pass
+    if clocks:
+        result['cpu_policy_mhz'] = dict(min=min(clocks), max=max(clocks), mean=sum(clocks)/len(clocks))
+    return result
+
+
 def record(prefix, seconds, interval=1):
     hz = os.sysconf('SC_CLK_TCK')
     utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -43,7 +71,7 @@ def record(prefix, seconds, interval=1):
         samples.append(dict(t=round(now-started, 3), prefix_window_focused=focused,
             cpu_percent=round(sum(r['cpu_percent'] or 0 for r in rows), 2),
             pss_mib=round(sum(r['pss_mib'] for r in rows), 2),
-            gpu_engine_percent=engines, processes=rows,
+            gpu_engine_percent=engines, processes=rows, host=host_state(),
             exited_processes=len(set(before)-set(after))))
         before, last = after, now
     return dict(started_utc=utc,

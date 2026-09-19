@@ -67,6 +67,15 @@ class LauncherTest(unittest.TestCase):
         self.assertEqual(env["LIGHTROOM_OMARCHY_USERNAME"], "original-user")
         self.assertEqual(env["LIGHTROOM_OMARCHY_CENTER_MENUS"], "1")
         self.assertEqual(env["PROTONPATH"], str(self.app.RUNTIME.parent))
+        self.assertIn("dxgi.syncInterval = 0", env["DXVK_CONFIG"])
+        self.app.PRESENT_HZ = 120
+        with patch.dict(os.environ, {"DXVK_CONFIG": "dxgi.syncInterval = 1"}):
+            env = self.app.environment()
+        self.assertIn("dxgi.maxFrameRate = 120", env["DXVK_CONFIG"])
+        self.assertTrue(env["DXVK_CONFIG"].endswith("dxgi.syncInterval = 1"))
+        with patch.dict(os.environ, {"LRCC_PRESENTATION": "upstream"}):
+            env = self.app.environment()
+        self.assertEqual(env.get("DXVK_CONFIG"), os.environ.get("DXVK_CONFIG"))
 
     def test_dispatch_rejects_hyprland_error_even_on_zero_exit(self):
         with patch.dict(os.environ, {"HYPRLAND_INSTANCE_SIGNATURE": "test", "LRCC_DISPATCHED": "0"}), \

@@ -42,3 +42,65 @@ none is established by an average CPU sample.
 
 References: [MangoHud](https://github.com/flightlessmango/MangoHud) and
 [DXVK HUD](https://github.com/doitsujin/dxvk#hud).
+
+## Isolated real-input fixture
+
+Developer tools in `diagnostics/headless-session.py` stage checksum-pinned,
+application-local Weston packages and start a separate headless 2880x1800,
+120 Hz display using the real GPU. Confirm the renderer in its log; software
+rendering is not a valid performance comparison. The fixture uses display `:1`
+and socket `lightroom-test` and refuses to replace an occupied display.
+
+Close the normal app and stop/wait for its Wine server before `clone`. Cloning
+refuses a running source prefix and never overwrites an existing test prefix.
+The copied prefix remains private; it contains the user's genuine signed-in data.
+
+```sh
+python3 diagnostics/headless-session.py stage
+python3 diagnostics/headless-session.py clone
+python3 diagnostics/headless-session.py start
+```
+
+In another terminal, launch the existing test copy:
+
+```sh
+DISPLAY=:1 WAYLAND_DISPLAY=lightroom-test LRCC_DISPATCHED=1 \
+  LRCC_PREFIX="$HOME/.local/share/omarchy-lightroom-cc/experiments/performance-headless/prefix" \
+  lightroom-omarchy-proton run-perf
+```
+
+`isolated-input.py` supports `maximize`, `loupe`, `zoom`, `pan`, `menu-open`,
+`escape`, `menus`, and `record`. Set both display variables as above. It verifies
+that the X display belongs to the dedicated headless Weston before sending any
+input. `pan` holds a real button and moves back and forth for about ten seconds;
+input timestamps are written to `measurements/isolated-input.jsonl`.
+`escape` outside a menu can leave photo view, so confirm the screen state.
+Captures of the parent window omit separate popup windows.
+
+Store a custom MangoHud config under the application data directory and pass
+its absolute path as `LRCC_HUD_CONFIG`; the runtime container's `/tmp` is private.
+An automatic logging delay is useful for repeated runs. Keep the warm-up gesture
+separate from measured continuous pans; do not count intentional idle pauses as
+stutters. Match CSV timestamps to the input intervals, and trim boundaries for
+the CSV filename's one-second timestamp precision. Preserve stalls inside the
+remaining interval, including those exceeding 100 ms.
+
+The fixture validates rendering work and interaction repeatability. It does not
+prove identical end-to-end presentation or input latency under the live Hyprland
+compositor. Repeat the winning change on the normal desktop.
+
+## Current presentation profile
+
+The custom runner defaults to `LRCC_PRESENTATION=fast`: sync interval zero and
+a frame cap following the destination monitor's refresh rate. If the refresh
+rate cannot be read, the cap is 60. This is read at launch; restart after moving
+to a display with a different refresh rate. `LRCC_PRESENTATION=upstream` leaves
+DXVK presentation settings unchanged, and explicit `DXVK_CONFIG` options win.
+See [the measured results and limitations](pacing-2026-09-19.md).
+
+The resource timeline also records platform power policy, CPU governor/energy
+preference, available CPU policy clocks, turbo policy, and host CPU/memory/I/O
+pressure. Missing interfaces are omitted. Policy clocks are sampled context,
+not effective per-thread frequency or proof of throttling. This recorder never
+changes priority, governor, turbo or the power profile. Its one-second sampling
+cannot attribute an individual short stall; use a targeted trace for that.

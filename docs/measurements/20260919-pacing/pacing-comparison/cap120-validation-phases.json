@@ -1,0 +1,21 @@
+{
+  "case": "cap120-validation",
+  "config": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 120",
+  "phases": [
+    {
+      "action": "pan",
+      "start_epoch": 1789839801.202915,
+      "end_epoch": 1789839811.381603
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789839811.491547,
+      "end_epoch": 1789839821.6541371
+    },
+    {
+      "action": "pan",
+      "start_epoch": 1789839821.758019,
+      "end_epoch": 1789839831.9430509
+    }
+  ]
+}

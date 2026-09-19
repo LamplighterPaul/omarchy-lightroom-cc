@@ -26,6 +26,7 @@ PROTON = False
 GRAPHICS = "x11"
 RUNNER = "adobe"
 WORKSPACE = 10  # Omarchy's Super+0.
+PRESENT_HZ = 60  # Conservative cap when no compositor refresh rate is available.
 TOOLS = DATA / "tools/usr/bin"
 SCRIPT = Path(__file__).resolve()
 MANIFEST = next((p for p in (SCRIPT.parent.parent / "manifest.json",
@@ -101,13 +102,23 @@ def environment():
             # Use this Proton build's replacements, including in migrated prefixes
             # that previously selected standalone native component experiments.
             env["WINEDLLOVERRIDES"] = env.get("WINEDLLOVERRIDES", "") + ";shcore,d2d1=b"
+            presentation = env.get("LRCC_PRESENTATION", "fast")
+            if presentation not in ("fast", "upstream"):
+                raise RuntimeError("LRCC_PRESENTATION must be fast or upstream")
+            if presentation == "fast":
+                # Measured on the isolated 120 Hz fixture. Let the compositor
+                # schedule display updates; bound production to the monitor.
+                options = f"dxgi.syncInterval = 0; dxgi.maxFrameRate = {PRESENT_HZ}"
+                if env.get("DXVK_CONFIG"):
+                    options += "; " + env["DXVK_CONFIG"]
+                env["DXVK_CONFIG"] = options
     if env.get("LRCC_PERF") == "1":
         layers = DATA / "tools/mangohud/layers"
         if (layers / "MangoHud.x86_64.json").is_file():
             output = DATA / "measurements/mangohud"
             output.mkdir(parents=True, exist_ok=True)
             env.update(MANGOHUD="1", VK_ADD_IMPLICIT_LAYER_PATH=str(layers),
-                       MANGOHUD_CONFIGFILE=str(DATA / "performance.conf"))
+                       MANGOHUD_CONFIGFILE=env.get("LRCC_HUD_CONFIG", str(DATA / "performance.conf")))
         else:
             env["DXVK_HUD"] = "fps,frametimes,memory,gpuload,compiler,scale=2"
     return env
@@ -134,7 +145,7 @@ def stage_mangohud():
     output.mkdir(parents=True, exist_ok=True)
     config = DATA / "performance.conf"
     if not config.exists():
-        config.write_text("fps\nframetime\nframe_timing\ncpu_stats\ngpu_stats\nram\nvram\n"
+        config.write_text("fps\nframetime\nframe_timing\ncpu_stats\ncpu_text=Host CPU\ngpu_stats\nprocmem\n"
                           "font_size=28\nposition=top-left\nlog_interval=0\nlog_duration=60\n"
                           "toggle_logging=Shift_L+F2\npermit_upload=0\ncontrol=lightroom-perf-%p\n"
                           f"output_folder={output}\n")
@@ -201,7 +212,7 @@ def stage_staging():
 def logged(label, action):
     logs = DATA / "logs"
     logs.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S-%f")
     path = logs / f"{stamp}-{label}.log"
     print(f"Log: {path}", flush=True)
     with path.open("w") as log:
@@ -493,13 +504,18 @@ def launch(exe, label, args):
     logged(label, start)
 
 
-def desktop_scale(monitors, workspaces):
+def destination_monitor(monitors, workspaces):
     """Use the destination workspace's monitor, falling back to the focused one."""
     target = next((w.get("monitor") for w in workspaces if w.get("id") == WORKSPACE), None)
     monitor = next((m for m in monitors if m.get("name") == target), None)
     monitor = monitor or next((m for m in monitors if m.get("focused")), None)
     if not monitor:
         raise RuntimeError("Cannot determine Lightroom's target monitor scale")
+    return monitor
+
+
+def desktop_scale(monitors, workspaces):
+    monitor = destination_monitor(monitors, workspaces)
     scale = float(monitor["scale"])
     if not 0.5 <= scale <= 4:
         raise RuntimeError(f"Invalid monitor scale: {scale}")
@@ -563,10 +579,13 @@ def sync_theme(log):
 
 
 def sync_display_scale(log):
+    global PRESENT_HZ
     if not os.environ.get("HYPRLAND_INSTANCE_SIGNATURE"):
         return
     monitors = json.loads(subprocess.check_output(["hyprctl", "monitors", "-j"], text=True))
     workspaces = json.loads(subprocess.check_output(["hyprctl", "workspaces", "-j"], text=True))
+    refresh = float(destination_monitor(monitors, workspaces).get("refreshRate", 0))
+    PRESENT_HZ = round(refresh) if 20 <= refresh <= 1000 else 60
     dpi = desktop_scale(monitors, workspaces)
     # When Xwayland itself scales windows, Wine must not apply the scale twice.
     if GRAPHICS == "x11":

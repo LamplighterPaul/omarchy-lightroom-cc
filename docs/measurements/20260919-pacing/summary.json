@@ -1,0 +1,89 @@
+[
+  {
+    "case": "baseline",
+    "config": "",
+    "runs": [
+      {
+        "samples": 1,
+        "p50_ms": 1722.62,
+        "p95_ms": 1722.62,
+        "p99_ms": 1722.62,
+        "max_ms": 1722.62,
+        "over_16_67_percent": 100.0,
+        "over_8_33_percent": 100.0,
+        "files": [
+          "lightroom_2026-09-19_19-28-53.csv"
+        ]
+      },
+      {
+        "samples": 0
+      },
+      {
+        "samples": 473,
+        "p50_ms": 17.374,
+        "p95_ms": 19.296,
+        "p99_ms": 21.137,
+        "max_ms": 31.885,
+        "over_16_67_percent": 71.5,
+        "over_8_33_percent": 99.8,
+        "files": [
+          "lightroom_2026-09-19_19-28-53.csv"
+        ]
+      },
+      {
+        "samples": 474,
+        "p50_ms": 17.209,
+        "p95_ms": 19.521,
+        "p99_ms": 21.068,
+        "max_ms": 24.216,
+        "over_16_67_percent": 70.7,
+        "over_8_33_percent": 100.0,
+        "files": [
+          "lightroom_2026-09-19_19-28-53.csv"
+        ]
+      }
+    ]
+  },
+  {
+    "case": "cap120-validation",
+    "config": "dxgi.syncInterval = 0; dxgi.maxFrameRate = 120",
+    "runs": [
+      {
+        "samples": 971,
+        "p50_ms": 8.247,
+        "p95_ms": 10.653,
+        "p99_ms": 12.404,
+        "max_ms": 56.012,
+        "over_16_67_percent": 0.3,
+        "over_8_33_percent": 45.0,
+        "files": [
+          "lightroom_2026-09-19_19-41-13.csv"
+        ]
+      },
+      {
+        "samples": 903,
+        "p50_ms": 8.314,
+        "p95_ms": 15.294,
+        "p99_ms": 18.527,
+        "max_ms": 26.894,
+        "over_16_67_percent": 2.9,
+        "over_8_33_percent": 49.4,
+        "files": [
+          "lightroom_2026-09-19_19-41-13.csv"
+        ]
+      },
+      {
+        "samples": 581,
+        "p50_ms": 8.802,
+        "p95_ms": 28.595,
+        "p99_ms": 31.754,
+        "max_ms": 49.034,
+        "over_16_67_percent": 30.6,
+        "over_8_33_percent": 66.1,
+        "files": [
+          "lightroom_2026-09-19_19-41-13.csv"
+        ]
+      }
+    ]
+  }
+]
