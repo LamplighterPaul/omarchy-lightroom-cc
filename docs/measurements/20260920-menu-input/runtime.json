@@ -1,0 +1,21 @@
+{
+  "runtime": "lightroom-omarchy-proton-input-trace-v2",
+  "component_hashes_verified": {
+    "files/lib/wine/x86_64-windows/advapi32.dll": true,
+    "files/lib/wine/i386-windows/advapi32.dll": true,
+    "files/lib/wine/x86_64-windows/shcore.dll": true,
+    "files/lib/wine/i386-windows/shcore.dll": true,
+    "files/lib/wine/x86_64-windows/d2d1.dll": true,
+    "files/lib/wine/i386-windows/d2d1.dll": true,
+    "files/lib/wine/x86_64-windows/hnetcfg.dll": true,
+    "files/lib/wine/i386-windows/hnetcfg.dll": true,
+    "files/lib/wine/x86_64-windows/uiautomationcore.dll": true,
+    "files/lib/wine/i386-windows/uiautomationcore.dll": true,
+    "files/lib/wine/x86_64-unix/win32u.so": true,
+    "files/lib/wine/x86_64-windows/ntdll.dll": true,
+    "files/lib/wine/i386-windows/ntdll.dll": true,
+    "files/lib/wine/x86_64-unix/winex11.so": true
+  },
+  "changed_component": "files/lib/wine/x86_64-unix/win32u.so",
+  "sha256": "0f0af7e91190a6acf35cc2b6406c8cf127e2f0ab7b6871cf7b62797933fa0b7f"
+}

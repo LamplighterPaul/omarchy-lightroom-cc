@@ -1,0 +1,22 @@
+[
+  {
+    "sample": 4,
+    "top_frame": "#0  0x00006ffff9457351 in luaopen_table () from target:<DATA>/experiments/performance-headless/prefix/drive_c/Program Files/Adobe/Adobe Lightroom CC/AgKernel.dll",
+    "note": "Diagnostic interruption, not a time-distribution sample. Deeper PE unwind unreliable."
+  },
+  {
+    "sample": 5,
+    "top_frame": "#0  0x000072726636389c in __wine_syscall_dispatcher () from target:<DATA>/runtimes/lightroom-omarchy-proton-input-trace-v2/files/lib/wine/x86_64-unix/ntdll.so",
+    "note": "Diagnostic interruption, not a time-distribution sample. Deeper PE unwind unreliable."
+  },
+  {
+    "sample": 6,
+    "top_frame": "#0  0x00006ffff9490f7d in AgLuaState_checkMainUniverse () from target:<DATA>/experiments/performance-headless/prefix/drive_c/Program Files/Adobe/Adobe Lightroom CC/AgKernel.dll",
+    "note": "Diagnostic interruption, not a time-distribution sample. Deeper PE unwind unreliable."
+  },
+  {
+    "sample": 7,
+    "top_frame": "#0  0x00006ffffe2d21e9 in memmove () from target:<DATA>/experiments/performance-headless/prefix/drive_c/windows/system32/vcruntime140.dll",
+    "note": "Diagnostic interruption, not a time-distribution sample. Deeper PE unwind unreliable."
+  }
+]

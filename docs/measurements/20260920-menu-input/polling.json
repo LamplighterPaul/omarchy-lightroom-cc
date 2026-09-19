@@ -1,0 +1,120 @@
+{
+  "status": "complete",
+  "openings": [
+    {
+      "action": "file-menu-key",
+      "phase": {
+        "action": "file-menu-key",
+        "start_epoch": 1789859486.079993,
+        "end_epoch": 1789859486.0800772,
+        "start_monotonic": 176489.289925312,
+        "end_monotonic": 176489.290008294
+      },
+      "map": {
+        "monotonic": 176490.704985292,
+        "window": "1800017",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 1415.059979975922
+    },
+    {
+      "action": "edit-menu-open",
+      "phase": {
+        "action": "edit-menu-open",
+        "start_epoch": 1789859487.900875,
+        "end_epoch": 1789859487.900954,
+        "start_monotonic": 176491.110806695,
+        "end_monotonic": 176491.110885473
+      },
+      "map": {
+        "monotonic": 176491.145760543,
+        "window": "1800019",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 34.953847993165255
+    },
+    {
+      "action": "file-menu-key",
+      "phase": {
+        "action": "file-menu-key",
+        "start_epoch": 1789859488.3294413,
+        "end_epoch": 1789859488.3295107,
+        "start_monotonic": 176491.539373007,
+        "end_monotonic": 176491.539441867
+      },
+      "map": {
+        "monotonic": 176491.591160374,
+        "window": "180001a",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 51.787367003271356
+    },
+    {
+      "action": "edit-menu-open",
+      "phase": {
+        "action": "edit-menu-open",
+        "start_epoch": 1789859488.7776167,
+        "end_epoch": 1789859488.77769,
+        "start_monotonic": 176491.987548986,
+        "end_monotonic": 176491.987621106
+      },
+      "map": {
+        "monotonic": 176492.041702361,
+        "window": "180001b",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 54.15337497834116
+    },
+    {
+      "action": "file-menu-key",
+      "phase": {
+        "action": "file-menu-key",
+        "start_epoch": 1789859489.2514656,
+        "end_epoch": 1789859489.25165,
+        "start_monotonic": 176492.461397447,
+        "end_monotonic": 176492.461581184
+      },
+      "map": {
+        "monotonic": 176492.520773834,
+        "window": "180001c",
+        "x": 1171,
+        "y": 57,
+        "width": 471,
+        "height": 546
+      },
+      "latency_ms": 59.37638698378578
+    },
+    {
+      "action": "edit-menu-open",
+      "phase": {
+        "action": "edit-menu-open",
+        "start_epoch": 1789859489.7219372,
+        "end_epoch": 1789859489.72201,
+        "start_monotonic": 176492.931869163,
+        "end_monotonic": 176492.931941048
+      },
+      "map": {
+        "monotonic": 176492.97383332,
+        "window": "180001d",
+        "x": 1254,
+        "y": 57,
+        "width": 445,
+        "height": 819
+      },
+      "latency_ms": 41.96415698970668
+    }
+  ],
+  "note": "Input submission to X11 map receipt, not visible display latency."
+}

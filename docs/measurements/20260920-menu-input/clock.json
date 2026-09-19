@@ -1,0 +1,27 @@
+[
+  {
+    "monotonic_before": 176068.946917702,
+    "raw": 176066.699981879,
+    "monotonic_after": 176068.946918726
+  },
+  {
+    "monotonic_before": 176068.946919334,
+    "raw": 176066.699982856,
+    "monotonic_after": 176068.94691971
+  },
+  {
+    "monotonic_before": 176068.946919969,
+    "raw": 176066.699983368,
+    "monotonic_after": 176068.946920138
+  },
+  {
+    "monotonic_before": 176068.946920297,
+    "raw": 176066.69998363,
+    "monotonic_after": 176068.946920381
+  },
+  {
+    "monotonic_before": 176068.946920452,
+    "raw": 176066.699983771,
+    "monotonic_after": 176068.946920522
+  }
+]

@@ -1,0 +1,278 @@
+[
+  {
+    "posted": 176488.423,
+    "events": [
+      {
+        "timestamp": 176488.423,
+        "event": "posted"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "peek-enter first=0 last=0 flags=0"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "driver-events-done"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "peek-return ret=1 msg=106"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "dispatch hwnd=0x10b5a"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "default hwnd=0x10b5a msg=106"
+      },
+      {
+        "timestamp": 176488.447,
+        "event": "default hwnd=0x10b5a msg=112"
+      }
+    ],
+    "poll_enter": 176488.447,
+    "queue_return": 176488.447,
+    "dispatch": 176488.447,
+    "post_to_poll_ms": 24.0,
+    "poll_to_dispatch_ms": 0.0
+  },
+  {
+    "posted": 176488.862,
+    "events": [
+      {
+        "timestamp": 176488.862,
+        "event": "posted"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "peek-enter first=0 last=0 flags=0"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "driver-events-done"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "peek-return ret=1 msg=106"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "dispatch hwnd=0x10b5a"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "default hwnd=0x10b5a msg=106"
+      },
+      {
+        "timestamp": 176488.886,
+        "event": "default hwnd=0x10b5a msg=112"
+      }
+    ],
+    "poll_enter": 176488.886,
+    "queue_return": 176488.886,
+    "dispatch": 176488.886,
+    "post_to_poll_ms": 24.0,
+    "poll_to_dispatch_ms": 0.0
+  },
+  {
+    "posted": 176489.291,
+    "events": [
+      {
+        "timestamp": 176489.291,
+        "event": "posted"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "peek-enter first=0 last=0 flags=0"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "driver-events-done"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "peek-return ret=1 msg=106"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "dispatch hwnd=0x10b5a"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "default hwnd=0x10b5a msg=106"
+      },
+      {
+        "timestamp": 176489.332,
+        "event": "default hwnd=0x10b5a msg=112"
+      }
+    ],
+    "poll_enter": 176489.332,
+    "queue_return": 176489.332,
+    "dispatch": 176489.332,
+    "post_to_poll_ms": 41.0,
+    "poll_to_dispatch_ms": 0.0
+  },
+  {
+    "posted": 176489.739,
+    "events": [
+      {
+        "timestamp": 176489.739,
+        "event": "posted"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "peek-enter first=0 last=0 flags=0"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "driver-events-done"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "peek-return ret=1 msg=106"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "dispatch hwnd=0x10b5a"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "default hwnd=0x10b5a msg=106"
+      },
+      {
+        "timestamp": 176489.781,
+        "event": "default hwnd=0x10b5a msg=112"
+      }
+    ],
+    "poll_enter": 176489.781,
+    "queue_return": 176489.781,
+    "dispatch": 176489.781,
+    "post_to_poll_ms": 42.0,
+    "poll_to_dispatch_ms": 0.0
+  },
+  {
+    "posted": 176490.213,
+    "events": [
+      {
+        "timestamp": 176490.213,
+        "event": "posted"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "peek-enter first=0 last=0 flags=0"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "driver-events-done"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "peek-return ret=1 msg=106"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "dispatch hwnd=0x10b5a"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "default hwnd=0x10b5a msg=106"
+      },
+      {
+        "timestamp": 176490.262,
+        "event": "default hwnd=0x10b5a msg=112"
+      }
+    ],
+    "poll_enter": 176490.262,
+    "queue_return": 176490.262,
+    "dispatch": 176490.262,
+    "post_to_poll_ms": 49.0,
+    "poll_to_dispatch_ms": 0.0
+  },
+  {
+    "posted": 176490.683,
+    "events": [
+      {
+        "timestamp": 176490.683,
+        "event": "posted"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "peek-enter first=0 last=0 flags=0"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "driver-events-done"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "peek-return ret=1 msg=106"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "peek hwnd=0x10b5a flags=0"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "dispatch hwnd=0x10b5a"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "default hwnd=0x10b5a msg=106"
+      },
+      {
+        "timestamp": 176490.714,
+        "event": "default hwnd=0x10b5a msg=112"
+      }
+    ],
+    "poll_enter": 176490.714,
+    "queue_return": 176490.714,
+    "dispatch": 176490.714,
+    "post_to_poll_ms": 31.0,
+    "poll_to_dispatch_ms": 0.0
+  }
+]
