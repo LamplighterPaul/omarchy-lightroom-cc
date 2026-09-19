@@ -35,3 +35,11 @@ normal exception signals through and suppresses frame arguments by default.
 Press Ctrl-C at the hang, then use `thread apply all bt` to inspect stacks.
 Debugger output can still contain private paths or data; review before sharing.
 This command does not currently support the full Proton runner.
+
+## Thread-pool lifetime
+
+`threadpool-lifetime.c` reproduces deferred `CloseThreadpool` behavior with bound
+timer, wait and work objects. It also covers cancellation and an empty pool.
+Run only in a disposable or isolated prefix: the baseline runtime deliberately
+hits its assertion in the timer case. See
+[the candidate report](../docs/threadpool-2026-09-19.md) for evidence and limits.
