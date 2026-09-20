@@ -79,6 +79,48 @@ class LauncherTest(unittest.TestCase):
              patch.object(self.app.subprocess, 'Popen', side_effect=OSError('unavailable')):
             self.assertIsNone(self.app.start_ui_hint(self.app.LR, io.StringIO()))
 
+    def animation_preferences(self, text='prefs = {\n animationSpeed = 1.25,\n gpu4setting = "auto",\n}\n'):
+        prefs = self.app.PREFIX / 'drive_c/users/test/AppData/Roaming/Adobe/Lightroom CC/Preferences/Lightroom CC Preferences.agprefs'
+        prefs.parent.mkdir(parents=True)
+        prefs.write_text(text)
+        return prefs
+
+    def test_animation_profile_preserves_original_and_other_preferences(self):
+        prefs = self.animation_preferences()
+        original = prefs.read_text()
+        with patch.dict(os.environ, {'LRCC_ANIMATIONS': 'off'}):
+            self.app.sync_animations(io.StringIO(), self.root / 'no-processes')
+            self.app.sync_animations(io.StringIO(), self.root / 'no-processes')
+        self.assertEqual(prefs.read_text(), original.replace('animationSpeed = 1.25', 'animationSpeed = 0'))
+        with patch.dict(os.environ, {'LRCC_ANIMATIONS': 'original'}):
+            self.app.sync_animations(io.StringIO(), self.root / 'no-processes')
+        self.assertEqual(prefs.read_text(), original)
+
+    def test_animation_profile_never_edits_running_prefix(self):
+        prefs = self.animation_preferences()
+        original = prefs.read_text()
+        proc = self.root / 'proc/123'
+        proc.mkdir(parents=True)
+        (proc / 'comm').write_text('lightroom.exe\n')
+        (proc / 'environ').write_bytes(b'WINEPREFIX=' + os.fsencode(self.app.PREFIX) + b'\0')
+        with patch.dict(os.environ, {'LRCC_ANIMATIONS': 'off'}):
+            self.app.sync_animations(io.StringIO(), proc.parent)
+        self.assertEqual(prefs.read_text(), original)
+        self.assertFalse((self.app.PREFIX.parent / 'animation-profile.json').exists())
+
+    def test_animation_profile_rejects_ambiguous_pref_and_preserves_user_override(self):
+        prefs = self.animation_preferences('animationSpeed = 1,\nanimationSpeed = 2,\n')
+        with patch.dict(os.environ, {'LRCC_ANIMATIONS': 'off'}):
+            self.app.sync_animations(io.StringIO(), self.root / 'no-processes')
+        self.assertFalse((self.app.PREFIX.parent / 'animation-profile.json').exists())
+        prefs.write_text('animationSpeed = 1,\n')
+        with patch.dict(os.environ, {'LRCC_ANIMATIONS': 'off'}):
+            self.app.sync_animations(io.StringIO(), self.root / 'no-processes')
+        prefs.write_text('animationSpeed = 0.5,\n')
+        with patch.dict(os.environ, {'LRCC_ANIMATIONS': 'original'}):
+            self.app.sync_animations(io.StringIO(), self.root / 'no-processes')
+        self.assertEqual(prefs.read_text(), 'animationSpeed = 0.5,\n')
+
     def test_candidate_runtime_is_named_and_identified(self):
         runtime = self.app.DATA / 'runtimes/candidate'
         runtime.mkdir(parents=True)

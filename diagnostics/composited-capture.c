@@ -39,7 +39,7 @@ static const struct weston_capture_source_v1_listener capture_listener = {
 };
 static double seconds(clockid_t clock)
 { struct timespec t; clock_gettime(clock, &t); return t.tv_sec + t.tv_nsec / 1e9; }
-static int save_png(const char *path, const uint32_t *pixels, int w, int h)
+static int save_png(const char *path, const uint32_t *pixels, int w, int h, int scale)
 {
     FILE *file = fopen(path, "wx");
     if (!file) return 0;
@@ -48,14 +48,14 @@ static int save_png(const char *path, const uint32_t *pixels, int w, int h)
     if (!png || !info) { fclose(file); return 0; }
     if (setjmp(png_jmpbuf(png))) { png_destroy_write_struct(&png, &info); fclose(file); return 0; }
     png_init_io(png, file); png_set_compression_level(png, 1);
-    int ow = w / 4, oh = h / 4;
+    int ow = w / scale, oh = h / scale;
     png_set_IHDR(png, info, ow, oh, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
     png_write_info(png, info);
     unsigned char *row = malloc(ow * 3);
     if (!row) { png_destroy_write_struct(&png, &info); fclose(file); return 0; }
     for (int y = 0; y < oh; y++) {
         for (int x = 0; x < ow; x++) {
-            uint32_t pixel = pixels[y * 4 * w + x * 4];
+            uint32_t pixel = pixels[y * scale * w + x * scale];
             row[x*3] = pixel >> 16; row[x*3+1] = pixel >> 8; row[x*3+2] = pixel;
         }
         png_write_row(png, row);
@@ -64,10 +64,12 @@ static int save_png(const char *path, const uint32_t *pixels, int w, int h)
 }
 int main(int argc, char **argv)
 {
-    if (argc != 4 || !getenv("WAYLAND_DISPLAY") || strcmp(getenv("WAYLAND_DISPLAY"), "lightroom-test")) {
-        fprintf(stderr, "Only WAYLAND_DISPLAY=lightroom-test is allowed. Usage: capture EXISTING_DIR FRAMES FPS\n"); return 2;
+    if ((argc != 4 && argc != 5) || !getenv("WAYLAND_DISPLAY") || strcmp(getenv("WAYLAND_DISPLAY"), "lightroom-test")) {
+        fprintf(stderr, "Only WAYLAND_DISPLAY=lightroom-test is allowed. Usage: capture EXISTING_DIR FRAMES FPS [DOWNSAMPLE=4]\n"); return 2;
     }
     int frames = atoi(argv[2]), fps = atoi(argv[3]); struct stat st;
+    int scale = argc == 5 ? atoi(argv[4]) : 4;
+    if (scale != 1 && scale != 2 && scale != 4) return 2;
     if (frames < 1 || frames > 600 || fps < 1 || fps > 30 || frames > fps * 60 || stat(argv[1], &st) || !S_ISDIR(st.st_mode)) return 2;
     alarm(90);
     struct wl_display *display = wl_display_connect("lightroom-test");
@@ -105,7 +107,7 @@ int main(int argc, char **argv)
             count++;
         }
         char path[4096];
-        if (snprintf(path, sizeof(path), "%s/frame-%04d.png", argv[1], i) >= sizeof(path) || !save_png(path, pixels, w, h)) return 6;
+        if (snprintf(path, sizeof(path), "%s/frame-%04d.png", argv[1], i) >= sizeof(path) || !save_png(path, pixels, w, h, scale)) return 6;
         printf("%d,%.6f,%.3f,%.3f,%.6f,%.6f,%.9f\n", i, epoch, (end-start)*1000,
                total/count, (double)dark/count, (double)background/count, end); fflush(stdout);
         double delay = 1.0/fps - (seconds(CLOCK_MONOTONIC) - start);

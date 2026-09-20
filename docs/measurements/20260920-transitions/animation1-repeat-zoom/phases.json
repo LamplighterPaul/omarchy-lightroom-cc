@@ -1,0 +1,58 @@
+[
+  {
+    "action": "zoom",
+    "start_epoch": 1789864080.031921,
+    "end_epoch": 1789864080.0319932,
+    "start_monotonic": 181083.241853184,
+    "end_monotonic": 181083.241924395
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864081.5760376,
+    "end_epoch": 1789864081.57611,
+    "start_monotonic": 181084.785969489,
+    "end_monotonic": 181084.786041021
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864083.1095757,
+    "end_epoch": 1789864083.1096485,
+    "start_monotonic": 181086.319507551,
+    "end_monotonic": 181086.319579588
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864084.6420672,
+    "end_epoch": 1789864084.642138,
+    "start_monotonic": 181087.851999114,
+    "end_monotonic": 181087.852069477
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864086.1925604,
+    "end_epoch": 1789864086.1926415,
+    "start_monotonic": 181089.402492535,
+    "end_monotonic": 181089.402572691
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864087.7408478,
+    "end_epoch": 1789864087.7409306,
+    "start_monotonic": 181090.950780107,
+    "end_monotonic": 181090.95086196
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864089.2736108,
+    "end_epoch": 1789864089.2736783,
+    "start_monotonic": 181092.483542672,
+    "end_monotonic": 181092.483609485
+  },
+  {
+    "action": "zoom",
+    "start_epoch": 1789864090.8162432,
+    "end_epoch": 1789864090.8163142,
+    "start_monotonic": 181094.026175072,
+    "end_monotonic": 181094.02624547
+  }
+]

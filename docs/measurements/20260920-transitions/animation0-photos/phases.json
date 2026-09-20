@@ -1,0 +1,58 @@
+[
+  {
+    "action": "next-photo",
+    "start_epoch": 1789864406.4832187,
+    "end_epoch": 1789864406.4833033,
+    "start_monotonic": 181409.693151118,
+    "end_monotonic": 181409.693234748
+  },
+  {
+    "action": "previous-photo",
+    "start_epoch": 1789864408.057412,
+    "end_epoch": 1789864408.0575414,
+    "start_monotonic": 181411.267344628,
+    "end_monotonic": 181411.26747274
+  },
+  {
+    "action": "next-photo",
+    "start_epoch": 1789864409.6116087,
+    "end_epoch": 1789864409.611687,
+    "start_monotonic": 181412.82154135,
+    "end_monotonic": 181412.821618256
+  },
+  {
+    "action": "previous-photo",
+    "start_epoch": 1789864411.1827543,
+    "end_epoch": 1789864411.1828995,
+    "start_monotonic": 181414.392686574,
+    "end_monotonic": 181414.392831182
+  },
+  {
+    "action": "next-photo",
+    "start_epoch": 1789864412.7217777,
+    "end_epoch": 1789864412.7218506,
+    "start_monotonic": 181415.931710006,
+    "end_monotonic": 181415.931781995
+  },
+  {
+    "action": "previous-photo",
+    "start_epoch": 1789864414.2606263,
+    "end_epoch": 1789864414.2607186,
+    "start_monotonic": 181417.470558421,
+    "end_monotonic": 181417.470650072
+  },
+  {
+    "action": "next-photo",
+    "start_epoch": 1789864415.8061032,
+    "end_epoch": 1789864415.8061903,
+    "start_monotonic": 181419.016035368,
+    "end_monotonic": 181419.016121526
+  },
+  {
+    "action": "previous-photo",
+    "start_epoch": 1789864417.3395615,
+    "end_epoch": 1789864417.3396528,
+    "start_monotonic": 181420.549493503,
+    "end_monotonic": 181420.549584065
+  }
+]

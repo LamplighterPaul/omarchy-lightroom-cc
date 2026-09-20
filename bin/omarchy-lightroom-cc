@@ -633,6 +633,11 @@ def launch(exe, label, args):
         sync_display_scale(log)
         if RUNNER == "lightroom-omarchy-proton":
             sync_theme(log)
+            if exe == LR:
+                try:
+                    sync_animations(log)
+                except (OSError, ValueError) as exc:
+                    print(f'Animation preference unavailable: {exc}; retaining application settings.', file=log, flush=True)
         hint = start_ui_hint(exe, log)
         try:
             wine(exe, *args, cwd=exe.parent, stdout=log, stderr=log)
@@ -641,6 +646,67 @@ def launch(exe, label, args):
                 hint.terminate()
                 hint.wait(timeout=5)
     logged(label, start)
+
+
+def sync_animations(log, proc_root=Path('/proc')):
+    """Apply a reversible motion preference before Lightroom reads its prefs."""
+    mode = os.environ.get('LRCC_ANIMATIONS', 'off' if ACTIVE_PROFILE == 'performance' else 'original')
+    if mode not in ('off', 'original'):
+        raise RuntimeError('LRCC_ANIMATIONS must be off or original')
+    marker = PREFIX.parent / 'animation-profile.json'
+    if mode == 'original' and not marker.exists():
+        return
+    # A running app may overwrite the file from its in-memory preferences.
+    for proc in proc_root.glob('[0-9]*'):
+        try:
+            if (proc / 'comm').read_text().strip().lower() != 'lightroom.exe':
+                continue
+            value = next((v[11:] for v in (proc / 'environ').read_bytes().split(b'\0')
+                          if v.startswith(b'WINEPREFIX=')), None)
+            if value is not None and Path(os.fsdecode(value)).resolve() == PREFIX.resolve():
+                print('Animation preference unchanged: close Lightroom normally before switching it.', file=log, flush=True)
+                return
+        except (OSError, ValueError):
+            continue
+    paths = {p.resolve() for p in PREFIX.glob('drive_c/users/*/AppData/Roaming/Adobe/Lightroom CC/Preferences/Lightroom CC Preferences.agprefs')}
+    if len(paths) != 1:
+        print('Animation preference unavailable; retaining application settings.', file=log, flush=True)
+        return
+    prefs = paths.pop()
+    text = prefs.read_text()
+    pattern = r'(?m)^(\s*animationSpeed\s*=\s*)([0-9]+(?:\.[0-9]+)?)(\s*,)'
+    matches = list(re.finditer(pattern, text))
+    if len(matches) != 1:
+        print('Animation preference missing or ambiguous; retaining application settings.', file=log, flush=True)
+        return
+    current = matches[0].group(2)
+    if marker.exists():
+        state = json.loads(marker.read_text())
+        original = state.get('original') if isinstance(state, dict) else None
+        if not isinstance(state, dict) or state.get('schema') != 1 or not isinstance(original, str) or not re.fullmatch(r'[0-9]+(?:\.[0-9]+)?', original):
+            print('Invalid animation preference backup; retaining application settings.', file=log, flush=True)
+            return
+    else:
+        original = current
+        with marker.open('x') as stream:
+            os.chmod(marker, 0o600)
+            json.dump({'schema': 1, 'original': original}, stream)
+            stream.write('\n')
+    desired = '0' if mode == 'off' else original
+    if mode == 'original' and current not in ('0', original):
+        print('Animation preference changed outside the launcher; retaining it.', file=log, flush=True)
+        return
+    if desired != current:
+        updated = re.sub(pattern, lambda m: m.group(1) + desired + m.group(3), text)
+        with tempfile.NamedTemporaryFile(mode='w', dir=prefs.parent, prefix='.animation-', delete=False) as stream:
+            stream.write(updated)
+            temporary = Path(stream.name)
+        try:
+            temporary.chmod(prefs.stat().st_mode & 0o777)
+            temporary.replace(prefs)
+        finally:
+            temporary.unlink(missing_ok=True)
+    print(f'Lightroom animationSpeed={desired} ({mode}); original value preserved.', file=log, flush=True)
 
 
 def start_ui_hint(exe, log):
@@ -998,6 +1064,7 @@ def browser_status():
 def status():
     return {"data": str(DATA), "prefix": str(PREFIX), "selected_profile": ACTIVE_PROFILE,
             "ui_boost_requested": os.environ.get("LRCC_UI_BOOST", "auto" if ACTIVE_PROFILE == "performance" else "off"),
+            "animations_requested": os.environ.get("LRCC_ANIMATIONS", "off" if ACTIVE_PROFILE == "performance" else "original"),
             "selected_runtime": str(RUNTIME.parent), "runtime_present": (RUNTIME / "bin/wine").is_file(),
             "runtime_switch_pending": RUNNER == "lightroom-omarchy-proton" and bool(conflicting_prefix_runtimes()),
             "prefix_created": (PREFIX / "system.reg").is_file(),

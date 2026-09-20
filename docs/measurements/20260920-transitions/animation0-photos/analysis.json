@@ -1,0 +1,112 @@
+{
+  "region": "160x160+270+100",
+  "change_threshold_mae": 5,
+  "settled_threshold_mae": 2,
+  "note": "Capture-completion timing, with observer overhead and sampling delay. Region-based, not whole-frame or physical-display latency.",
+  "transitions": [
+    {
+      "action": "next-photo",
+      "input_monotonic": 181409.693151118,
+      "baseline_frame": 20,
+      "target_frame": 52,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 367.37266299314797,
+      "settled_ms": 1420.0538739969488,
+      "first_frame": 28,
+      "settled_frame": 49
+    },
+    {
+      "action": "previous-photo",
+      "input_monotonic": 181411.267344628,
+      "baseline_frame": 52,
+      "target_frame": 83,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 799.3805340083782,
+      "settled_ms": 799.3805340083782,
+      "first_frame": 68,
+      "settled_frame": 68
+    },
+    {
+      "action": "next-photo",
+      "input_monotonic": 181412.82154135,
+      "baseline_frame": 83,
+      "target_frame": 114,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 546.5143720211927,
+      "settled_ms": 546.5143720211927,
+      "first_frame": 94,
+      "settled_frame": 94
+    },
+    {
+      "action": "previous-photo",
+      "input_monotonic": 181414.392686574,
+      "baseline_frame": 114,
+      "target_frame": 145,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 536.4080849976745,
+      "settled_ms": 536.4080849976745,
+      "first_frame": 125,
+      "settled_frame": 125
+    },
+    {
+      "action": "next-photo",
+      "input_monotonic": 181415.931710006,
+      "baseline_frame": 145,
+      "target_frame": 175,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 543.9922469959129,
+      "settled_ms": 543.9922469959129,
+      "first_frame": 156,
+      "settled_frame": 156
+    },
+    {
+      "action": "previous-photo",
+      "input_monotonic": 181417.470558421,
+      "baseline_frame": 175,
+      "target_frame": 206,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 505.12637000065297,
+      "settled_ms": 505.12637000065297,
+      "first_frame": 186,
+      "settled_frame": 186
+    },
+    {
+      "action": "next-photo",
+      "input_monotonic": 181419.016035368,
+      "baseline_frame": 206,
+      "target_frame": 237,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 513.9497999916784,
+      "settled_ms": 513.9497999916784,
+      "first_frame": 217,
+      "settled_frame": 217
+    },
+    {
+      "action": "previous-photo",
+      "input_monotonic": 181420.549493503,
+      "baseline_frame": 237,
+      "target_frame": 359,
+      "reference_difference": 52.65313802083333,
+      "blank_region_samples": 0,
+      "status": "scored",
+      "first_change_ms": 482.46272798860446,
+      "settled_ms": 482.46272798860446,
+      "first_frame": 247,
+      "settled_frame": 247
+    }
+  ]
+}

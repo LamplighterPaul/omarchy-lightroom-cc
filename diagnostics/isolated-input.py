@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('action', choices=['zoom', 'pan', 'pan-vertical', 'menus', 'maximize', 'resize-small', 'record', 'menu-open', 'edit-menu-open', 'edit-menu-click', 'file-menu-key', 'escape', 'loupe', 'grid', 'next-photo', 'previous-photo', 'close'])
+parser.add_argument('action', choices=['zoom', 'pan', 'pan-vertical', 'menus', 'maximize', 'resize-small', 'record', 'menu-open', 'edit-menu-open', 'edit-menu-click', 'file-menu-key', 'escape', 'loupe', 'grid', 'next-photo', 'previous-photo', 'preferences', 'close'])
 args = parser.parse_args()
 if os.environ.get('WAYLAND_DISPLAY') != 'lightroom-test' or os.environ.get('DISPLAY') != ':1':
     raise SystemExit('Refusing input outside the dedicated lightroom-test/:1 fixture')
@@ -82,6 +82,8 @@ elif args.action in ('next-photo', 'previous-photo'):
     key(symbol,1);key(symbol,0)
 elif args.action=='close':
     key(0xffe3,1);key(ord('q'),1);time.sleep(.05);key(ord('q'),0);key(0xffe3,0)
+elif args.action=='preferences':
+    key(0xffe3,1);key(ord(','),1);key(ord(','),0);key(0xffe3,0)
 elif args.action in ('menu-open', 'edit-menu-click'):
     left=c.c_int();top=c.c_int();child=c.c_ulong()
     x.XTranslateCoordinates(d,w,root,0,0,c.byref(left),c.byref(top),c.byref(child))

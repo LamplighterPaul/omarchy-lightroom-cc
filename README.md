@@ -108,6 +108,14 @@ For a comparison, close Lightroom normally and launch with
 `LRCC_UI_BOOST=off lightroom-omarchy-proton run`.
 See [the scheduling measurements](docs/ui-scheduling-2026-09-20.md).
 
+The performance profile also disables Lightroom's zoom animation. In repeated
+private captures this reduced median time to the settled zoom image from 343 ms
+to 155–162 ms. It makes zoom immediate rather than animated; it does not raise
+rendering FPS or eliminate photo-loading delays. The original preference is
+saved locally. To restore it, close Lightroom normally and launch with
+`LRCC_ANIMATIONS=original lightroom-omarchy-proton run`.
+See [the transition measurements and limitations](docs/transitions-2026-09-20.md).
+
 Close Lightroom normally, then stop any remaining prefix services before the
 first runtime switch:
 
