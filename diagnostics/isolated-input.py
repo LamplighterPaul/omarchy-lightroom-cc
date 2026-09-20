@@ -95,7 +95,10 @@ elif args.action in ('edit-menu-open', 'file-menu-key'):
 elif args.action=='escape':
     key(0xff1b,1);key(0xff1b,0)
 elif args.action=='record':
-    key(0xffe1,1);key(0xffbf,1);time.sleep(.5);key(0xffbf,0);key(0xffe1,0)
+    # MangoHud polls keys every 100 ms and repeats held toggles after 400 ms.
+    # Hold across a poll without toggling twice. Send during active rendering:
+    # an idle photo may not present a frame while the keys are held.
+    key(0xffe1,1);key(0xffbf,1);time.sleep(.2);key(0xffbf,0);key(0xffe1,0)
 elif args.action=='menus':
     for i in range(5):
         key(0xffe9,1);key(ord('f'),1);key(ord('f'),0);key(0xffe9,0)

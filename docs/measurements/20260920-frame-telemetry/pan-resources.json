@@ -1,0 +1,244 @@
+{
+  "seconds": 10.156138242018642,
+  "phase": {
+    "action": "pan-vertical",
+    "start_epoch": 1789863034.4001913,
+    "end_epoch": 1789863044.5236716,
+    "start_monotonic": 180037.610122949,
+    "end_monotonic": 180047.733605906
+  },
+  "processes": [
+    {
+      "pid": 2657219,
+      "name": "python3",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.630859375,
+      "rss_mib": 10.3984375,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657227,
+      "name": "srt-bwrap",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.02734375,
+      "rss_mib": 1.8359375,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657275,
+      "name": "pv-adverb",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.2431640625,
+      "rss_mib": 2.51953125,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657299,
+      "name": "python3",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.0595703125,
+      "rss_mib": 3.33203125,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657355,
+      "name": "umu.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.55859375,
+      "rss_mib": 8.91796875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657357,
+      "name": "wineserver",
+      "cpu_percent": 2.9538786579215737,
+      "pss_mib": 6.25,
+      "rss_mib": 8.640625,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657363,
+      "name": "services.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.1796875,
+      "rss_mib": 4.0390625,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657366,
+      "name": "winedevice.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 1.1162109375,
+      "rss_mib": 7.48046875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657377,
+      "name": "svchost.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.1005859375,
+      "rss_mib": 3.6171875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657382,
+      "name": "plugplay.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.34765625,
+      "rss_mib": 6.29296875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657384,
+      "name": "explorer.exe",
+      "cpu_percent": 0.689238353515034,
+      "pss_mib": 1.357421875,
+      "rss_mib": 11.94140625,
+      "gpu_resident_mib": 3.01953125,
+      "gpu_engines_percent": {
+        "0000:00:02.0/6652/rcs": 0.0,
+        "0000:00:02.0/6652/vcs": 0.0,
+        "0000:00:02.0/6652/vecs": 0.0,
+        "0000:00:02.0/6652/bcs": 0.0,
+        "0000:00:02.0/6652/ccs": 0.0,
+        "0000:00:02.0/6650/rcs": 0.0,
+        "0000:00:02.0/6650/vcs": 0.0,
+        "0000:00:02.0/6650/vecs": 0.0,
+        "0000:00:02.0/6650/bcs": 0.0,
+        "0000:00:02.0/6650/ccs": 0.0
+      }
+    },
+    {
+      "pid": 2657392,
+      "name": "winedevice.exe",
+      "cpu_percent": 1.4769393289607868,
+      "pss_mib": 0.75390625,
+      "rss_mib": 7.7421875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657423,
+      "name": "rpcss.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.1044921875,
+      "rss_mib": 3.76171875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2657433,
+      "name": "tabtip.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 5.169921875,
+      "rss_mib": 12.88671875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2702101,
+      "name": "python3",
+      "cpu_percent": 0.0,
+      "pss_mib": 2.013671875,
+      "rss_mib": 12.5546875,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2702145,
+      "name": "srt-bwrap",
+      "cpu_percent": 0.0,
+      "pss_mib": 0.03125,
+      "rss_mib": 1.83984375,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2702194,
+      "name": "pv-adverb",
+      "cpu_percent": 0.0,
+      "pss_mib": 1.7744140625,
+      "rss_mib": 4.05859375,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2702218,
+      "name": "python3",
+      "cpu_percent": 0.0,
+      "pss_mib": 2.3515625,
+      "rss_mib": 5.84765625,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2702219,
+      "name": "umu.exe",
+      "cpu_percent": 0.0,
+      "pss_mib": 5.0810546875,
+      "rss_mib": 20.08203125,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    },
+    {
+      "pid": 2702223,
+      "name": "lightroom.exe",
+      "cpu_percent": 27.569534140601355,
+      "pss_mib": 1896.55859375,
+      "rss_mib": 1926.06640625,
+      "gpu_resident_mib": 3878.78125,
+      "gpu_engines_percent": {
+        "0000:00:02.0/6702/rcs": 0.0,
+        "0000:00:02.0/6702/vcs": 0.0,
+        "0000:00:02.0/6702/vecs": 0.0,
+        "0000:00:02.0/6702/bcs": 0.0,
+        "0000:00:02.0/6702/ccs": 0.0,
+        "0000:00:02.0/6706/rcs": 0.0,
+        "0000:00:02.0/6706/vcs": 0.0,
+        "0000:00:02.0/6706/vecs": 0.0,
+        "0000:00:02.0/6706/bcs": 0.0,
+        "0000:00:02.0/6706/ccs": 0.0,
+        "0000:00:02.0/6704/rcs": 0.0,
+        "0000:00:02.0/6704/vcs": 0.0,
+        "0000:00:02.0/6704/vecs": 0.0,
+        "0000:00:02.0/6704/bcs": 0.0,
+        "0000:00:02.0/6704/ccs": 0.0,
+        "0000:00:02.0/6707/rcs": 0.0,
+        "0000:00:02.0/6707/vcs": 0.0,
+        "0000:00:02.0/6707/vecs": 0.0,
+        "0000:00:02.0/6707/bcs": 0.0,
+        "0000:00:02.0/6707/ccs": 0.0,
+        "0000:00:02.0/6710/rcs": 58.436827263911375,
+        "0000:00:02.0/6710/vcs": 0.0,
+        "0000:00:02.0/6710/vecs": 0.0,
+        "0000:00:02.0/6710/bcs": 0.0,
+        "0000:00:02.0/6710/ccs": 0.0,
+        "0000:00:02.0/6708/rcs": 0.0,
+        "0000:00:02.0/6708/vcs": 0.0,
+        "0000:00:02.0/6708/vecs": 0.0,
+        "0000:00:02.0/6708/bcs": 0.0,
+        "0000:00:02.0/6708/ccs": 0.0
+      }
+    },
+    {
+      "pid": 2702285,
+      "name": "Adobe Crash Pro",
+      "cpu_percent": 0.0,
+      "pss_mib": 3.7939453125,
+      "rss_mib": 13.87890625,
+      "gpu_resident_mib": 0.0,
+      "gpu_engines_percent": {}
+    }
+  ],
+  "note": "Separate resource pass; 100% CPU is one core. GPU clients/engines are separate counters; allocations may overlap CPU memory. Do not add GPU allocation to PSS."
+}

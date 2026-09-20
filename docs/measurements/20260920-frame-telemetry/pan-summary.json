@@ -1,0 +1,74 @@
+[
+  {
+    "case": "controlled-pan-1-min0",
+    "samples": 632,
+    "recorded_span_seconds": 5.258440692000001,
+    "median_ms": 8.332555,
+    "p95_ms": 8.48486,
+    "p99_ms": 8.55299,
+    "max_ms": 11.3522,
+    "over_16_67_ms": 0,
+    "over_33_33_ms": 0,
+    "interior_0_5s_trim": {
+      "samples": 511,
+      "max_ms": 8.57071,
+      "over_16_67_ms": 0,
+      "note": "Secondary view excluding fixed half-second control boundaries. Full recording above remains primary."
+    },
+    "note": "All CSV intervals retained, including stalls. Renderer timing, not physical display FPS."
+  },
+  {
+    "case": "controlled-pan-2-min1024",
+    "samples": 617,
+    "recorded_span_seconds": 5.134231734999999,
+    "median_ms": 8.33234,
+    "p95_ms": 8.48016,
+    "p99_ms": 8.5515,
+    "max_ms": 8.93215,
+    "over_16_67_ms": 0,
+    "over_33_33_ms": 0,
+    "interior_0_5s_trim": {
+      "samples": 496,
+      "max_ms": 8.6055,
+      "over_16_67_ms": 0,
+      "note": "Secondary view excluding fixed half-second control boundaries. Full recording above remains primary."
+    },
+    "note": "All CSV intervals retained, including stalls. Renderer timing, not physical display FPS."
+  },
+  {
+    "case": "controlled-pan-3-min0",
+    "samples": 626,
+    "recorded_span_seconds": 5.208597683,
+    "median_ms": 8.333169999999999,
+    "p95_ms": 8.45129,
+    "p99_ms": 8.54134,
+    "max_ms": 12.3366,
+    "over_16_67_ms": 0,
+    "over_33_33_ms": 0,
+    "interior_0_5s_trim": {
+      "samples": 505,
+      "max_ms": 8.60491,
+      "over_16_67_ms": 0,
+      "note": "Secondary view excluding fixed half-second control boundaries. Full recording above remains primary."
+    },
+    "note": "All CSV intervals retained, including stalls. Renderer timing, not physical display FPS."
+  },
+  {
+    "case": "controlled-pan-4-min1024",
+    "samples": 633,
+    "recorded_span_seconds": 5.301450246000001,
+    "median_ms": 8.33633,
+    "p95_ms": 8.49849,
+    "p99_ms": 18.2709,
+    "max_ms": 25.0804,
+    "over_16_67_ms": 10,
+    "over_33_33_ms": 0,
+    "interior_0_5s_trim": {
+      "samples": 516,
+      "max_ms": 9.35338,
+      "over_16_67_ms": 0,
+      "note": "Secondary view excluding fixed half-second control boundaries. Full recording above remains primary."
+    },
+    "note": "All CSV intervals retained, including stalls. Renderer timing, not physical display FPS."
+  }
+]

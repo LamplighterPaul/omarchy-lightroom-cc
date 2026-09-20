@@ -82,6 +82,27 @@ input timestamps are written to `measurements/isolated-input.jsonl`.
 `escape` outside a menu can leave photo view, so confirm the screen state.
 Captures of the parent window omit separate popup windows.
 
+For a bounded frame-time recording, first confirm a settled photo at 100% zoom
+with room to pan vertically and logging off. Then run:
+
+```sh
+DISPLAY=:1 WAYLAND_DISPLAY=lightroom-test python3 diagnostics/record-pan.py /path/to/new-output-directory
+```
+
+This logs roughly five seconds inside a ten-second drag. Hotkeys are held for
+200 ms and sent while frames are being rendered. MangoHud 0.8.4 checks keys on
+rendered frames and repeats a held toggle after 400 ms; the old 500 ms press could
+toggle twice. The recorder rejects short bursts, stale files and recordings
+outside the gesture. All frame intervals, including stalls, remain in its main
+summary. A secondary fixed half-second boundary exclusion helps identify control
+effects without replacing the full result.
+
+Do not assume the MangoHud control socket belongs to the active renderer:
+Lightroom creates multiple Vulkan instances. In the tested session, the instance
+presenting the photo had control fd -1 while another held the advertised socket.
+Any separate socket client must use a timeout and verify the protocol greeting.
+See [the telemetry investigation](frame-telemetry-2026-09-20.md).
+
 Store a custom MangoHud config under the application data directory and pass
 its absolute path as `LRCC_HUD_CONFIG`; the runtime container's `/tmp` is private.
 An automatic logging delay is useful for repeated runs. Keep the warm-up gesture

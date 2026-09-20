@@ -1,0 +1,48 @@
+{
+  "status": "complete",
+  "files": [
+    "lightroom_2026-09-20_02-09-56.csv",
+    "lightroom_2026-09-20_02-09-56_summary.csv"
+  ],
+  "phases": [
+    {
+      "action": "record",
+      "start_epoch": 1789862996.835546,
+      "end_epoch": 1789862997.0357563,
+      "start_monotonic": 180000.045477892,
+      "end_monotonic": 180000.245688285
+    },
+    {
+      "action": "record",
+      "start_epoch": 1789863002.0690265,
+      "end_epoch": 1789863002.2692173,
+      "start_monotonic": 180005.278958618,
+      "end_monotonic": 180005.479150156
+    },
+    {
+      "action": "pan-vertical",
+      "start_epoch": 1789862995.8356671,
+      "end_epoch": 1789863005.9611266,
+      "start_monotonic": 179999.045598963,
+      "end_monotonic": 180009.171059153
+    }
+  ],
+  "precondition": "Caller must independently verify settled photo at 100% zoom; logging initially off.",
+  "timing": {
+    "samples": 633,
+    "recorded_span_seconds": 5.301450246000001,
+    "median_ms": 8.33633,
+    "p95_ms": 8.49849,
+    "p99_ms": 18.2709,
+    "max_ms": 25.0804,
+    "over_16_67_ms": 10,
+    "over_33_33_ms": 0,
+    "interior_0_5s_trim": {
+      "samples": 516,
+      "max_ms": 9.35338,
+      "over_16_67_ms": 0,
+      "note": "Secondary view excluding fixed half-second control boundaries. Full recording above remains primary."
+    },
+    "note": "All CSV intervals retained, including stalls. Renderer timing, not physical display FPS."
+  }
+}

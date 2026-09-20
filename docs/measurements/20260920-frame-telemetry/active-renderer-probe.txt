@@ -1,0 +1,6 @@
+BREAKPOINT_PC 0x784b98a4e82e <overlay_QueuePresentKHR(VkQueue_T*, VkPresentInfoKHR const*)+734>
+MANGO_CONTROL_FD -1
+MANGO_INSTANCE 93825807812288
+#0  0x0000784b98a4e82e in overlay_QueuePresentKHR(VkQueue_T*, VkPresentInfoKHR const*) () from target:/home/paul/.local/share/omarchy-lightroom-cc/tools/mangohud/usr/lib/mangohud/lib64/libMangoHud.so
+#1  0x0000784bb374e074 in win32u_vkQueuePresentKHR (client_queue=<optimized out>, client_present_info=<optimized out>) at /src/wine/dlls/win32u/vulkan.c:6359
+#2  0x0000784bb0dcbe03 in thunk64_vkQueuePresentKHR () from target:/home/paul/.local/share/omarchy-lightroom-cc/runtimes/lightroom-omarchy-proton-11.7-3-rc1/files/lib/wine/x86_64-unix/winevulkan.so
