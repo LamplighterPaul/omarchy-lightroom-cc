@@ -1,170 +1,119 @@
 # omarchy-lightroom-cc
 
-An open-source compatibility experiment by **[Paul Zammit](https://github.com/LamplighterPaul)**
-to run Adobe **Lightroom CC (cloud)** locally on Omarchy, with a dedicated GE-Proton runtime
-and desktop integration.
+Adobe **Lightroom CC (cloud)** on Omarchy, with a dedicated Proton runtime,
+desktop integration and tools for measuring compatibility and performance.
+Created by [Paul Zammit](https://github.com/LamplighterPaul).
 
-**Status · 20 September 2026 · custom Proton running; performance investigation active**
+This repository contains the **launcher, setup tooling, diagnostics and test
+reports**. The companion [lightroom-omarchy-proton](https://github.com/LamplighterPaul/lightroom-omarchy-proton)
+repository contains the **runtime patches, build recipes and pinned components**.
 
-[lightroom-omarchy-proton](https://github.com/LamplighterPaul/lightroom-omarchy-proton)
-now runs the signed-in cloud library through UMU and Steam Runtime 4, with
-2x monitor scaling and centered menu colours from the current Omarchy theme.
-The operator reports improved stability; dark flicker and choppy panning remain.
-See the [Proton migration and performance tools report](docs/proton-2026-09-19.md).
-The [earlier performance report](docs/performance-2026-09-19.md) covers the
-standalone Wine baseline. Neither 60/120 FPS nor native performance parity is verified.
+## Current status
 
-Genuine Adobe sign-in **succeeded**, and Lightroom now loads the cloud library
-and opens full-size photos. Disabling the optional AdobeGrowthSDK for Lightroom
-avoids the observed post-sign-in hang. A clean exit and restart preserved sign-in
-and restored the library without another login. The operator confirms basic
-editing works. Camera Raw now detects the Intel GPU and passes its GPU sanity
-tests with vkd3d-proton. Full editing/export validation is still pending.
+**20 September 2026 — working developer preview with substantial improvements
+to photo interaction, responsiveness and crash recovery.** The tested setup is
+Lightroom 9.5.1 with custom Proton **11.7-3-rc2**, selected by the launcher's
+`performance` profile. It runs through UMU and Steam Runtime 4; Steam itself is
+not required. Proton supplies the Wine compatibility layer and graphics stack.
 
-## What works so far
+The signed-in cloud library loads, photos open, basic editing has been confirmed
+by the operator, and sign-in survives normal restarts. The Intel GPU initializes
+successfully and Lightroom reports automatic full acceleration. Desktop scaling
+follows the monitor's scale (tested at 2x). Windows menus use the current Omarchy
+palette, with centered entries and spacing; Adobe's own interface is retained.
 
-- Download and stage the genuine Lightroom 9.5.1 Windows payload directly from
-  Adobe, without installing the Creative Cloud desktop UI.
-- Decode Adobe's ZIP/raw-LZMA2 payload and verify pinned download checksums.
-- Clear the MSVCP140 startup crash with Microsoft's VS2022 redistributables.
-- Pass a missing Direct2D startup effect using a source-built experimental patch.
-- Render Adobe's sign-in form using Wine Staging 11.17 and Adobe's CEF/NGL helpers.
-- Complete subscription sign-in and return to the native Windows Lightroom app.
-- Load cloud photos and albums, open photos, and retain sign-in across restart.
-- Avoid the post-sign-in hang with a persistent, Lightroom-only GrowthSDK override.
-- Initialize Camera Raw's Intel GPU path using vkd3d-proton's Direct3D 12 DLLs.
-- Launch from an Omarchy desktop entry that remembers the selected Wine runner.
+### Measured progress
 
-## Remaining limitations
-
-| Area | Current result |
+| Area | Result on the development machine |
 | --- | --- |
-| Main UI | Responsive with optional AdobeGrowthSDK disabled; library and photo view verified. Underlying heap fault remains unresolved. |
-| Camera Raw GPU | Intel GPU recognized; GPU sanity tests pass. Speedup not benchmarked. |
-| Color management | Experimental Direct2D effect is a pass-through, not a color transform. |
-| Import, edit, export | Basic editing confirmed by the operator. Comprehensive tool and export tests remain. |
-| Input and performance | Operator reported slowness and pointer jumping in the camera-profile selector before the GPU comparison. Pointer issue remains unresolved. |
-| Persistence and cloud sync | Sign-in persists after exit/restart; cloud library downloads. Edit persistence and upload not verified. |
-| Clean installation and packaging | Not reproduced; no production package yet. |
+| Black flashes while dragging | Greatly reduced by retaining the presented photo during background repaints. A controlled comparison recorded 112 blank samples out of 280 with retention disabled and zero with it enabled. [Evidence](docs/loupe-retention-2026-09-19.md). |
+| Zoom | Disabling the transition animation reduced median time to a settled zoom image from 343 ms to 155–162 ms in repeated captures. [Evidence](docs/transitions-2026-09-20.md). |
+| Menus | A targeted UI-thread scheduling hint reduced measured keyboard-menu opening time by about 30%, while keeping all CPU cores available to workers. Long outliers remain. [Evidence](docs/ui-scheduling-2026-09-20.md). |
+| Sustained panning | Four controlled recordings had median renderer intervals around 8.33 ms; one retained stalls up to 25 ms. Physical-display 120 FPS and native performance parity remain unproven. [Evidence](docs/frame-telemetry-2026-09-20.md). |
+| Stability | Normal close/restart works after shutdown fixes. Rc2 recovers from the stale display-controller query that caused a fatal X11 exit; Lightroom survived eight injected failures and subsequent interactions. Real sleep/wake validation remains. [Evidence](docs/randr-recovery-2026-09-20.md). |
 
-Full results and the restart point are in **[Status and validation](docs/validation.md)**.
-Follow the **[issue tracker](https://github.com/LamplighterPaul/omarchy-lightroom-cc/issues)**
-for remaining work.
+These are measurements from one development machine, mostly using an isolated
+display. Capture adds overhead, and results vary with the workload. Residual
+stutters and photo-loading delays still need work; this is not a claim that all
+flicker, stalls or crashes are gone.
 
-## Try or contribute
+## What still needs proving
 
-This is a developer preview for people investigating compatibility. A genuine
-Adobe subscription and interactive sign-in are required. Adobe does not support
-this Linux configuration. Windows APIs run through Wine; this is not a Linux port.
+- **Local file import and export:** neither workflow has been validated end to
+  end. Opening existing cloud photos does not establish local-file support.
+- **Colour accuracy:** ICC profiles, display transforms, gamut handling, soft
+  proofing and exported colour fidelity remain unverified. The current
+  experimental Direct2D colour-management effect is a pass-through, not a
+  correct colour transform. Professional colour work is not validated.
+- **Editing and sync:** basic edits work in observed use; complete tool coverage,
+  saved-edit persistence and cloud upload consistency remain unverified.
+- **Fresh installation and sign-in:** the working Proton environment was
+  migrated from an authenticated prefix. A clean Proton-only setup and sign-in
+  have not been reproduced end to end.
+- **Broader stability:** real suspend/resume, display changes, long sessions and
+  other hardware still need coverage. Photo changes measured around half a
+  second typically, with longer outliers.
+- **Runtime size:** the package still contains the full GE-Proton distribution
+  with selected rebuilt components. A smaller Lightroom-specific runtime is
+  future work; unnecessary components and their footprint have not yet been
+  systematically audited or removed.
 
-See **[Development setup](docs/setup.md)** for commands and dependencies,
-**[diagnostics](diagnostics/README.md)** for inspection tools, and
-**[CONTRIBUTING.md](CONTRIBUTING.md)** for reporting reproducible results.
+## Development and testing
+
+A genuine Adobe subscription and interactive authentication are required. The
+project is an independent developer preview, unsupported by Adobe.
 
 ```sh
 git clone https://github.com/LamplighterPaul/omarchy-lightroom-cc.git
 cd omarchy-lightroom-cc
 make check
-```
-
-The custom Proton build preserves the original Windows username for encrypted
-credential migration and implements the firewall COM enumerator that caused a
-startup crash. Fresh Proton sign-in remains a separate unverified workflow.
-The preserved standalone Wine installation is available for rollback.
-
-```sh
 make install
-lightroom-omarchy-proton run          # silently on Super+0
-lightroom-omarchy-proton stage-mangohud
-lightroom-omarchy-proton run-perf     # close Lightroom first; optional overlay
-lightroom-omarchy-proton measure 30   # resource timeline for an existing session
 ```
 
-In performance mode, Shift+F2 records up to 60 seconds of MangoHud data locally.
-See [the reproducible test protocol](docs/performance-loop.md).
+`make install` installs the launcher and tooling. It does **not** provision a
+complete Lightroom environment. Start with the companion runtime's
+[build and packaging guide](https://github.com/LamplighterPaul/lightroom-omarchy-proton/blob/omarchy/omarchy/README.md).
+The [earlier setup notes](docs/setup.md) document the incremental Wine-based
+bootstrap and authentication route; they are historical context, not a verified
+clean Proton installer.
 
-The separate `11.7-3-rc1` candidate targets the photo's dark background repaint.
-Its [regression and warm-pacing measurements](docs/loupe-retention-2026-09-19.md)
-do not establish sustained display FPS or eliminate all menu stalls. Stage it
-using the Proton repository's pinned candidate recipe first. After closing
-Lightroom and stopping its prefix, select it explicitly:
-
-```sh
-LRCC_LIMITER=mangohud lightroom-omarchy-proton --runtime lightroom-omarchy-proton-11.7-3-rc1 run-perf
-```
-
-Named profiles keep the tested runtime and limiter together. After the candidate
-and MangoHud are staged, select the profile for future launches:
-
-```sh
-lightroom-omarchy-proton use-profile performance
-```
-
-On supported hybrid CPUs, the performance launcher requests a higher performance
-level for Lightroom's main UI thread. CPU affinity stays unchanged, and new
-workers do not inherit the UI boost. This reduced measured keyboard-menu
-opening time by about 30% on the test laptop. It does not remove every stall.
-For a comparison, close Lightroom normally and launch with
-`LRCC_UI_BOOST=off lightroom-omarchy-proton run`.
-See [the scheduling measurements](docs/ui-scheduling-2026-09-20.md).
-
-The performance profile also disables Lightroom's zoom animation. In repeated
-private captures this reduced median time to the settled zoom image from 343 ms
-to 155–162 ms. It makes zoom immediate rather than animated; it does not raise
-rendering FPS or eliminate photo-loading delays. The original preference is
-saved locally. To restore it, close Lightroom normally and launch with
-`LRCC_ANIMATIONS=original lightroom-omarchy-proton run`.
-See [the transition measurements and limitations](docs/transitions-2026-09-20.md).
-
-The performance profile now selects rc2, which recovers from the stale display
-controller query that terminated Lightroom after a system resume. The failure
-was reproduced with rc1 and recovered with rc2 in the private fixture; a real
-sleep/wake cycle remains unverified. See [the crash evidence and recovery
-tests](docs/randr-recovery-2026-09-20.md).
-
-Close Lightroom normally, then stop any remaining prefix services before the
-first runtime switch:
+For an already prepared environment with rc2 and MangoHud staged, close
+Lightroom normally and stop its existing prefix before switching profiles:
 
 ```sh
 lightroom-omarchy-proton stop
+lightroom-omarchy-proton use-profile performance
 lightroom-omarchy-proton run
 ```
 
-`run` keeps the overlay hidden; `run-perf` shows it. The existing desktop shortcut
-follows the saved profile. `--profile stable run` overrides it for one launch;
-`use-profile stable` restores the stable default. Close Lightroom and stop its
-prefix before switching back too. A fresh installation defaults to stable until
-a profile is selected. `status` reports the selected profile and whether an old
-runtime is still running.
+The performance profile checks all 14 pinned component hashes. The older
+`stable` profile is retained as a baseline; that name is not a guarantee of
+complete workflow validation. Fresh installations default to that older profile
+until another is selected. The desktop shortcut follows the saved profile.
 
-The performance profile verifies all 14 pinned candidate components before
-selection and launch. It enables photo retention and the measured late limiter;
-explicit `LRCC_RETAIN_LOUPE` and `LRCC_LIMITER` values remain overrides. It does
-not change photo-processing preferences, credentials, or the current running
-session. `--runtime` remains an explicit experimental override and cannot be
-combined with `--profile`. Silent Super+0 launch and desktop scaling rules apply
-to both profiles. `LRCC_PREFIX` still selects an isolated prefix for tests.
-See [profile validation and remaining limits](docs/launch-profiles-2026-09-20.md).
+Use `status` to inspect the selected runtime, `measure 30` to record CPU/GPU and
+memory data, or `run-perf` instead of `run` to launch with the overlay. See the
+[performance test loop](docs/performance-loop.md) and
+[diagnostic tools](diagnostics/README.md). The
+[scheduling](docs/ui-scheduling-2026-09-20.md) and
+[zoom](docs/transitions-2026-09-20.md) reports document comparison and restore
+options. Dated reports describe the builds tested at the time.
 
-For Omarchy's desktop integration, [the Lightroom window rule](config/lightroom-hyprland.lua)
-keeps launches on Super+0 and disables compositor fades for its Windows menus.
-Merge it into the user Hyprland Lua config after Omarchy defaults; preserve any
-other personal rules. The [desktop menu investigation](docs/menu-compositor-2026-09-19.md)
-records the evidence and live configuration checks.
+The current development launch convention uses **Super+0 (workspace 10)**
+silently, so testing does not interrupt the desktop. This is a debugging
+convention, not a Lightroom feature or a requirement of Proton.
 
-## Credits and license
+Contributions should include reproducible steps and measured results. See
+[CONTRIBUTING.md](CONTRIBUTING.md) and the
+[issue tracker](https://github.com/LamplighterPaul/omarchy-lightroom-cc/issues).
 
-Original launcher, diagnostics, build scripts, tests and documentation:
-**Copyright © 2026 Paul Zammit and contributors, [MIT](LICENSE)**.
+## Credits and licensing
 
-The Direct2D experiment includes work from **6im0n, sander110419 and the Wine
-project**, with their notices and licenses preserved. See
-**[THIRD_PARTY.md](THIRD_PARTY.md)** for source revisions, license scope, runtime
-credits and inspiration from Proton, SteamOS, CachyOS, Bazzite and Omarchy.
-See **[research notes](docs/research.md)** for the direct-download findings.
+Original launcher, diagnostics and documentation: copyright © 2026 Paul Zammit
+and contributors, [MIT](LICENSE). Wine-derived components retain their own
+licenses. Thanks to Wine, GE-Proton, Valve Proton, UMU, DXVK, vkd3d-proton,
+MangoHud, Omarchy, 6im0n and sander110419; see [THIRD_PARTY.md](THIRD_PARTY.md)
+for attribution and license details.
 
-This repository contains source and documentation. Adobe applications,
-Microsoft redistributables, runtime archives, credentials, photos and signed-in
-Wine environments are not included. Downloaded components retain their own
-licenses. Adobe, Lightroom and Creative Cloud are trademarks of Adobe Inc.;
-this is an independent project.
+Adobe binaries, credentials, photos and authenticated prefixes are not included
+in this source repository. Adobe and Lightroom are trademarks of Adobe Inc.
