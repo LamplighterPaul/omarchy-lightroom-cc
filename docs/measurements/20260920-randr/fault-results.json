@@ -1,0 +1,33 @@
+{
+  "reported_error": {
+    "name": "BadRRCrtc",
+    "major_opcode": 140,
+    "minor_opcode": 20,
+    "resource": "0x4b3"
+  },
+  "baseline_probe": {
+    "runtime": "11.7-3-rc1",
+    "injected_resource": "0x7ffffffe",
+    "error": "BadRRCrtc",
+    "exit_code": 1
+  },
+  "patched_probe": {
+    "runtime": "11.7-3-rc2",
+    "stale_result": "NULL",
+    "subsequent_valid_query": true,
+    "exit_code": 0
+  },
+  "lightroom": {
+    "runtime": "11.7-3-rc2",
+    "invalid_valid_pairs": 8,
+    "all_invalid_returned_null": true,
+    "all_valid_succeeded": true,
+    "survived": true,
+    "subsequent_zoom_toggles": 5,
+    "subsequent_menu_openings": 12,
+    "pan_seconds": 10,
+    "photo_switches": 2,
+    "closed_normally": true
+  },
+  "real_suspend_resume_retested": false
+}

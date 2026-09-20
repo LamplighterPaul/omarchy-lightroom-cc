@@ -1,6 +1,6 @@
 {
-  "runtime": "lightroom-omarchy-proton-11.7-3-rc1",
-  "version": "11.7-3-rc1",
+  "runtime": "lightroom-omarchy-proton-11.7-3-rc2",
+  "version": "11.7-3-rc2",
   "components": {
     "files/lib/wine/x86_64-windows/advapi32.dll": "0983c5028949991d31195a0b80de0ca0b514923de692fdfa1c88aa2b7561c6e1",
     "files/lib/wine/i386-windows/advapi32.dll": "dd57fa612e8ed4db83b15a45d22eefac739ffaa9219ba6d1ad3be4c62ef27de5",
@@ -15,7 +15,7 @@
     "files/lib/wine/x86_64-unix/win32u.so": "8fd85ef6cd113ad0bcde589246c84f7fe179b5b503ec489ae2bc988191b9e693",
     "files/lib/wine/x86_64-windows/ntdll.dll": "bab6b6a540ce729ebbb4f653b42a99f28f5d6d91b0b35d0f4f6efd764c2efc62",
     "files/lib/wine/i386-windows/ntdll.dll": "ce784f23eb1e2f37462fcc5cbea23e49c75aee0ab948824a4133f9bdafd43e1a",
-    "files/lib/wine/x86_64-unix/winex11.so": "ede2fd9dbe769966907a475f49b45d5058c68cac9273ef69fc48b559343dbc58"
+    "files/lib/wine/x86_64-unix/winex11.so": "206a83b3a7f7c338b7d1ab064a2de51c418ac893c18ce4b0018c4dd8fbb605fc"
   },
   "limiter": "mangohud",
   "retain_loupe": "1",

@@ -4,7 +4,7 @@ An open-source compatibility experiment by **[Paul Zammit](https://github.com/La
 to run Adobe **Lightroom CC (cloud)** locally on Omarchy, with a dedicated GE-Proton runtime
 and desktop integration.
 
-**Status · 19 September 2026 · custom Proton running; performance investigation active**
+**Status · 20 September 2026 · custom Proton running; performance investigation active**
 
 [lightroom-omarchy-proton](https://github.com/LamplighterPaul/lightroom-omarchy-proton)
 now runs the signed-in cloud library through UMU and Steam Runtime 4, with
@@ -115,6 +115,12 @@ rendering FPS or eliminate photo-loading delays. The original preference is
 saved locally. To restore it, close Lightroom normally and launch with
 `LRCC_ANIMATIONS=original lightroom-omarchy-proton run`.
 See [the transition measurements and limitations](docs/transitions-2026-09-20.md).
+
+The performance profile now selects rc2, which recovers from the stale display
+controller query that terminated Lightroom after a system resume. The failure
+was reproduced with rc1 and recovered with rc2 in the private fixture; a real
+sleep/wake cycle remains unverified. See [the crash evidence and recovery
+tests](docs/randr-recovery-2026-09-20.md).
 
 Close Lightroom normally, then stop any remaining prefix services before the
 first runtime switch:
