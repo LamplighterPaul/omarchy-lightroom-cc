@@ -1,6 +1,7 @@
 PREFIX ?= $(HOME)/.local
 
-.PHONY: install check
+.PHONY: install check syntax
+
 install:
 	install -Dm755 bin/omarchy-lightroom-cc $(DESTDIR)$(PREFIX)/bin/omarchy-lightroom-cc
 	install -Dm755 bin/lightroom-omarchy-proton $(DESTDIR)$(PREFIX)/bin/lightroom-omarchy-proton
@@ -12,5 +13,9 @@ install:
 	install -Dm644 diagnostics/stall-trace.py $(DESTDIR)$(PREFIX)/share/omarchy-lightroom-cc/diagnostics/stall-trace.py
 	install -Dm644 diagnostics/ui-scheduler.py $(DESTDIR)$(PREFIX)/share/omarchy-lightroom-cc/diagnostics/ui-scheduler.py
 
-check:
+syntax:
+	python3 -m py_compile bin/omarchy-lightroom-cc scripts/build-d2d1.py
+	node --check diagnostics/webview-capture.mjs
+
+check: syntax
 	python3 -m unittest discover -s tests -v
