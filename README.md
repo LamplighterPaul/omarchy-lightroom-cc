@@ -1,3 +1,6 @@
+> [!NOTE]
+> **Archived:** There are better native Linux alternatives available now, such as [Rawmakase](https://github.com/pch/rawmakase). I recommend using those instead of running Lightroom CC through Proton.
+
 # omarchy-lightroom-cc
 
 Adobe **Lightroom CC (cloud)** on Omarchy, with a dedicated Proton runtime,
